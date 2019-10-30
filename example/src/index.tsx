@@ -1,22 +1,45 @@
+/* eslint-disable */
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { createFormContext, FormProvider, useField } from "./files";
+import { FormProvider, useField } from "./dist";
 
-const MyFormContext = createFormContext({
-  values: {
-    name: "",
-    address: {
-      city: ""
-    }
-  }
-});
+function App() {
+  return (
+    <div className="App">
+      <FormProvider>
+        <NameField />
+      </FormProvider>
+    </div>
+  );
+}
 
-const App = () => {
-  return <FormProvider context={MyFormContext} />;
+const NameField = () => {
+  // @ts-ignore
+  const [firstNameProps, firstNameMeta] = useField({
+    name: "firstName",
+    validate: a => (!a ? "This is required!" : undefined)
+  });
+
+  // @ts-ignore
+  const [lastNameProps, lastNameMeta] = useField({
+    name: "lastName",
+    validate: a => (!a ? "This is required!" : undefined)
+  });
+
+  console.log(firstNameProps, firstNameMeta);
+  console.log(lastNameProps, lastNameMeta);
+
+  return (
+    <>
+      <label htmlFor={firstNameProps.name}>First Name</label>
+      <input {...firstNameProps} />
+      {firstNameMeta.error && <span>{firstNameMeta.error}</span>}
+      <label htmlFor={lastNameProps.name}>Last Name</label>
+      <input {...lastNameProps} />
+      {lastNameMeta.error && <span>{lastNameMeta.error}</span>}
+    </>
+  );
 };
 
-const child = () => {
-  const x = useField(MyFormContext, { property: ["address", "city"] });
-};
 ReactDOM.render(<App />, document.getElementById("root"));

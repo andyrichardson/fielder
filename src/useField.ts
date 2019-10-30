@@ -41,16 +41,22 @@ export const useField = <T = any>({
   initialValue,
   initialTouched
 }: UseFieldArg<T>): UseFieldResponse => {
-  const { fields, setFields } = useContext<FormState>(FormContext);
+  const ctx = useContext<FormState>(FormContext);
 
   const name = useMemo(() => initialName, []);
   const { touched, value, error, isValid } = useMemo<FieldState<T>>(
-    () => (fields as any)[name],
-    [name, fields]
+    () =>
+      (ctx.fields as any)[name] || {
+        value: initialValue,
+        isValid: initialValid || false,
+        touched: initialTouched || false,
+        error: initialError
+      },
+    [name, ctx]
   );
 
   useEffect(() => {
-    setFields(f => ({
+    ctx.setFields(f => ({
       ...f,
       [name]: {
         name,
@@ -63,35 +69,35 @@ export const useField = <T = any>({
     }));
 
     return () =>
-      setFields(f => ({
+      ctx.setFields(f => ({
         ...f,
         [name]: undefined as any
       }));
   }, []);
 
   useEffect(() => {
-    setFields(f => ({
+    ctx.setFields(f => ({
       ...f,
       [name]: {
         ...(f as any)[name],
         validate
       }
     }));
-  }, [validate]);
+  }, [validate, ctx.setFields]);
 
   const onBlur = useCallback<FocusEventHandler>(() => {
-    setFields(f => ({
+    ctx.setFields(f => ({
       ...f,
       [name]: {
         ...(f as any)[name],
         touched: true
       }
     }));
-  }, [setFields]);
+  }, [ctx.setFields]);
 
   const onChange = useCallback<ChangeEventHandler>(
     (e: any) => {
-      setFields(f => ({
+      ctx.setFields(f => ({
         ...f,
         [name]: {
           ...(f as any)[name],
@@ -99,11 +105,13 @@ export const useField = <T = any>({
         }
       }));
     },
-    [setFields]
+    [ctx.setFields]
   );
+
+  console.log("rerender");
 
   return useMemo(
     () => [{ name, value, onBlur, onChange }, { touched, error, isValid }],
-    [value, onBlur, onChange, name, touched, error, isValid]
+    [value, onBlur, onChange, name, touched, error, isValid, ctx]
   );
 };

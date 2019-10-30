@@ -2,12 +2,13 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
+    "moduleResolution": "node",
     "lib": ["dom", "es2015", "es2017.object"],
-    "jsx": "preserve",
+    "jsx": "react",
     "strict": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "outDir": "dist"
+    "outDir": "example/src/dist"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "files": ["src/index.ts"]
 }

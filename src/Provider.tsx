@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useMemo, FC } from "react";
 import { FormState, FieldState } from "./types";
 import { FormContext } from "./context";
 
-export const FormProvider: FC = () => {
+export const FormProvider: FC = ({ children }) => {
   const [uselessState, setUselessState] = useState(false);
   const fields = useRef<Record<string, any>>({});
 
@@ -10,7 +10,7 @@ export const FormProvider: FC = () => {
   const update = useCallback(() => setUselessState(s => !s), []);
 
   const setFields = useCallback<FormState["setFields"]>(
-    arg => {
+    (arg, noUpdate = false) => {
       const newFields = typeof arg === "function" ? arg(fields.current) : arg;
 
       Object.entries(newFields).forEach(([key, value]) => {
@@ -21,21 +21,23 @@ export const FormProvider: FC = () => {
 
         fields.current[key] = value;
       });
-      update();
+      !noUpdate && update();
     },
     [fields, update]
   );
 
   const validateFields = useCallback<FormState["validateFields"]>(
     () =>
-      setFields(f =>
-        Object.entries(f).reduce(
-          (p, [key, value]) => ({
-            ...p,
-            [key]: validateFieldState(value)
-          }),
-          {}
-        )
+      setFields(
+        f =>
+          Object.entries(f).reduce(
+            (p, [key, value]) => ({
+              ...p,
+              [key]: validateFieldState(value)
+            }),
+            {}
+          ),
+        true
       ),
     [setFields]
   );
@@ -50,6 +52,8 @@ export const FormProvider: FC = () => {
     [setFields]
   );
 
+  useMemo(validateFields, [uselessState]);
+
   const isValid = useMemo(
     () => Object.values(fields.current).every(f => f.isValid),
     [uselessState]
@@ -59,14 +63,20 @@ export const FormProvider: FC = () => {
     () => ({
       fields: fields.current,
       setFields,
-      validateField,
-      validateFields,
+      validateField: (name: any) => {
+        validateField(name);
+        update();
+      },
+      validateFields: () => {
+        validateFields();
+        update();
+      },
       isValid
     }),
-    [uselessState, setFields, validateField, validateFields]
+    [uselessState, setFields, validateField, validateFields, isValid]
   );
 
-  return <FormContext.Provider value={value}></FormContext.Provider>;
+  return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };
 
 const validateFieldState = (f: FieldState<any>) => {
