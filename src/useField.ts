@@ -29,6 +29,7 @@ export type UseFieldMeta = {
   readonly touched: FieldState["touched"];
   readonly error: FieldState["error"];
   readonly isValid: FieldState["isValid"];
+  readonly isValidating: FieldState["isValidating"];
 };
 
 export type UseFieldResponse = [UseFieldProps, UseFieldMeta];
@@ -36,10 +37,10 @@ export type UseFieldResponse = [UseFieldProps, UseFieldMeta];
 export const useField = <T = any>({
   name: initialName,
   validate,
-  initialValid,
-  initialError,
-  initialValue,
-  initialTouched
+  initialValid = false,
+  initialError = undefined,
+  initialValue = undefined,
+  initialTouched = undefined
 }: UseFieldArg<T>): UseFieldResponse => {
   const ctx = useContext<FormState>(FormContext);
 
@@ -48,14 +49,34 @@ export const useField = <T = any>({
     () =>
       (ctx.fields as any)[name] || {
         value: initialValue,
-        isValid: initialValid || false,
-        touched: initialTouched || false,
-        error: initialError
+        isValid: initialValid,
+        touched: initialTouched,
+        error: initialError,
+        isValidating: false
       },
     [name, ctx]
   );
 
   useEffect(() => {
+    if (ctx.fields[name].active) {
+      throw Error("Duplicate field mounted.");
+    }
+
+    ctx.setFields(fields => {
+      const p = fields[name];
+
+      return {
+        ...fields,
+        [name]: {
+          active: true,
+          name,
+          value: p.value !== undefined ? p.value : initialValue,
+          isValid: initialValid,
+          touched: p.touched || initialTouched
+        }
+      };
+    });
+
     ctx.setFields(f => ({
       ...f,
       [name]: {
@@ -71,7 +92,11 @@ export const useField = <T = any>({
     return () =>
       ctx.setFields(f => ({
         ...f,
-        [name]: undefined as any
+        [name]: {
+          ...f[name],
+          isValid: false,
+          isValidating: false
+        }
       }));
   }, []);
 

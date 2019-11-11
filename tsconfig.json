@@ -8,6 +8,7 @@
     "strict": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "keyofStringsOnly": true,
     "outDir": "example/src/dist"
   },
   "files": ["src/index.ts"]

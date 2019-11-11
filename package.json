@@ -25,5 +25,8 @@
     "react-dom": "^16.11.0",
     "typescript": "^3.6.4",
     "yup": "^0.27.0"
+  },
+  "dependencies": {
+    "tipple": "^0.6.0"
   }
 }
