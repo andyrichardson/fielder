@@ -1,4 +1,5 @@
 import { SetStateAction } from "react";
+import { SetFieldValueArgs, BlurFieldArgs, UnmountFieldArgs } from "./useForm";
 
 export type FormError = string;
 
@@ -8,13 +9,10 @@ export interface FormState<T extends Record<string, any> = any> {
   isValidating: boolean;
   mountField: (k: FieldConfig<T>) => void;
   unmountField: (k: UnmountFieldArgs<T>) => void;
+  setFieldValue: (a: SetFieldValueArgs<T>) => void;
+  blurField: (a: BlurFieldArgs<T>) => void;
   validateField: (name: keyof T) => void;
   validateFields: () => void;
-}
-
-export interface UnmountFieldArgs<T = string> {
-  name: keyof T;
-  destroy?: boolean;
 }
 
 export interface FieldState<T = any> {
@@ -59,4 +57,6 @@ export interface FieldConfig<
   readonly initialTouched?: boolean;
   /** Starting valid state. */
   readonly initialValid?: boolean;
+  /** Should destroy value when useField hook is unmounted. */
+  readonly destroyOnUnmount?: boolean;
 }

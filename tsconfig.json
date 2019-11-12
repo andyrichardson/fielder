@@ -3,7 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["dom", "es2015", "es2017.object"],
+    "lib": ["dom", "es2015", "esnext"],
     "jsx": "react",
     "strict": true,
     "isolatedModules": true,
@@ -11,5 +11,6 @@
     "keyofStringsOnly": true,
     "outDir": "example/src/dist"
   },
-  "files": ["src/index.ts"]
+  "files": ["src/index.ts"],
+  "includes": ["src/**/*.tsx", "src/**/*.ts"]
 }

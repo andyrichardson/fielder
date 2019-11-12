@@ -17,9 +17,11 @@
   },
   "homepage": "https://github.com/andyrichardson/form#readme",
   "devDependencies": {
+    "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.3",
     "@types/yup": "^0.26.24",
+    "enzyme-adapter-react-16": "^1.15.1",
     "jest": "^24.9.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
@@ -27,6 +29,10 @@
     "yup": "^0.27.0"
   },
   "dependencies": {
-    "tipple": "^0.6.0"
+    "@types/enzyme": "^3.10.3",
+    "@types/jest": "^24.0.22",
+    "enzyme": "^3.10.0",
+    "tipple": "^0.6.0",
+    "ts-jest": "^24.1.0"
   }
 }

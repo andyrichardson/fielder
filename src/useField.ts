@@ -4,19 +4,11 @@ import React, {
   ChangeEventHandler,
   FocusEventHandler,
   useCallback,
-  useMemo
+  useMemo,
+  useLayoutEffect
 } from "react";
 import { FormContext } from "./context";
-import { FormState, FormError, FieldState } from "./types";
-
-export interface UseFieldArg<T> {
-  readonly name: string;
-  readonly validate?: (value: T) => string | undefined;
-  readonly initialValue?: T;
-  readonly initialValid?: boolean;
-  readonly initialError?: FormError;
-  readonly initialTouched?: boolean;
-}
+import { FormState, FormError, FieldState, FieldConfig } from "./types";
 
 export type UseFieldProps<T = any> = {
   readonly name: string;
@@ -40,103 +32,69 @@ export const useField = <T = any>({
   initialValid = false,
   initialError = undefined,
   initialValue = undefined,
-  initialTouched = undefined
-}: UseFieldArg<T>): UseFieldResponse => {
-  const ctx = useContext<FormState>(FormContext);
+  initialTouched = false,
+  validateOnBlur = true,
+  validateOnChange = true,
+  validateOnUpdate = false,
+  destroyOnUnmount = false
+}: FieldConfig<T>): UseFieldResponse => {
+  const {
+    fields,
+    blurField,
+    mountField,
+    unmountField,
+    setFieldValue
+  } = useContext<FormState>(FormContext);
 
   const name = useMemo(() => initialName, []);
-  const { touched, value, error, isValid } = useMemo<FieldState<T>>(
+  const field = useMemo(
     () =>
-      (ctx.fields as any)[name] || {
-        value: initialValue,
-        isValid: initialValid,
-        touched: initialTouched,
+      fields[initialName] || {
+        name,
         error: initialError,
-        isValidating: false
+        valid: initialValid,
+        value: initialValue,
+        touched: initialTouched
       },
-    [name, ctx]
+    [fields]
   );
 
-  useEffect(() => {
-    if (ctx.fields[name].active) {
+  useLayoutEffect(() => {
+    if (fields[name] && fields[name]._isActive) {
       throw Error("Duplicate field mounted.");
     }
 
-    ctx.setFields(fields => {
-      const p = fields[name];
-
-      return {
-        ...fields,
-        [name]: {
-          active: true,
-          name,
-          value: p.value !== undefined ? p.value : initialValue,
-          isValid: initialValid,
-          touched: p.touched || initialTouched
-        }
-      };
+    mountField({
+      name,
+      initialError,
+      initialValid,
+      initialValue,
+      initialTouched,
+      validate,
+      validateOnBlur,
+      validateOnChange,
+      validateOnUpdate
     });
 
-    ctx.setFields(f => ({
-      ...f,
-      [name]: {
-        name,
-        value: initialValue,
-        isValid: initialValid || false,
-        touched: initialTouched || false,
-        error: initialError,
-        validate
-      }
-    }));
-
-    return () =>
-      ctx.setFields(f => ({
-        ...f,
-        [name]: {
-          ...f[name],
-          isValid: false,
-          isValidating: false
-        }
-      }));
-  }, []);
-
-  useEffect(() => {
-    ctx.setFields(f => ({
-      ...f,
-      [name]: {
-        ...(f as any)[name],
-        validate
-      }
-    }));
-  }, [validate, ctx.setFields]);
+    return () => unmountField({ name, destroy: destroyOnUnmount });
+  }, [mountField]);
 
   const onBlur = useCallback<FocusEventHandler>(() => {
-    ctx.setFields(f => ({
-      ...f,
-      [name]: {
-        ...(f as any)[name],
-        touched: true
-      }
-    }));
-  }, [ctx.setFields]);
+    blurField({ name });
+  }, [blurField]);
 
   const onChange = useCallback<ChangeEventHandler>(
-    (e: any) => {
-      ctx.setFields(f => ({
-        ...f,
-        [name]: {
-          ...(f as any)[name],
-          value: e.currentTarget.value
-        }
-      }));
-    },
-    [ctx.setFields]
+    e => setFieldValue(e.target as any),
+    [setFieldValue]
   );
 
-  console.log("rerender");
+  const { value, touched, error, isValid, isValidating } = field;
 
   return useMemo(
-    () => [{ name, value, onBlur, onChange }, { touched, error, isValid }],
-    [value, onBlur, onChange, name, touched, error, isValid, ctx]
+    () => [
+      { name, value, onBlur, onChange },
+      { touched, error, isValid, isValidating }
+    ],
+    [value, onBlur, onChange, name, touched, error, isValid, isValidating]
   );
 };
