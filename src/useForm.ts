@@ -1,46 +1,50 @@
-import { useReducer, Reducer, useCallback, useMemo } from "react";
-import { FormState, FieldState, FieldConfig } from "./types";
+import {
+  useReducer,
+  Reducer,
+  useCallback,
+  useMemo,
+  SetStateAction
+} from "react";
+import { FormState, FieldState, FieldConfig, FieldsState } from "./types";
 
-interface MountFieldAction {
+interface MountFieldAction<T = any> {
   type: "MOUNT_FIELD";
-  config: FieldConfig;
+  config: FieldConfig<T>;
 }
 
-interface UnmountFieldAction {
+interface UnmountFieldAction<T = any> {
   type: "UNMOUNT_FIELD";
-  config: UnmountFieldArgs;
+  config: UnmountFieldArgs<T>;
 }
 
-interface SetFieldValueAction {
+interface SetFieldValueAction<T = any> {
   type: "SET_FIELD_VALUE";
-  config: SetFieldValueArgs;
+  config: SetFieldValueArgs<T>;
 }
 
-interface BlurFieldAction {
+interface BlurFieldAction<T = any> {
   type: "BLUR_FIELD";
-  config: BlurFieldArgs;
+  config: BlurFieldArgs<T>;
 }
 
-type FormAction =
-  | MountFieldAction
-  | UnmountFieldAction
-  | SetFieldValueAction
-  | BlurFieldAction;
+type FormAction<T = any> =
+  | MountFieldAction<T>
+  | UnmountFieldAction<T>
+  | SetFieldValueAction<T>
+  | BlurFieldAction<T>;
 
-type FieldsState = Record<string, FieldState | undefined>;
-
-export const useForm = () => {
-  const [state, dispatch] = useReducer<Reducer<FieldsState, FormAction>>(
+export const useForm = <T = any>(): FormState<T> => {
+  const [fields, dispatch] = useReducer<Reducer<FieldsState<T>, FormAction<T>>>(
     (s, a) => {
       const newState = applyActionToState(s, a);
 
       return applyValidationToState(newState, a);
     },
-    {}
+    {} as FieldsState<T>
   );
 
   const mountField = useCallback<FormState["mountField"]>(
-    config => dispatch({ type: "MOUNT_FIELD", config }),
+    config => dispatch({ type: "MOUNT_FIELD", config: config as any }),
     [dispatch]
   );
 
@@ -49,22 +53,22 @@ export const useForm = () => {
     [dispatch]
   );
 
-  const setFieldValue = useCallback<FormState["setFieldValue"]>(
+  const setFieldValue = useCallback<FormState<T>["setFieldValue"]>(
     config => dispatch({ type: "SET_FIELD_VALUE", config }),
     [dispatch]
   );
 
   const blurField = useCallback<FormState["blurField"]>(
-    config => dispatch({ type: "BLUR_FIELD", config }),
+    config => dispatch({ type: "BLUR_FIELD", config: config as any }),
     [dispatch]
   );
 
   const mountedFields = useMemo(
     () =>
-      Object.values(state).filter(
+      Object.values(fields as FieldsState).filter(
         f => !(f === undefined || !f._isActive)
       ) as FieldState[],
-    [state]
+    [fields]
   );
   const isValid = useMemo(() => mountedFields.every(f => f.isValid), [
     mountedFields
@@ -74,17 +78,29 @@ export const useForm = () => {
     mountedFields
   ]);
 
+  const validateField = useCallback<FormState<T>["validateField"]>(
+    name => false,
+    []
+  );
+
+  const validateFields = useCallback<FormState<T>["validateFields"]>(
+    () => false,
+    []
+  );
+
   return useMemo(
     () => ({
-      state,
+      fields,
       mountField,
       unmountField,
       setFieldValue,
       blurField,
+      validateField,
+      validateFields,
       isValid,
       isValidating
     }),
-    [state, mountField, unmountField, isValid, isValidating]
+    [fields, mountField, unmountField, isValid, isValidating]
   );
 };
 
@@ -198,8 +214,8 @@ const doMountField = (fields: FieldsState) => ({
   };
 };
 
-export interface UnmountFieldArgs<T = string> {
-  name: keyof T;
+export interface UnmountFieldArgs<T = any> {
+  name: keyof T & string;
   destroy?: boolean;
 }
 
@@ -215,10 +231,11 @@ const doUnmountField = (fields: FieldsState) => ({
   }
 
   if (destroy) {
-    return {
-      ...fields,
-      [name]: undefined
-    };
+    return Object.entries(fields).reduce(
+      (state, [key, value]) =>
+        key === name ? state : { ...state, [key]: value },
+      {}
+    );
   }
 
   return {
@@ -230,9 +247,12 @@ const doUnmountField = (fields: FieldsState) => ({
   };
 };
 
-export interface SetFieldValueArgs<T = any, K extends keyof T = keyof T> {
+export interface SetFieldValueArgs<
+  T = any,
+  K extends keyof T & string = keyof T & string
+> {
   name: K;
-  value: T[K];
+  value: SetStateAction<T[K]>;
 }
 
 /** Triggers a change to the given field. */
@@ -254,12 +274,15 @@ const doSetFieldValue = (fields: FieldsState) => <T>({
     ...fields,
     [name]: {
       ...p,
-      value
+      value: typeof value === "function" ? (value as any)(p) : value
     }
   };
 };
 
-export interface BlurFieldArgs<T = any, K extends keyof T = keyof T> {
+export interface BlurFieldArgs<
+  T = any,
+  K extends keyof T & string = keyof T & string
+> {
   name: K;
 }
 

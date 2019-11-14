@@ -3,19 +3,26 @@ import { SetFieldValueArgs, BlurFieldArgs, UnmountFieldArgs } from "./useForm";
 
 export type FormError = string;
 
+export type FormValue = string | boolean | number | string[];
+
+export type FieldsState<T = any> = Record<
+  keyof T & string,
+  FieldState<T[keyof T & string]>
+>;
+
 export interface FormState<T extends Record<string, any> = any> {
-  fields: Record<keyof T, FieldState<T[keyof T]>>;
+  fields: FieldsState<T>;
   isValid: boolean;
   isValidating: boolean;
   mountField: (k: FieldConfig<T>) => void;
   unmountField: (k: UnmountFieldArgs<T>) => void;
   setFieldValue: (a: SetFieldValueArgs<T>) => void;
   blurField: (a: BlurFieldArgs<T>) => void;
-  validateField: (name: keyof T) => void;
+  validateField: (name: keyof T & string) => void;
   validateFields: () => void;
 }
 
-export interface FieldState<T = any> {
+export interface FieldState<T = string | boolean | number> {
   readonly _isActive: boolean;
   readonly _validateOnChange: boolean;
   readonly _validateOnBlur: boolean;
@@ -35,7 +42,9 @@ export interface FieldState<T = any> {
 
 export interface FieldConfig<
   S = any,
-  K extends keyof S | string = S extends Record<string, any> ? keyof S : string,
+  K extends (keyof S & string) | string = S extends Record<string, any>
+    ? keyof S & string
+    : string,
   V = S extends Record<string, any> ? S[K] : S,
   F = S extends Record<string, any> ? S : unknown
 > {

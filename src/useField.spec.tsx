@@ -1,26 +1,29 @@
-import React from "react";
+import React, { FC } from "react";
 import { mount } from "enzyme";
-import { useField } from "./useField";
+import { useField, UseFieldResponse } from "./useField";
 import { FormContext } from "./context";
+import { FieldConfig } from "./types";
 
 const context = {
   fields: {},
   mountField: jest.fn(),
-  unmountField: jest.fn()
+  unmountField: jest.fn(),
+  blurField: jest.fn(),
+  setFieldValue: jest.fn()
 };
-let response: any;
-let args: Parameters<typeof useField>[0];
+let response: UseFieldResponse;
+let args: FieldConfig<any>;
 
-const Fixture = () => {
-  const F = () => {
+const Fixture: FC = ({ children }) => {
+  const F: FC = ({ children }) => {
     response = useField(args);
 
-    return null;
+    return <>{children}</>;
   };
 
   return (
     <FormContext.Provider value={context as any}>
-      <F />
+      <F>{children}</F>
     </FormContext.Provider>
   );
 };
@@ -89,6 +92,132 @@ describe("on unmount", () => {
     expect(context.unmountField).toBeCalledWith({
       name: args.name,
       destroy: true
+    });
+  });
+});
+
+describe("on blur", () => {
+  it("calls blurField", () => {
+    args = { name: "someField" };
+    mount(<Fixture />);
+    response[0].onBlur();
+
+    expect(context.blurField).toBeCalledTimes(1);
+    expect(context.blurField).toBeCalledWith({
+      name: args.name
+    });
+  });
+});
+
+describe("on change", () => {
+  describe("basic input", () => {
+    it("calls setFieldValue", () => {
+      const value = "newval";
+      args = { name: "someField" };
+
+      mount(<Fixture />);
+      response[0].onChange({
+        currentTarget: {
+          tagName: "INPUT",
+          getAttribute: () => undefined,
+          value
+        }
+      } as any);
+
+      expect(context.setFieldValue).toBeCalledTimes(1);
+      expect(context.setFieldValue).toBeCalledWith({
+        name: args.name,
+        value
+      });
+    });
+  });
+
+  describe("radio input", () => {
+    it("calls setFieldValue", () => {
+      const value = "newval";
+      args = { name: "someField" };
+
+      mount(<Fixture />);
+      response[0].onChange({
+        currentTarget: {
+          tagName: "INPUT",
+          getAttribute: () => "radio",
+          value
+        }
+      } as any);
+
+      expect(context.setFieldValue).toBeCalledTimes(1);
+      expect(context.setFieldValue).toBeCalledWith({
+        name: args.name,
+        value
+      });
+    });
+  });
+
+  describe("checkbox input", () => {
+    const value = "newval";
+    args = { name: "someField" };
+
+    beforeEach(() => {
+      mount(<Fixture />);
+      response[0].onChange({
+        currentTarget: {
+          tagName: "INPUT",
+          getAttribute: () => "checkbox",
+          value
+        }
+      } as any);
+    });
+
+    it("calls setFieldValue", () => {
+      expect(context.setFieldValue).toBeCalledTimes(1);
+      expect(context.setFieldValue).toBeCalledWith(
+        expect.objectContaining({
+          name: args.name
+        })
+      );
+    });
+
+    describe("on setFieldValue value function", () => {
+      let valueFn: Function;
+      const otherVals = ["other", "again"];
+
+      beforeEach(() => {
+        valueFn = context.setFieldValue.mock.calls[0][0].value;
+      });
+
+      it("instantiates array with value", () => {
+        expect(valueFn()).toEqual([value]);
+      });
+
+      it("removes value from array", () => {
+        expect(valueFn([...otherVals, value])).toEqual(otherVals);
+      });
+
+      it("appends value to array", () => {
+        expect(valueFn(otherVals)).toEqual([...otherVals, value]);
+      });
+    });
+  });
+
+  describe("select input", () => {
+    it("calls setFieldValue", () => {
+      const value = "newval";
+      args = { name: "someField" };
+
+      mount(<Fixture />);
+      response[0].onChange({
+        currentTarget: {
+          tagName: "SELECT",
+          value
+        }
+      } as any);
+
+      expect(context.setFieldValue).toBeCalledTimes(1);
+      expect(context.setFieldValue).toBeCalledWith({
+        name: args.name,
+        value
+      });
     });
   });
 });

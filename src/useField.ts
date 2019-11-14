@@ -1,6 +1,7 @@
 import React, {
   useContext,
   useEffect,
+  ChangeEvent,
   ChangeEventHandler,
   FocusEventHandler,
   useCallback,
@@ -14,7 +15,7 @@ export type UseFieldProps<T = any> = {
   readonly name: string;
   readonly value: T;
   readonly onChange: ChangeEventHandler;
-  readonly onBlur: FocusEventHandler;
+  readonly onBlur: () => void;
 };
 
 export type UseFieldMeta = {
@@ -23,6 +24,12 @@ export type UseFieldMeta = {
   readonly isValid: FieldState["isValid"];
   readonly isValidating: FieldState["isValidating"];
 };
+
+type SupportedElements =
+  | HTMLInputElement
+  | HTMLSelectElement
+  | HTMLTextAreaElement
+  | HTMLTextAreaElement;
 
 export type UseFieldResponse = [UseFieldProps, UseFieldMeta];
 
@@ -79,12 +86,32 @@ export const useField = <T = any>({
     return () => unmountField({ name, destroy: destroyOnUnmount });
   }, [mountField]);
 
-  const onBlur = useCallback<FocusEventHandler>(() => {
+  const onBlur = useCallback(() => {
     blurField({ name });
   }, [blurField]);
 
-  const onChange = useCallback<ChangeEventHandler>(
-    e => setFieldValue(e.target as any),
+  const onChange = useCallback<ChangeEventHandler<SupportedElements>>(
+    e => {
+      const type = getElementType(e);
+      const newVal = e.currentTarget.value;
+
+      if (type !== "checkbox") {
+        return setFieldValue({ name, value: newVal });
+      }
+
+      return setFieldValue({
+        name,
+        value: (value: any[]) => {
+          if (value === undefined) {
+            return [newVal];
+          }
+
+          return value.includes(newVal)
+            ? value.filter(v => v !== newVal)
+            : [...value, newVal];
+        }
+      });
+    },
     [setFieldValue]
   );
 
@@ -97,4 +124,27 @@ export const useField = <T = any>({
     ],
     [value, onBlur, onChange, name, touched, error, isValid, isValidating]
   );
+};
+
+const getElementType = (e: ChangeEvent<SupportedElements>) => {
+  const tagName = e.currentTarget.tagName.toLowerCase();
+  const getAttribute = e.currentTarget.getAttribute;
+
+  if (tagName === "input" && getAttribute("type") === "checkbox") {
+    return "checkbox";
+  }
+
+  if (tagName === "input" && getAttribute("type") === "radio") {
+    return "radio";
+  }
+
+  if (tagName === "select") {
+    return "select";
+  }
+
+  if (tagName === "input") {
+    return "input";
+  }
+
+  throw Error("Unsupported input element");
 };
