@@ -27,11 +27,22 @@ interface BlurFieldAction<T = any> {
   config: BlurFieldArgs<T>;
 }
 
+interface ValidateFieldAction<T = any> {
+  type: "VALIDATE_FIELD";
+  config: ValidateFieldArgs<T>;
+}
+
+interface ValidateFieldsAction {
+  type: "VALIDATE_FIELDS";
+}
+
 type FormAction<T = any> =
   | MountFieldAction<T>
   | UnmountFieldAction<T>
   | SetFieldValueAction<T>
-  | BlurFieldAction<T>;
+  | BlurFieldAction<T>
+  | ValidateFieldAction<T>
+  | ValidateFieldsAction;
 
 export const useForm = <T = any>(): FormState<T> => {
   const [fields, dispatch] = useReducer<Reducer<FieldsState<T>, FormAction<T>>>(
@@ -43,12 +54,12 @@ export const useForm = <T = any>(): FormState<T> => {
     {} as FieldsState<T>
   );
 
-  const mountField = useCallback<FormState["mountField"]>(
+  const mountField = useCallback<FormState<T>["mountField"]>(
     config => dispatch({ type: "MOUNT_FIELD", config: config as any }),
     [dispatch]
   );
 
-  const unmountField = useCallback<FormState["unmountField"]>(
+  const unmountField = useCallback<FormState<T>["unmountField"]>(
     config => dispatch({ type: "UNMOUNT_FIELD", config }),
     [dispatch]
   );
@@ -58,9 +69,19 @@ export const useForm = <T = any>(): FormState<T> => {
     [dispatch]
   );
 
-  const blurField = useCallback<FormState["blurField"]>(
+  const blurField = useCallback<FormState<T>["blurField"]>(
     config => dispatch({ type: "BLUR_FIELD", config: config as any }),
     [dispatch]
+  );
+
+  const validateField = useCallback<FormState<T>["validateField"]>(
+    config => dispatch({ type: "VALIDATE_FIELD", config }),
+    [dispatch]
+  );
+
+  const validateFields = useCallback<FormState<T>["validateFields"]>(
+    () => dispatch({ type: "VALIDATE_FIELDS" }),
+    []
   );
 
   const mountedFields = useMemo(
@@ -77,16 +98,6 @@ export const useForm = <T = any>(): FormState<T> => {
   const isValidating = useMemo(() => mountedFields.some(f => f.isValidating), [
     mountedFields
   ]);
-
-  const validateField = useCallback<FormState<T>["validateField"]>(
-    name => false,
-    []
-  );
-
-  const validateFields = useCallback<FormState<T>["validateFields"]>(
-    () => false,
-    []
-  );
 
   return useMemo(
     () => ({
@@ -127,7 +138,14 @@ const applyActionToState = (s: FieldsState, a: FormAction) => {
 
 /** Triggers validation on fields items. */
 const applyValidationToState = (s: FieldsState, a: FormAction): FieldsState => {
-  if (!["SET_FIELD_VALUE", "BLUR_FIELD"].includes(a.type)) {
+  if (
+    ![
+      "SET_FIELD_VALUE",
+      "BLUR_FIELD",
+      "VALIDATE_FIELD",
+      "VALIDATE_FIELDS"
+    ].includes(a.type)
+  ) {
     return s;
   }
 
@@ -148,8 +166,19 @@ const applyValidationToState = (s: FieldsState, a: FormAction): FieldsState => {
       field._validateOnChange;
     const validateUpdate =
       a.type === "SET_FIELD_VALUE" && field._validateOnChange;
+    const validateField =
+      a.type === "VALIDATE_FIELD" && a.config.name === field.name;
+    const validateFields = a.type === "VALIDATE_FIELDS";
 
-    if (!(validateBlur || validateChange || validateUpdate)) {
+    if (
+      !(
+        validateBlur ||
+        validateChange ||
+        validateUpdate ||
+        validateField ||
+        validateFields
+      )
+    ) {
       return state;
     }
 
@@ -308,3 +337,10 @@ const doBlurField = (fields: FieldsState) => <T = any>({
     }
   };
 };
+
+export interface ValidateFieldArgs<
+  T = any,
+  K extends keyof T & string = keyof T & string
+> {
+  name: K;
+}

@@ -18,7 +18,7 @@ export interface FormState<T extends Record<string, any> = any> {
   unmountField: (k: UnmountFieldArgs<T>) => void;
   setFieldValue: (a: SetFieldValueArgs<T>) => void;
   blurField: (a: BlurFieldArgs<T>) => void;
-  validateField: (name: keyof T & string) => void;
+  validateField: (a: { name: keyof T & string }) => void;
   validateFields: () => void;
 }
 
