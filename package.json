@@ -1,21 +1,21 @@
 {
-  "name": "form",
-  "version": "1.0.0",
-  "description": "",
+  "name": "fielder",
+  "version": "0.1.0",
+  "description": "A modern React form library which focuses on being dynamic.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andyrichardson/form.git"
+    "url": "git+https://github.com/andyrichardson/fielder.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andyrichardson/form/issues"
+    "url": "https://github.com/andyrichardson/fielder/issues"
   },
-  "homepage": "https://github.com/andyrichardson/form#readme",
+  "homepage": "https://github.com/andyrichardson/fielder#readme",
   "devDependencies": {
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/react": "^16.9.11",
