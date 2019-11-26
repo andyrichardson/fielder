@@ -3,37 +3,52 @@ import {
   Reducer,
   useCallback,
   useMemo,
-  SetStateAction
+  SetStateAction,
+  Dispatch,
+  useRef,
+  MutableRefObject
 } from "react";
 import { FormState, FieldState, FieldConfig, FieldsState } from "./types";
 
+/** Adds a field to the form. */
 interface MountFieldAction<T = any> {
   type: "MOUNT_FIELD";
   config: FieldConfig<T>;
 }
 
+/** Removes a field to the form or sets it as inactive. */
 interface UnmountFieldAction<T = any> {
   type: "UNMOUNT_FIELD";
   config: UnmountFieldArgs<T>;
 }
 
+/** Sets the value of a field (may trigger validation). */
 interface SetFieldValueAction<T = any> {
   type: "SET_FIELD_VALUE";
   config: SetFieldValueArgs<T>;
 }
 
+/** Sets a field to having been touched. */
 interface BlurFieldAction<T = any> {
   type: "BLUR_FIELD";
   config: BlurFieldArgs<T>;
 }
 
+/** Force validation to be called on a given field. */
 interface ValidateFieldAction<T = any> {
   type: "VALIDATE_FIELD";
   config: ValidateFieldArgs<T>;
 }
 
+/** Force validation to be called on all fields. */
 interface ValidateFieldsAction {
   type: "VALIDATE_FIELDS";
+}
+
+/** Set state of a field (without triggering validation). */
+interface SetFieldStateAction<T = any> {
+  type: "SET_FIELD_STATE";
+  config: SetFieldStateArgs<T>;
 }
 
 type FormAction<T = any> =
@@ -42,17 +57,27 @@ type FormAction<T = any> =
   | SetFieldValueAction<T>
   | BlurFieldAction<T>
   | ValidateFieldAction<T>
-  | ValidateFieldsAction;
+  | ValidateFieldsAction
+  | SetFieldStateAction<T>;
 
 export const useForm = <T = any>(): FormState<T> => {
-  const [fields, dispatch] = useReducer<Reducer<FieldsState<T>, FormAction<T>>>(
-    (s, a) => {
-      const newState = applyActionToState(s, a);
+  const dispatchRef = useRef<Dispatch<FormAction<T>>>();
 
-      return applyValidationToState(newState, a);
+  const handleAsyncValidation = useMemo(
+    () => createHandleAsyncValidation(dispatchRef),
+    []
+  );
+
+  const [fields, dispatch] = useReducer<Reducer<FieldsState<T>, FormAction<T>>>(
+    (state, action) => {
+      const newState = applyActionToState(state, action);
+
+      return applyValidationToState(newState, action, handleAsyncValidation);
     },
     {} as FieldsState<T>
   );
+
+  useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
   const mountField = useCallback<FormState<T>["mountField"]>(
     config => dispatch({ type: "MOUNT_FIELD", config: config as any }),
@@ -133,23 +158,80 @@ const applyActionToState = (s: FieldsState, a: FormAction) => {
     return doBlurField(s)(a.config);
   }
 
+  if (a.type === "SET_FIELD_STATE") {
+    return doSetFieldState(s)(a.config);
+  }
+
   return s;
 };
 
+/** Tracks async validation and updates state on completion. */
+const createHandleAsyncValidation = <T>(
+  dispatch: MutableRefObject<Dispatch<FormAction<T>> | undefined>
+) => {
+  let promises: Record<string, number> = {};
+
+  return (name: keyof T, validationPromise: Promise<any>) => {
+    // Set new UUID for validaiton call
+    const promiseId = promises[name] !== undefined ? promises[name] + 1 : 0;
+    promises = {
+      ...promises,
+      [name]: promiseId
+    };
+
+    const validationCallback = (isError: boolean) => (response: any) => {
+      if (!dispatch || dispatch.current === undefined) {
+        console.warn(
+          "Unable to update validation state. Dispatch not available."
+        );
+        return;
+      }
+
+      // Newer validation promise has been called
+      if (promises[name] !== promiseId) {
+        return;
+      }
+
+      const isValid = !isError && !response;
+
+      dispatch.current({
+        type: "SET_FIELD_STATE",
+        config: {
+          name,
+          state: s => ({
+            ...s,
+            isValidating: false,
+            isValid,
+            error: response
+          })
+        }
+      });
+    };
+
+    validationPromise
+      .then(validationCallback(false))
+      .catch(validationCallback(true));
+  };
+};
+
 /** Triggers validation on fields items. */
-const applyValidationToState = (s: FieldsState, a: FormAction): FieldsState => {
+const applyValidationToState = (
+  state: FieldsState,
+  action: FormAction,
+  handleAsyncValidation: (name: any, promise: Promise<any>) => void
+): FieldsState => {
   if (
     ![
       "SET_FIELD_VALUE",
       "BLUR_FIELD",
       "VALIDATE_FIELD",
       "VALIDATE_FIELDS"
-    ].includes(a.type)
+    ].includes(action.type)
   ) {
-    return s;
+    return state;
   }
 
-  return Object.keys(s).reduce((state, key) => {
+  return Object.keys(state).reduce((state, key) => {
     const field = state[key];
 
     if (field === undefined || !field._isActive || !field._validate) {
@@ -157,18 +239,18 @@ const applyValidationToState = (s: FieldsState, a: FormAction): FieldsState => {
     }
 
     const validateBlur =
-      a.type === "BLUR_FIELD" &&
-      a.config.name === field.name &&
+      action.type === "BLUR_FIELD" &&
+      action.config.name === field.name &&
       field._validateOnBlur;
     const validateChange =
-      a.type === "SET_FIELD_VALUE" &&
-      a.config.name === field.name &&
+      action.type === "SET_FIELD_VALUE" &&
+      action.config.name === field.name &&
       field._validateOnChange;
     const validateUpdate =
-      a.type === "SET_FIELD_VALUE" && field._validateOnChange;
+      action.type === "SET_FIELD_VALUE" && field._validateOnChange;
     const validateField =
-      a.type === "VALIDATE_FIELD" && a.config.name === field.name;
-    const validateFields = a.type === "VALIDATE_FIELDS";
+      action.type === "VALIDATE_FIELD" && action.config.name === field.name;
+    const validateFields = action.type === "VALIDATE_FIELDS";
 
     if (
       !(
@@ -196,6 +278,8 @@ const applyValidationToState = (s: FieldsState, a: FormAction): FieldsState => {
       };
     }
 
+    handleAsyncValidation(field.name, validateResponse);
+
     return {
       ...state,
       [key]: {
@@ -203,7 +287,7 @@ const applyValidationToState = (s: FieldsState, a: FormAction): FieldsState => {
         isValidating: true
       }
     };
-  }, s);
+  }, state);
 };
 
 /** Initial and remount of field. */
@@ -319,7 +403,7 @@ export interface BlurFieldArgs<
 const doBlurField = (fields: FieldsState) => <T = any>({
   name
 }: BlurFieldArgs): FieldsState => {
-  const p = fields[name as string];
+  const p = fields[name];
 
   if (p === undefined) {
     throw Error("Cannot unmount non-mounted field");
@@ -338,9 +422,37 @@ const doBlurField = (fields: FieldsState) => <T = any>({
   };
 };
 
+const doSetFieldState = (fields: FieldsState) => <T>({
+  name,
+  state
+}: SetFieldStateArgs<T>) => {
+  const p = fields[name];
+
+  if (p === undefined) {
+    throw Error("Cannot unmount non-mounted field");
+  }
+
+  if (!p._isActive) {
+    console.warn("Setting field attribute on inactive field.");
+  }
+
+  return {
+    ...fields,
+    [name]: typeof state === "function" ? state(p) : state
+  };
+};
+
 export interface ValidateFieldArgs<
   T = any,
   K extends keyof T & string = keyof T & string
 > {
   name: K;
+}
+
+export interface SetFieldStateArgs<
+  T = any,
+  K extends keyof T & string = keyof T & string
+> {
+  name: K;
+  state: SetStateAction<FieldState<T[K]>>;
 }

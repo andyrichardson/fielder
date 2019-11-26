@@ -51,7 +51,10 @@ export interface FieldConfig<
   /** Unique identifier for field. */
   readonly name: K;
   /** Validation function. */
-  readonly validate?: (value: V, form: F) => FormError;
+  readonly validate?: (
+    value: V,
+    form: F
+  ) => FormError | void | Promise<FormError | void>;
   /** When the given field's value changes. */
   readonly validateOnChange?: boolean;
   /** When the given field loses focus. */

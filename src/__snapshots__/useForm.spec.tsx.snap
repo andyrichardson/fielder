@@ -1,0 +1,228 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initial call matches snapshot 1`] = `
+Object {
+  "blurField": [Function],
+  "fields": Object {},
+  "isValid": true,
+  "isValidating": false,
+  "mountField": [Function],
+  "setFieldValue": [Function],
+  "unmountField": [Function],
+  "validateField": [Function],
+  "validateFields": [Function],
+}
+`;
+
+exports[`on blur field field state matches snapshot 1`] = `
+Object {
+  "IgnoredField": Object {
+    "_isActive": true,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": false,
+    "isValidating": false,
+    "name": "IgnoredField",
+    "touched": false,
+    "value": undefined,
+  },
+  "TargetField": Object {
+    "_isActive": true,
+    "_validate": [MockFunction],
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": false,
+    "isValidating": false,
+    "name": "TargetField",
+    "touched": true,
+    "value": undefined,
+  },
+}
+`;
+
+exports[`on change field field state matches snapshot 1`] = `
+Object {
+  "IgnoredField": Object {
+    "_isActive": true,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": false,
+    "isValidating": false,
+    "name": "IgnoredField",
+    "touched": false,
+    "value": undefined,
+  },
+  "TargetField": Object {
+    "_isActive": true,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": false,
+    "isValidating": false,
+    "name": "TargetField",
+    "touched": false,
+    "value": "Hello",
+  },
+}
+`;
+
+exports[`on mount field on default args field state matches snapshot 1`] = `
+Object {
+  "test": Object {
+    "_isActive": true,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": false,
+    "isValidating": false,
+    "name": "test",
+    "touched": false,
+    "value": undefined,
+  },
+}
+`;
+
+exports[`on mount field on provided args field state matches snapshot 1`] = `
+Object {
+  "test": Object {
+    "_isActive": true,
+    "_validate": [MockFunction],
+    "_validateOnBlur": false,
+    "_validateOnChange": false,
+    "_validateOnUpdate": true,
+    "error": "some error",
+    "isValid": true,
+    "isValidating": false,
+    "name": "test",
+    "touched": true,
+    "value": "hello",
+  },
+}
+`;
+
+exports[`on unmount field fields state matches snapshot 1`] = `
+Object {
+  "TargetField": Object {
+    "_isActive": false,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": false,
+    "isValidating": false,
+    "name": "TargetField",
+    "touched": false,
+    "value": 5678,
+  },
+  "test": Object {
+    "_isActive": true,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": true,
+    "isValidating": false,
+    "name": "test",
+    "touched": false,
+    "value": 1234,
+  },
+}
+`;
+
+exports[`on unmount field on destroy field state matches snapshot 1`] = `
+Object {
+  "test": Object {
+    "_isActive": true,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": true,
+    "isValidating": false,
+    "name": "test",
+    "touched": false,
+    "value": 1234,
+  },
+}
+`;
+
+exports[`on unmount field on provided args field state matches snapshot 1`] = `
+Object {
+  "test": Object {
+    "_isActive": true,
+    "_validate": [MockFunction],
+    "_validateOnBlur": false,
+    "_validateOnChange": false,
+    "_validateOnUpdate": true,
+    "error": "some error",
+    "isValid": true,
+    "isValidating": false,
+    "name": "test",
+    "touched": true,
+    "value": "hello",
+  },
+}
+`;
+
+exports[`on validate field (async) on reject (with value) field state matches snapshot 1`] = `
+Object {
+  "_isActive": true,
+  "_validate": [Function],
+  "_validateOnBlur": false,
+  "_validateOnChange": true,
+  "_validateOnUpdate": false,
+  "error": "Some error",
+  "isValid": false,
+  "isValidating": false,
+  "name": "TargetField",
+  "touched": false,
+  "value": undefined,
+}
+`;
+
+exports[`on validate field (async) on resolve (with value) field state matches snapshot 1`] = `
+Object {
+  "_isActive": true,
+  "_validate": [Function],
+  "_validateOnBlur": false,
+  "_validateOnChange": true,
+  "_validateOnUpdate": false,
+  "error": "Some error",
+  "isValid": false,
+  "isValidating": false,
+  "name": "TargetField",
+  "touched": false,
+  "value": undefined,
+}
+`;
+
+exports[`on validate field (async) on resolve field state matches snapshot 1`] = `
+Object {
+  "_isActive": true,
+  "_validate": [Function],
+  "_validateOnBlur": false,
+  "_validateOnChange": true,
+  "_validateOnUpdate": false,
+  "error": undefined,
+  "isValid": true,
+  "isValidating": false,
+  "name": "TargetField",
+  "touched": false,
+  "value": undefined,
+}
+`;

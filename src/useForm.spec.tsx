@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import { act } from "react-dom/test-utils";
 import React from "react";
 import { useForm } from "./useForm";
@@ -17,19 +17,7 @@ beforeEach(jest.clearAllMocks);
 describe("initial call", () => {
   it("matches snapshot", () => {
     mount(<Fixture />);
-    expect(response).toMatchInlineSnapshot(`
-      Object {
-        "blurField": [Function],
-        "fields": Object {},
-        "isValid": true,
-        "isValidating": false,
-        "mountField": [Function],
-        "setFieldValue": [Function],
-        "unmountField": [Function],
-        "validateField": [Function],
-        "validateFields": [Function],
-      }
-    `);
+    expect(response).toMatchSnapshot();
   });
 });
 
@@ -45,23 +33,7 @@ describe("on mount field", () => {
 
     describe("field state", () => {
       it("matches snapshot", () => {
-        expect(response.fields).toMatchInlineSnapshot(`
-          Object {
-            "test": Object {
-              "_isActive": true,
-              "_validate": undefined,
-              "_validateOnBlur": false,
-              "_validateOnChange": true,
-              "_validateOnUpdate": false,
-              "error": undefined,
-              "isValid": false,
-              "isValidating": false,
-              "name": "test",
-              "touched": false,
-              "value": undefined,
-            },
-          }
-        `);
+        expect(response.fields).toMatchSnapshot();
       });
     });
   });
@@ -86,23 +58,7 @@ describe("on mount field", () => {
 
     describe("field state", () => {
       it("matches snapshot", () => {
-        expect(response.fields).toMatchInlineSnapshot(`
-          Object {
-            "test": Object {
-              "_isActive": true,
-              "_validate": [MockFunction],
-              "_validateOnBlur": false,
-              "_validateOnChange": false,
-              "_validateOnUpdate": true,
-              "error": "some error",
-              "isValid": true,
-              "isValidating": false,
-              "name": "test",
-              "touched": true,
-              "value": "hello",
-            },
-          }
-        `);
+        expect(response.fields).toMatchSnapshot();
       });
     });
   });
@@ -156,36 +112,7 @@ describe("on unmount field", () => {
     });
 
     it("matches snapshot", () => {
-      expect(response.fields).toMatchInlineSnapshot(`
-        Object {
-          "TargetField": Object {
-            "_isActive": false,
-            "_validate": undefined,
-            "_validateOnBlur": false,
-            "_validateOnChange": true,
-            "_validateOnUpdate": false,
-            "error": undefined,
-            "isValid": false,
-            "isValidating": false,
-            "name": "TargetField",
-            "touched": false,
-            "value": 5678,
-          },
-          "test": Object {
-            "_isActive": true,
-            "_validate": undefined,
-            "_validateOnBlur": false,
-            "_validateOnChange": true,
-            "_validateOnUpdate": false,
-            "error": undefined,
-            "isValid": true,
-            "isValidating": false,
-            "name": "test",
-            "touched": false,
-            "value": 1234,
-          },
-        }
-      `);
+      expect(response.fields).toMatchSnapshot();
     });
 
     it("is not active", () => {
@@ -216,23 +143,7 @@ describe("on unmount field", () => {
 
     describe("field state", () => {
       it("matches snapshot", () => {
-        expect(response.fields).toMatchInlineSnapshot(`
-          Object {
-            "test": Object {
-              "_isActive": true,
-              "_validate": undefined,
-              "_validateOnBlur": false,
-              "_validateOnChange": true,
-              "_validateOnUpdate": false,
-              "error": undefined,
-              "isValid": true,
-              "isValidating": false,
-              "name": "test",
-              "touched": false,
-              "value": 1234,
-            },
-          }
-        `);
+        expect(response.fields).toMatchSnapshot();
       });
 
       it("does not contain previous field", () => {
@@ -261,23 +172,7 @@ describe("on unmount field", () => {
 
     describe("field state", () => {
       it("matches snapshot", () => {
-        expect(response.fields).toMatchInlineSnapshot(`
-          Object {
-            "test": Object {
-              "_isActive": true,
-              "_validate": [MockFunction],
-              "_validateOnBlur": false,
-              "_validateOnChange": false,
-              "_validateOnUpdate": true,
-              "error": "some error",
-              "isValid": true,
-              "isValidating": false,
-              "name": "test",
-              "touched": true,
-              "value": "hello",
-            },
-          }
-        `);
+        expect(response.fields).toMatchSnapshot();
       });
     });
   });
@@ -301,36 +196,7 @@ describe("on blur field", () => {
     });
 
     it("matches snapshot", () => {
-      expect(response.fields).toMatchInlineSnapshot(`
-        Object {
-          "IgnoredField": Object {
-            "_isActive": true,
-            "_validate": undefined,
-            "_validateOnBlur": false,
-            "_validateOnChange": true,
-            "_validateOnUpdate": false,
-            "error": undefined,
-            "isValid": false,
-            "isValidating": false,
-            "name": "IgnoredField",
-            "touched": false,
-            "value": undefined,
-          },
-          "TargetField": Object {
-            "_isActive": true,
-            "_validate": [MockFunction],
-            "_validateOnBlur": false,
-            "_validateOnChange": true,
-            "_validateOnUpdate": false,
-            "error": undefined,
-            "isValid": false,
-            "isValidating": false,
-            "name": "TargetField",
-            "touched": true,
-            "value": undefined,
-          },
-        }
-      `);
+      expect(response.fields).toMatchSnapshot();
     });
 
     it("is touched", () => {
@@ -399,36 +265,7 @@ describe("on change field", () => {
     });
 
     it("matches snapshot", () => {
-      expect(response.fields).toMatchInlineSnapshot(`
-        Object {
-          "IgnoredField": Object {
-            "_isActive": true,
-            "_validate": undefined,
-            "_validateOnBlur": false,
-            "_validateOnChange": true,
-            "_validateOnUpdate": false,
-            "error": undefined,
-            "isValid": false,
-            "isValidating": false,
-            "name": "IgnoredField",
-            "touched": false,
-            "value": undefined,
-          },
-          "TargetField": Object {
-            "_isActive": true,
-            "_validate": undefined,
-            "_validateOnBlur": false,
-            "_validateOnChange": true,
-            "_validateOnUpdate": false,
-            "error": undefined,
-            "isValid": false,
-            "isValidating": false,
-            "name": "TargetField",
-            "touched": false,
-            "value": "Hello",
-          },
-        }
-      `);
+      expect(response.fields).toMatchSnapshot();
     });
 
     it("has new value", () => {
@@ -660,6 +497,144 @@ describe("on validate field", () => {
 
       it("has no error value", () => {
         expect(response.fields[fieldName]).toHaveProperty("error", undefined);
+      });
+    });
+  });
+});
+
+describe("on validate field (async)", () => {
+  const fieldName = "TargetField";
+  let resolve: (a?: any) => void;
+  let reject: (a?: any) => void;
+
+  beforeEach(() => {
+    mount(<Fixture />);
+  });
+
+  beforeEach(() => {
+    act(() => {
+      response.mountField({ name: "IgnoredField" });
+      response.mountField({
+        name: fieldName,
+        validate: () =>
+          new Promise((res, rej) => {
+            resolve = res;
+            reject = rej;
+          })
+      });
+    });
+  });
+
+  describe("on call", () => {
+    beforeEach(() => {
+      act(() => {
+        response.validateField({ name: fieldName });
+      });
+    });
+
+    describe("field state", () => {
+      it("is validating", () => {
+        expect(response.fields[fieldName]).toHaveProperty("isValidating", true);
+      });
+    });
+  });
+
+  describe("on resolve", () => {
+    beforeEach(async () => {
+      act(() => {
+        response.validateField({ name: fieldName });
+      });
+      await act(async () => {
+        resolve();
+      });
+    });
+
+    describe("field state", () => {
+      it("matches snapshot", () => {
+        expect(response.fields[fieldName]).toMatchSnapshot();
+      });
+
+      it("is not validating", () => {
+        expect(response.fields[fieldName]).toHaveProperty(
+          "isValidating",
+          false
+        );
+      });
+
+      it("has no error", () => {
+        expect(response.fields[fieldName]).toHaveProperty("error", undefined);
+      });
+
+      it("is valid", () => {
+        expect(response.fields[fieldName]).toHaveProperty("isValid", true);
+      });
+    });
+  });
+
+  describe("on resolve (with value)", () => {
+    const val = "Some error";
+
+    beforeEach(async () => {
+      act(() => {
+        response.validateField({ name: fieldName });
+      });
+      await act(async () => {
+        resolve(val);
+      });
+    });
+
+    describe("field state", () => {
+      it("matches snapshot", () => {
+        expect(response.fields[fieldName]).toMatchSnapshot();
+      });
+
+      it("is not validating", () => {
+        expect(response.fields[fieldName]).toHaveProperty(
+          "isValidating",
+          false
+        );
+      });
+
+      it("has error", () => {
+        expect(response.fields[fieldName]).toHaveProperty("error", val);
+      });
+
+      it("is not valid", () => {
+        expect(response.fields[fieldName]).toHaveProperty("isValid", false);
+      });
+    });
+  });
+
+  describe("on reject (with value)", () => {
+    const val = "Some error";
+
+    beforeEach(async () => {
+      act(() => {
+        response.validateField({ name: fieldName });
+      });
+      await act(async () => {
+        reject(val);
+      });
+    });
+
+    describe("field state", () => {
+      it("matches snapshot", () => {
+        expect(response.fields[fieldName]).toMatchSnapshot();
+      });
+
+      it("is not validating", () => {
+        expect(response.fields[fieldName]).toHaveProperty(
+          "isValidating",
+          false
+        );
+      });
+
+      it("has error", () => {
+        expect(response.fields[fieldName]).toHaveProperty("error", val);
+      });
+
+      it("is not valid", () => {
+        expect(response.fields[fieldName]).toHaveProperty("isValid", false);
       });
     });
   });
