@@ -4,7 +4,8 @@
   "description": "A dynamic React form library which adapts to change.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -18,19 +19,19 @@
   "homepage": "https://github.com/andyrichardson/fielder#readme",
   "devDependencies": {
     "@types/enzyme-adapter-react-16": "^1.0.5",
-    "@types/react": "^16.9.11",
+    "@types/react": "^16.9.13",
     "@types/react-dom": "^16.9.4",
     "@types/yup": "^0.26.24",
     "enzyme-adapter-react-16": "^1.15.1",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "typescript": "^3.6.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "typescript": "^3.7.2",
     "yup": "^0.27.0",
     "@types/enzyme": "^3.10.3",
-    "@types/jest": "^24.0.22",
+    "@types/jest": "^24.0.23",
     "enzyme": "^3.10.0",
-    "ts-jest": "^24.1.0"
+    "ts-jest": "^24.2.0"
   }
 }

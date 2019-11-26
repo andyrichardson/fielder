@@ -2,9 +2,6 @@
 <p style="margin: 0;" align="center">A dynamic React form library which adapts to change</p>
 
 <p align="center">
-  <a href="https://codecov.io/gh/andyrichardson/tipple">
-    <img src="https://img.shields.io/codecov/c/github/andyrichardson/tipple.svg" alt="coverage">
-  </a>
   <a href="https://npmjs.com/package/fielder">
     <img src="https://img.shields.io/github/package-json/v/andyrichardson/fielder.svg" alt="version" />
   </a>
