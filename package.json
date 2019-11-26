@@ -1,7 +1,7 @@
 {
   "name": "fielder",
   "version": "0.1.0",
-  "description": "A modern React form library which focuses on being dynamic.",
+  "description": "A dynamic React form library which adapts to change.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
