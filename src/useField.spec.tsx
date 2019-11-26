@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { mount } from "enzyme";
 import { useField, UseFieldResponse } from "./useField";
-import { FormContext } from "./context";
+import { FielderContext } from "./context";
 import { FieldConfig } from "./types";
 
 const context = {
@@ -22,9 +22,9 @@ const Fixture: FC = ({ children }) => {
   };
 
   return (
-    <FormContext.Provider value={context as any}>
+    <FielderContext.Provider value={context as any}>
       <F>{children}</F>
-    </FormContext.Provider>
+    </FielderContext.Provider>
   );
 };
 

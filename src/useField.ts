@@ -8,7 +8,7 @@ import React, {
   useMemo,
   useLayoutEffect
 } from "react";
-import { FormContext } from "./context";
+import { FielderContext } from "./context";
 import { FormState, FormError, FieldState, FieldConfig } from "./types";
 
 export type UseFieldProps<T = any> = {
@@ -51,7 +51,7 @@ export const useField = <T = any>({
     mountField,
     unmountField,
     setFieldValue
-  } = useContext<FormState>(FormContext);
+  } = useContext<FormState>(FielderContext);
 
   const name = useMemo(() => initialName, []);
   const field = useMemo(

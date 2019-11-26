@@ -2,10 +2,21 @@
   "name": "fielder",
   "version": "0.1.0",
   "description": "A dynamic React form library which adapts to change.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "umd:main": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "keywords": [
+    "fielder",
+    "react",
+    "form",
+    "dynamic",
+    "validation"
+  ],
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "microbundle build"
   },
   "repository": {
     "type": "git",
@@ -18,21 +29,22 @@
   },
   "homepage": "https://github.com/andyrichardson/fielder#readme",
   "devDependencies": {
+    "@types/enzyme": "^3.10.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.23",
     "@types/react": "^16.9.13",
     "@types/react-dom": "^16.9.4",
     "@types/yup": "^0.26.24",
+    "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
+    "microbundle": "^0.11.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "ts-jest": "^24.2.0",
     "typescript": "^3.7.2",
-    "yup": "^0.27.0",
-    "@types/enzyme": "^3.10.3",
-    "@types/jest": "^24.0.23",
-    "enzyme": "^3.10.0",
-    "ts-jest": "^24.2.0"
+    "yup": "^0.27.0"
   },
   "peerDependencies": {
     "react": ">= 16.8.0"
