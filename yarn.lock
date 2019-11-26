@@ -3844,11 +3844,6 @@ throat@^4.0.0:
   resolved "https://registry.yarnpkg.com/throat/-/throat-4.1.0.tgz#89037cbc92c56ab18926e6ba4cbb200e15672a6a"
   integrity sha1-iQN8vJLFarGJJua6TLsgDhVnKmo=
 
-tipple@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/tipple/-/tipple-0.6.0.tgz#ae314d628e33fa3be25ed3b707662e6826100ece"
-  integrity sha512-ggScHJtO9QI0ODEqT/dstLxhb/8zUISea2ZgwweMe/6t0d6ym70yX1wm6s1PhN0pvmqTopp8q2zMPPaoZDGiRw==
-
 tmpl@1.0.x:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/tmpl/-/tmpl-1.0.4.tgz#23640dd7b42d00433911140820e5cf440e521dd1"

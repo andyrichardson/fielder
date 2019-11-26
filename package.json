@@ -10,8 +10,8 @@
     "type": "git",
     "url": "git+https://github.com/andyrichardson/fielder.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Andy Richardson (andyrichardson)",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/andyrichardson/fielder/issues"
   },
@@ -27,13 +27,10 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "typescript": "^3.6.4",
-    "yup": "^0.27.0"
-  },
-  "dependencies": {
+    "yup": "^0.27.0",
     "@types/enzyme": "^3.10.3",
     "@types/jest": "^24.0.22",
     "enzyme": "^3.10.0",
-    "tipple": "^0.6.0",
     "ts-jest": "^24.1.0"
   }
 }

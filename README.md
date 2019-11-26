@@ -1,19 +1,68 @@
-# Foerm
+<h1 style="margin: 5px 0; border: none;" align="center">Fielder</h1>
+<p style="margin: 0;" align="center">A dynamic React form library which adapts to change</p>
 
 ## About
 
-Unlike other libraries, `Foerm` has been built from the ground up with a `field-first` approach to validation.
+Unlike other libraries, _Fielder_ has been built from the ground up with a **field-first** approach to validation.
 
 What does this mean?
 
 - Validation can easily be added and removed to a form
+- Only validate what the user can see (see cross form validation below)
 - No need for a large set of upfront domain knowledge
+
+## Features
+
+### ⚡️Immediate validation
+
+Synchronous validation will update state immediately in the event of a change/blur.
+
+Fewer renders, better performance and no weird "intermediary states".
+
+### 🔍 Optimized for flexibility
+
+While Yup is supported, you're not limited to using a large Yup schema. Validation functions receive the form state as well as the field value.
+
+```tsx
+(value, state) =>
+  state.otherField.value === "string"
+    ? Yup.string()
+        .required()
+        .validateSync(value)
+    : Yup.number().validateSync(value);
+```
+
+### 🤓User focused API
+
+Users don't want to find out that the value they entered on a previous page is invalid. This is why _Fielder_ encourages field-level validation.
+
+If the field isn't mounted, the value won't be validated. Simple!
+
+### 💁‍♂️ One way to do things
+
+_Fielder_ has been built with hooks since day one. There aren't any clunky APIs to learn, only `useField`, `useForm` and `useFormContext`.
+
+Your data doesn't need to be coupled to your components (and likely shouldn't be), that's why _Fielder_ doesn't include a component API.
 
 ## Usage
 
+### Setting up a form
+
+`useForm` is where you initiate your form. In order to expose the form to any child components (and subsequently `useField`), you'll want to expose it via context.
+
+```tsx
+const myForm = useForm();
+
+return <FielderProvider value={myForm}>{children}</FielderProvider>;
+```
+
+### Declaring fields
+
+`useField` is where you harness the power of _Fielder_.
+
 ```tsx
 const [nameProps, nameMeta] = useField({
-  name: 'name',
+  name: 'userName',
   validate: useMemo(() => Yup.string().required().validateSync, []);
 });
 
@@ -23,44 +72,15 @@ return (
 );
 ```
 
-## Field lifecycle
+There are a whole number of additional arguments which can be passed to `useField` which allow you to:
 
-### 1. Mount
+- Set validation
+- Set when validation is triggered (e.g. on blur, change, etc)
+- Set initial value, error, valid and touched states
+- Set unmount behaviour
 
-The field is mounted for the first time and is initialized in the form state.
+> Note: Unlike other popular form libraries, _Fielder_ allows you to change config options (such as validation) at any time.
 
-> Note: This can cause a number of changes to the form-wide state such as the _valid_ and _validating_ states.
+## Documentation
 
-### 2. Change
-
-The field has changed in some way and the form state is updated.
-
-Change events include:
-
-- value is changed (onChange)
-- field is blurred (onBlur)
-- field validation has changed (new _validate_ option passed to _useField_)
-
-### 3. Unmount
-
-The field is no longer mounted and is set as inactive in the form-wide state.
-
-Optionally, the field can be be purged from the form state.
-
-> Note: Inactive fields are not validated, however, other fields can still see their values and validate accordingly.
-
-### 4. Remount (Optional)
-
-Fields which have not been purged can be re-mounted. In this case, their value prior to unmounting will be used.
-
-> Note: Remounting is often useful when working with multi-page forms.
-
-## Validation
-
-Validation can occur
-
-- onChange - _after a field's value has changed_
-- onBlur - _after a field has been blurred_
-- onGlobalChange - _after any field has been changed or blurred_
-
-Validation can occur
+For more info and examples, check out the [Documentation section](./docs/README.md).
