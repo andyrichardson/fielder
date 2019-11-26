@@ -1,6 +1,21 @@
 <h1 style="margin: 5px 0; border: none;" align="center">Fielder</h1>
 <p style="margin: 0;" align="center">A dynamic React form library which adapts to change</p>
 
+<p align="center">
+  <a href="https://codecov.io/gh/andyrichardson/tipple">
+    <img src="https://img.shields.io/codecov/c/github/andyrichardson/tipple.svg" alt="coverage">
+  </a>
+  <a href="https://npmjs.com/package/fielder">
+    <img src="https://img.shields.io/github/package-json/v/andyrichardson/fielder.svg" alt="version" />
+  </a>
+  <a href="https://bundlephobia.com/result?p=fielder">
+    <img src="https://img.shields.io/bundlephobia/minzip/fielder.svg" alt="size" />
+  </a>
+  <a href="https://github.com/andyrichardson/tipple/blob/master/LICENSE">
+    <img src="https://img.shields.io/npm/l/fielder.svg" alt="licence">
+  </a>
+</p>
+
 ## About
 
 Unlike other libraries, _Fielder_ has been built from the ground up with a **field-first** approach to validation.
