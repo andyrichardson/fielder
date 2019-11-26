@@ -638,6 +638,69 @@ describe("on validate field (async)", () => {
       });
     });
   });
+
+  describe("on multiple validation calls", () => {
+    const val = "Some error";
+
+    beforeEach(() => {
+      act(() => {
+        response.validateField({ name: fieldName });
+      });
+    });
+
+    describe("on old resolves -> new pending", () => {
+      beforeEach(async () => {
+        const initialResolve = resolve;
+        act(() => {
+          response.validateField({ name: fieldName });
+        });
+
+        await act(async () => {
+          initialResolve(val);
+        });
+      });
+
+      describe("field state", () => {
+        it("is validating", () => {
+          expect(response.fields[fieldName]).toHaveProperty(
+            "isValidating",
+            true
+          );
+        });
+      });
+    });
+
+    describe("on new resolves -> old rejects", () => {
+      beforeEach(async () => {
+        const initialResolve = resolve;
+        act(() => {
+          response.validateField({ name: fieldName });
+        });
+
+        await act(async () => {
+          resolve();
+          initialResolve(val);
+        });
+      });
+
+      describe("field state", () => {
+        it("is not validating", () => {
+          expect(response.fields[fieldName]).toHaveProperty(
+            "isValidating",
+            false
+          );
+        });
+
+        it("has no error", () => {
+          expect(response.fields[fieldName]).toHaveProperty("error", undefined);
+        });
+
+        it("is valid", () => {
+          expect(response.fields[fieldName]).toHaveProperty("isValid", true);
+        });
+      });
+    });
+  });
 });
 
 describe("on validate fields", () => {
