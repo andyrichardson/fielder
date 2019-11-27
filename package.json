@@ -1,19 +1,13 @@
 {
   "name": "fielder",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A dynamic React form library which adapts to change.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "umd:main": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "keywords": [
-    "fielder",
-    "react",
-    "form",
-    "dynamic",
-    "validation"
-  ],
+  "keywords": ["fielder", "react", "form", "dynamic", "validation"],
   "scripts": {
     "start": "rollup -c rollup.config.js --watch",
     "test": "jest",
