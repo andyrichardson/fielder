@@ -1,7 +1,7 @@
 import { SetStateAction } from "react";
 import { SetFieldValueArgs, BlurFieldArgs, UnmountFieldArgs } from "./useForm";
 
-export type FormError = string;
+export type FormError = Error | string;
 
 export type FormValue = string | boolean | number | string[];
 
@@ -50,11 +50,8 @@ export interface FieldConfig<
 > {
   /** Unique identifier for field. */
   readonly name: K;
-  /** Validation function. */
-  readonly validate?: (
-    value: V,
-    form: F
-  ) => FormError | void | Promise<FormError | void>;
+  /** Validation function (throws errors). */
+  readonly validate?: (value: V, form: F) => void;
   /** When the given field's value changes. */
   readonly validateOnChange?: boolean;
   /** When the given field loses focus. */

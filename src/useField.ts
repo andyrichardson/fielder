@@ -127,14 +127,15 @@ export const useField = <T = any>({
 };
 
 const getElementType = (e: ChangeEvent<SupportedElements>) => {
-  const tagName = e.currentTarget.tagName.toLowerCase();
-  const getAttribute = e.currentTarget.getAttribute;
+  const target = e.currentTarget || e.target;
+  const tagName = target.tagName.toLowerCase();
+  const type = target.getAttribute("type");
 
-  if (tagName === "input" && getAttribute("type") === "checkbox") {
+  if (tagName === "input" && type === "checkbox") {
     return "checkbox";
   }
 
-  if (tagName === "input" && getAttribute("type") === "radio") {
+  if (tagName === "input" && type === "radio") {
     return "radio";
   }
 

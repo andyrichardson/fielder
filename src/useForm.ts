@@ -264,29 +264,41 @@ const applyValidationToState = (
       return state;
     }
 
-    const validateResponse = field._validate(field.value, state) as any;
+    try {
+      const validateResponse = field._validate(field.value, state) as any;
 
-    if (!(validateResponse instanceof Promise)) {
+      if (!(validateResponse instanceof Promise)) {
+        return {
+          ...state,
+          [key]: {
+            ...field,
+            isValid: true,
+            isValidating: false,
+            error: undefined
+          }
+        };
+      }
+
+      handleAsyncValidation(field.name, validateResponse);
+
       return {
         ...state,
         [key]: {
           ...field,
-          isValid: validateResponse === undefined,
+          isValidating: true
+        }
+      };
+    } catch (err) {
+      return {
+        ...state,
+        [key]: {
+          ...field,
+          isValid: false,
           isValidating: false,
-          error: validateResponse
+          error: err && err.message ? err.message : err
         }
       };
     }
-
-    handleAsyncValidation(field.name, validateResponse);
-
-    return {
-      ...state,
-      [key]: {
-        ...field,
-        isValidating: true
-      }
-    };
   }, state);
 };
 
