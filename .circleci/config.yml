@@ -64,6 +64,7 @@ workflows:
             tags:
               only: /.*/
       - deploy:
+          context: NPM
           requires:
             - install
             - test
