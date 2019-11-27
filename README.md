@@ -75,7 +75,7 @@ return <FielderProvider value={myForm}>{children}</FielderProvider>;
 ```tsx
 const [nameProps, nameMeta] = useField({
   name: 'userName',
-  validate: useMemo(() => Yup.string().required().validateSync, []);
+  validate: useCallback((v) => Yup.string().required().validateSync(v), []);
 });
 
 return (
