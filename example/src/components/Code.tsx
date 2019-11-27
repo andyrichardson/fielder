@@ -30,21 +30,37 @@ export const Code = ({ children, className, live }) => {
   if (live) {
     return (
       <>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+      .ant-card-body { display: flex; flex-grow: 1; }
+        `
+          }}
+        />
+
         <LiveProvider noInline={true} code={children} scope={scope}>
-          <Card
-            style={{ marginTop: "40px" }}
-            actions={[
-              <Icon onClick={() => setCodeVisibility(s => !s)} type="code" />
-            ]}
-          >
-            <LivePreview />
-          </Card>
-          {showCode && (
-            <Card>
-              <LiveEditor />
-              <LiveError />
+          <div style={{ display: "flex" }}>
+            <Card
+              style={{
+                width: showCode ? "50%" : "100%",
+                display: "flex",
+                flexDirection: "column"
+              }}
+              actions={[
+                <Icon onClick={() => setCodeVisibility(s => !s)} type="code" />
+              ]}
+            >
+              <LivePreview />
             </Card>
-          )}
+            {showCode && (
+              <div
+                style={{ overflow: "auto", maxHeight: "500px", width: "50%" }}
+              >
+                <LiveEditor />
+                <LiveError />
+              </div>
+            )}
+          </div>
         </LiveProvider>
       </>
     );

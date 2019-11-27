@@ -1,8 +1,12 @@
-# Examples
-
-### Cross field validation
+## Cross field validation
 
 Cross field validation occurs when a fields validation state is conditional on other field values.
+
+> Note: These values are not limited to mounted fields.
+
+#### Example
+
+_Try choosing a beer._
 
 ```tsx live=true
 const MyForm = ({ children }) => {
@@ -22,7 +26,8 @@ const MyForm = ({ children }) => {
 const FormFields = () => {
   const [ageProps, ageMeta] = useField({
     name: "age",
-    validate: validateAge
+    validate: validateAge,
+    initialValue: 8
   });
 
   const [drinkProps, drinkMeta] = useField({

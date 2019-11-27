@@ -1,3 +1,13 @@
+## Steppers/Wizards
+
+Fielder works greate with steppers and wizards.
+
+By default, values will persist in the form state but can be configured to be destroyed on unmount.
+
+### Live example
+
+Try changing some values and switching between steps.
+
 ```tsx live=true
 const MyForm = () => {
   const formState = useForm();
@@ -12,7 +22,13 @@ const MyForm = () => {
 
   const values = JSON.stringify(
     Object.entries(formState.fields).reduce(
-      (p, [key, field]) => ({ ...p, [key]: field.value }),
+      (p, [key, field]) => ({
+        ...p,
+        [key]: {
+          value: field.value,
+          mounted: field._isActive
+        }
+      }),
       {}
     ),
     null,
@@ -32,7 +48,7 @@ const MyForm = () => {
         </Button>
       </div>
 
-      <br />
+      <p>Form state</p>
       <LiveEditor code={values} />
     </FielderProvider>
   );
@@ -45,10 +61,12 @@ const FirstStep = () => {
   });
 
   return (
-    <div>
+    <>
+      <Form.Item label="Persisting field">
+        <Input {...aProps} />
+      </Form.Item>
       <p>This field has an initial value which only applies on first mount.</p>
-      <Input {...aProps} />
-    </div>
+    </>
   );
 };
 
@@ -59,10 +77,12 @@ const SecondStep = () => {
   });
 
   return (
-    <div>
-      <p>This field loses its value (is removed) unmount</p>
-      <Input {...bProps} />
-    </div>
+    <>
+      <Form.Item label="Destroying field">
+        <Input {...bProps} />
+      </Form.Item>
+      <p>This field is completely removed after unmount</p>
+    </>
   );
 };
 
