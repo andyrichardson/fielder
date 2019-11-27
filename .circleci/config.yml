@@ -19,6 +19,10 @@ jobs:
           keys:
             - node-cache-{{ .Revision }}
       - run: npm run build
+      - save_cache:
+          key: build-cache-{{ .Revision }}
+          paths:
+            - "dist"
 
   test:
     docker:
