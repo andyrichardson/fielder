@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as ant from "antd";
 import * as Yup from "yup";
 import Highlight, { defaultProps } from "prism-react-renderer";
@@ -17,21 +17,36 @@ const scope = {
   useForm,
   useField,
   useFormContext,
-  FielderProvider
+  FielderProvider,
+  LiveEditor
 };
 
+const { Card, Icon } = ant;
+
 export const Code = ({ children, className, live }) => {
+  const [showCode, setCodeVisibility] = useState(false);
   const language = className.replace(/language-/, "");
 
   if (live) {
     return (
-      <div style={{ marginTop: "40px" }}>
+      <>
         <LiveProvider noInline={true} code={children} scope={scope}>
-          <LivePreview />
-          <LiveEditor />
-          <LiveError />
+          <Card
+            style={{ marginTop: "40px" }}
+            actions={[
+              <Icon onClick={() => setCodeVisibility(s => !s)} type="code" />
+            ]}
+          >
+            <LivePreview />
+          </Card>
+          {showCode && (
+            <Card>
+              <LiveEditor />
+              <LiveError />
+            </Card>
+          )}
         </LiveProvider>
-      </div>
+      </>
     );
   }
   return (

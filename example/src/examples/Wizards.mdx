@@ -1,0 +1,70 @@
+```tsx live=true
+const MyForm = () => {
+  const formState = useForm();
+  const [page, setPage] = useState(0);
+
+  const handleNext = () => setPage(p => (p + 1) % 2);
+
+  const content = {
+    0: <FirstStep />,
+    1: <SecondStep />
+  };
+
+  const values = JSON.stringify(
+    Object.entries(formState.fields).reduce(
+      (p, [key, field]) => ({ ...p, [key]: field.value }),
+      {}
+    ),
+    null,
+    2
+  );
+
+  return (
+    <FielderProvider value={formState}>
+      <Steps current={page}>
+        <Steps.Step key={"1"} title={"Persisting step"} />
+        <Steps.Step key={"2"} title={"Optional step"} />
+      </Steps>
+      <div style={{ padding: 20 }}>{content[page]}</div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Button type="primary" onClick={handleNext}>
+          Next
+        </Button>
+      </div>
+
+      <br />
+      <LiveEditor code={values} />
+    </FielderProvider>
+  );
+};
+
+const FirstStep = () => {
+  const [aProps] = useField({
+    name: "fieldA",
+    initialValue: "Initial value :)"
+  });
+
+  return (
+    <div>
+      <p>This field has an initial value which only applies on first mount.</p>
+      <Input {...aProps} />
+    </div>
+  );
+};
+
+const SecondStep = () => {
+  const [bProps] = useField({
+    name: "fieldB",
+    destroyOnUnmount: true
+  });
+
+  return (
+    <div>
+      <p>This field loses its value (is removed) unmount</p>
+      <Input {...bProps} />
+    </div>
+  );
+};
+
+render(<MyForm />);
+```
