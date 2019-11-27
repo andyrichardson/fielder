@@ -209,7 +209,8 @@ describe("on change", () => {
       response[0].onChange({
         currentTarget: {
           tagName: "SELECT",
-          value
+          value,
+          getAttribute: () => undefined
         }
       } as any);
 

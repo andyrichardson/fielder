@@ -355,7 +355,9 @@ describe("on validate field", () => {
     const error = "Name must be longer";
 
     beforeEach(() => {
-      validate.mockReturnValue(error);
+      validate.mockImplementation(() => {
+        throw error;
+      });
       act(() => {
         response.mountField({ name: "IgnoredField" });
         response.mountField({

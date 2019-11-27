@@ -129,6 +129,11 @@ export const useField = <T = any>({
 const getElementType = (e: ChangeEvent<SupportedElements>) => {
   const target = e.currentTarget || e.target;
   const tagName = target.tagName.toLowerCase();
+
+  if (tagName === "select") {
+    return "select";
+  }
+
   const type = target.getAttribute("type");
 
   if (tagName === "input" && type === "checkbox") {
@@ -137,10 +142,6 @@ const getElementType = (e: ChangeEvent<SupportedElements>) => {
 
   if (tagName === "input" && type === "radio") {
     return "radio";
-  }
-
-  if (tagName === "select") {
-    return "select";
   }
 
   if (tagName === "input") {
