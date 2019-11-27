@@ -1,14 +1,21 @@
-<h1 style="margin: 5px 0; border: none;" align="center">Fielder</h1>
-<p style="margin: 0;" align="center">A dynamic React form library which adapts to change</p>
+<p align="center">
+  <img alt="Fielder logo" src="https://github.com/andyrichardson/fielder/blob/master/docs/logo.png?raw=true" width="150px" />
+</p>
+
+<h1 align="center">Fielder</h1>
+<p align="center">A React form library which adapts to change.</p>
 
 <p align="center">
+  <a href="https://circleci.com/gh/andyrichardson/fielder">
+    <img src="https://img.shields.io/circleci/build/github/andyrichardson/fielder" alt="build" />
+  </a>
   <a href="https://npmjs.com/package/fielder">
     <img src="https://img.shields.io/github/package-json/v/andyrichardson/fielder.svg" alt="version" />
   </a>
   <a href="https://bundlephobia.com/result?p=fielder">
     <img src="https://img.shields.io/bundlephobia/minzip/fielder.svg" alt="size" />
   </a>
-  <a href="https://github.com/andyrichardson/tipple/blob/master/LICENSE">
+  <a href="https://github.com/andyrichardson/fielder/blob/master/LICENSE">
     <img src="https://img.shields.io/npm/l/fielder.svg" alt="licence">
   </a>
 </p>
