@@ -66,8 +66,7 @@ workflows:
       - deploy:
           requires:
             - install
-            - lint
-            - prettier
+            - test
             - build
           filters:
             tags:
