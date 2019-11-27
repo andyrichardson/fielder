@@ -1,2 +1,4 @@
+.rts2*
+package-lock.json
 node_modules
 dist

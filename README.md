@@ -15,7 +15,7 @@
 
 ## About
 
-Unlike other libraries, _Fielder_ has been built from the ground up with a **field-first** approach to validation.
+_Fielder_ has been built from the ground up with a **field-first** approach to validation.
 
 What does this mean?
 

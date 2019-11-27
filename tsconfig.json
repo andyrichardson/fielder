@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2015",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["dom", "es2015", "esnext"],
+    "lib": ["dom", "es2015"],
     "jsx": "react",
     "strict": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "keyofStringsOnly": true,
-    "outDir": "example/src/dist"
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true
   },
-  "files": ["src/index.ts"],
-  "includes": ["src/**/*.tsx", "src/**/*.ts"]
+  "files": ["src/index.ts"]
 }
