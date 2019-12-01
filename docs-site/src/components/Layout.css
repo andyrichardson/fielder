@@ -1,0 +1,50 @@
+blockquote {
+  background: #fafafa;
+  padding: 9px 10px;
+  border-left: solid 4px #949494;
+}
+
+blockquote > p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 32px;
+  margin-top: 40px;
+}
+
+h2 {
+  margin-top: 30px;
+  padding-bottom: 5px;
+  border-bottom: solid 1px #d4d4d4;
+}
+
+h3 {
+  margin-top: 20px;
+}
+
+pre > .ant-card {
+  zoom: 60%;
+}
+
+.ant-card-body {
+  display: flex !important;
+  flex-grow: 1;
+}
+
+#gatsby-focus-wrapper {
+  min-height: 100vh;
+  display: flex;
+}
+
+.token-line:last-child {
+  display: none;
+}
+
+.gatsby-highlight {
+  zoom: 0.8;
+}
+
+.language-text {
+  zoom: 0.85;
+}
