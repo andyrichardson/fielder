@@ -16,6 +16,10 @@ module.exports = {
             name: "Validation",
             link: "/validation",
           },
+          {
+            name: "Field lifecycle",
+            link: "/field-lifecycle",
+          },
         ],
       },
       {
@@ -34,11 +38,20 @@ module.exports = {
     "gatsby-plugin-typescript",
     "gatsby-plugin-react-helmet",
     {
-      resolve: `gatsby-plugin-mdx`,
+      resolve: "gatsby-plugin-mdx",
       options: {
-        gatsbyRemarkPlugins: [
+        plugins: [
           {
-            resolve: `gatsby-remark-prismjs`,
+            resolve: "gatsby-remark-autolink-headers",
+          },
+        ],
+        gatsbyRemarkPlugins: [
+          `gatsby-transformer-remark`,
+          {
+            resolve: "gatsby-remark-autolink-headers",
+          },
+          {
+            resolve: "gatsby-remark-prismjs",
           },
         ],
         defaultLayouts: {
@@ -46,7 +59,6 @@ module.exports = {
         },
       },
     },
-    "gatsby-transformer-remark",
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

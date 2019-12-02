@@ -29,17 +29,28 @@ A valid state implies the user has done their job and is able to progress to the
 
 Adding validation is as simple as providing a function to `useField` which is called on a given change event.
 
+> Form-wide validation is not supported in Fielder (see above for reasons why).
+
+### Basic validation
+
 ```tsx
 useField({
   name: 'password'
   validate: validatePassword,
 });
-```
 
-> Form-wide validation is not supported in Fielder (see above for reasons why).
+// ...
+const validatePassword = (val) => {
+  if (!val || val.length < 8) {
+    throw Error("Password must be 8 characters long");
+  }
+};
+```
 
 Your validation function should take 1 or 2 values (field state and form state, respectively), and should
 throw an error orn string if validation is not successful.
+
+### Cross field validation
 
 The below example demonstrates is a cross field validation function which checks other values within the form.
 

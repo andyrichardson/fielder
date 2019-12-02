@@ -8,13 +8,14 @@ import "antd/dist/antd.css"
 import "./Layout.css"
 import "./prism-theme.css"
 import { Layout, Menu } from "antd"
+import MenuItem from "antd/lib/menu/MenuItem"
 
 interface ShellProps {
   pageContext: any
 }
 
-const Shell: FC<ShellProps> = ({ children, pageContext }) => {
-  console.log(pageContext.frontmatter.title)
+const Shell: FC<ShellProps> = ({ children, pageContext, uri }) => {
+  console.log(uri)
   return (
     <>
       <Helmet>
@@ -26,22 +27,8 @@ const Shell: FC<ShellProps> = ({ children, pageContext }) => {
         }}
       >
         <Layout.Sider theme="light">
-          <Menu style={{ height: "100%" }} mode="inline">
-            {siteMetadata.menuLinks.map(m =>
-              m.links ? (
-                <Menu.ItemGroup key={m.link} title={m.name}>
-                  {m.links.map(l => (
-                    <Menu.Item key={l.link}>
-                      <Link to={`${m.link}/${l.link}`}>{l.name}</Link>
-                    </Menu.Item>
-                  ))}
-                </Menu.ItemGroup>
-              ) : (
-                <Menu.Item key={m.link}>
-                  <Link to={m.link}>{m.name}</Link>
-                </Menu.Item>
-              )
-            )}
+          <Menu selectedKeys={[uri]} style={{ height: "100%" }} mode="inline">
+            {siteMetadata.menuLinks.map(renderMenuItem)}
           </Menu>
         </Layout.Sider>
         <Layout.Content
@@ -51,6 +38,28 @@ const Shell: FC<ShellProps> = ({ children, pageContext }) => {
         </Layout.Content>
       </Layout>
     </>
+  )
+}
+
+interface Link {
+  name: string
+  link: string
+  links?: Link[]
+}
+
+const renderMenuItem: FC<Link> = ({ name, link, links }) => {
+  if (links === undefined) {
+    return (
+      <Menu.Item key={link}>
+        <Link to={link}>{name}</Link>
+      </Menu.Item>
+    )
+  }
+
+  return (
+    <Menu.ItemGroup key={link} title={name}>
+      {links.map(l => ({ ...l, link: `${link}${l.link}` })).map(renderMenuItem)}
+    </Menu.ItemGroup>
   )
 }
 
