@@ -20,6 +20,10 @@ module.exports = {
             name: "Field lifecycle",
             link: "/field-lifecycle",
           },
+          {
+            name: "Type safety",
+            link: "/type-safety",
+          },
         ],
       },
       {
@@ -27,8 +31,20 @@ module.exports = {
         link: "/api-reference",
         links: [
           {
+            name: "useField",
+            link: "/useField",
+          },
+          {
             name: "useForm",
             link: "/useForm",
+          },
+          {
+            name: "useFormContext",
+            link: "/useFormContext",
+          },
+          {
+            name: "types",
+            link: "/types",
           },
         ],
       },

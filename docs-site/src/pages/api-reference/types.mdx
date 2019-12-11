@@ -1,0 +1,66 @@
+# Types
+
+## FieldState
+
+_The state of a field
+
+## UseFieldProps
+
+_Props for a form-input element (`input`, `select`, etc.)._
+
+### Properties
+
+#### `name`
+
+_Field name._
+
+Type: `string`
+
+#### `value`
+
+_Field value._
+
+Type: `FormValue`
+
+#### `onChange`
+
+_Change event handler._
+
+Type: `ChangeEventHandler`
+
+#### `onBlur`
+
+_Blur event handler (causes field to be `touched`)._
+
+Type: `() => void`
+
+## UseFieldMeta
+
+_Metadata about a field's state._
+
+### Properties
+
+#### `touched`
+
+_Whether the field has been touched (see `onBlur`)._
+
+Type: `boolean`
+
+#### `error`
+
+_Validation error on a field._
+
+Type: `Error | string | undefined`
+
+#### `isValid`
+
+_Whether the field is passing validation._
+
+Type: `boolean`
+
+#### `isValidating`
+
+_Whether the field is currently undergoing async validation._
+
+Type: `boolean`
+

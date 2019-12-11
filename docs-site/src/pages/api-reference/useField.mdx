@@ -1,0 +1,119 @@
+# useField
+
+_Hook to mount a field to the form._
+
+```tsx
+import { useField } from 'fielder'; 
+```
+
+
+## Example usage
+
+```tsx
+const [passwordProps, passwordMeta] = useField({
+  name: 'password',
+  validate: passwordValidation,
+});
+
+return (
+  <input type={"password"} {...passwordProps} />
+);
+```
+
+## Response
+
+_An array containing `UseFieldProps` and `UseFieldMeta`, respectively._
+
+`[UseFieldProps, UseFieldMeta]`
+
+## Arguments
+
+### `name` **(required)**
+
+_The name/key of the field to be added to the form state._
+
+Type: `string`
+
+Example: `password`
+
+### `validate`
+
+_A validation function which throws an error when validation has failed._
+
+Type: `(value: string, formState: FormState) => (void | Promise<void>)`
+
+Default: `undefined`
+
+Example:
+
+```js
+(v, f) => { 
+  if (v < f.otherField.value) {
+    throw Error("Value must be more than 'from' value") 
+  }
+}`
+```
+
+### `initialValid`
+
+_Whether the initial value should be considered valid._
+
+Type: `boolean`
+
+Default: `false`
+
+### `initialError`
+
+_The initial error of the field._
+
+Type: `string | Error`
+
+Default: `undefined`
+
+### `initialValue`
+
+_The value of the field on first mount (first mount after being destroyed)._
+
+Type: `string | boolean`
+
+Default: `""`
+
+### `initialTouched`
+
+_Whether the initial state of the field is 'touched'._
+
+Type: `boolean`
+
+Default: `false`
+
+### validateOnBlur
+
+_Whether the provided validate function should be called on blur._
+
+Type: `boolean`
+
+Default: `true`
+
+### validateOnChange
+
+_Whether the provided validate function should be called on change._
+
+Type: `boolean`
+
+Default: `true`
+
+### validateOnUpdate
+
+_Whether the provided validate function should be called on **any** form change._
+
+Type: `boolean`
+
+Default: `false`
+
+### destroyOnUnmount
+
+_Whether the field should be completely removed from the form state on unmount._
+
+Type: `boolean`
+
+Default: `false`
