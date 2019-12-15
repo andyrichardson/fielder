@@ -3,16 +3,25 @@
 _Creates a new form instance._
 
 ```tsx
-import { useFormContext } from 'fielder'; 
+import { useFormContext } from "fielder"
+```
+
+## Example Usage
+
+```tsx
+const formState = useFormContext()
+
+return <button disabled={!formState.isValid}>Submit</button>
 ```
 
 ## Response
 
-_A `FormState` object (state of the form)._
+_The state of the form [(FormState)](/api-reference/useForm#formstate) along with accessors and mutators._
 
-`FormState`
+Type; `FormState`
+
+> See [useForm documentation](/api-reference/useForm) for more information about _FormState_
 
 ## Arguments
 
 `useForm` doesn't currently take any arguments.
-

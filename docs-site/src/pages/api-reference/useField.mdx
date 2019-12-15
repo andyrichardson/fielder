@@ -3,32 +3,31 @@
 _Hook to mount a field to the form._
 
 ```tsx
-import { useField } from 'fielder'; 
+import { useField } from "fielder"
 ```
-
 
 ## Example usage
 
 ```tsx
 const [passwordProps, passwordMeta] = useField({
-  name: 'password',
+  name: "password",
   validate: passwordValidation,
-});
+})
 
-return (
-  <input type={"password"} {...passwordProps} />
-);
+return <input type={"password"} {...passwordProps} />
 ```
 
-## Response
+## Return type
 
-_An array containing `UseFieldProps` and `UseFieldMeta`, respectively._
+_An array containing props for the target component [(UseFieldProps)](#/api-reference/types#usefieldprops) and metadata [(UseFieldMeta)](/api-reference/types#usefieldprops#usefieldmeta)._
 
-`[UseFieldProps, UseFieldMeta]`
+Type: `[UseFieldProps, UseFieldMeta]`
 
 ## Arguments
 
-### `name` **(required)**
+_useField_ takes a single object with the following properties:
+
+### name **(required)**
 
 _The name/key of the field to be added to the form state._
 
@@ -36,7 +35,7 @@ Type: `string`
 
 Example: `password`
 
-### `validate`
+### validate
 
 _A validation function which throws an error when validation has failed._
 
@@ -47,14 +46,14 @@ Default: `undefined`
 Example:
 
 ```js
-(v, f) => { 
+(v, f) => {
   if (v < f.otherField.value) {
-    throw Error("Value must be more than 'from' value") 
+    throw Error("Value must be more than 'from' value")
   }
 }`
 ```
 
-### `initialValid`
+### initialValid
 
 _Whether the initial value should be considered valid._
 
@@ -62,7 +61,7 @@ Type: `boolean`
 
 Default: `false`
 
-### `initialError`
+### initialError
 
 _The initial error of the field._
 
@@ -70,7 +69,7 @@ Type: `string | Error`
 
 Default: `undefined`
 
-### `initialValue`
+### initialValue
 
 _The value of the field on first mount (first mount after being destroyed)._
 
@@ -78,7 +77,7 @@ Type: `string | boolean`
 
 Default: `""`
 
-### `initialTouched`
+### initialTouched
 
 _Whether the initial state of the field is 'touched'._
 
@@ -117,3 +116,31 @@ _Whether the field should be completely removed from the form state on unmount._
 Type: `boolean`
 
 Default: `false`
+
+## Types
+
+### UseFieldProps
+
+Props which can be passed to a form element / component.
+
+```ts
+type UseFieldProps<T = any> = {
+  readonly name: string
+  readonly value: T
+  readonly onChange: ChangeEventHandler
+  readonly onBlur: () => void
+}
+```
+
+### UseFieldMeta
+
+Additional information about a field and it's validation state.
+
+```ts
+type UseFieldMeta = {
+  readonly touched: boolean
+  readonly error?: Error | string
+  readonly isValid: boolean
+  readonly isValidating: boolean
+}
+```

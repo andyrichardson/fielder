@@ -1,14 +1,11 @@
-import React, { FC } from "react"
+import React, { FC, useMemo } from "react"
 import { Helmet } from "react-helmet"
 import { siteMetadata } from "../../gatsby-config"
 import { Link } from "gatsby"
-import { MDXProvider } from "@mdx-js/react"
-import { Code } from "./Code"
-import "antd/dist/antd.css"
+// import "antd/dist/antd.css"
 import "./Layout.css"
 import "./prism-theme.css"
 import { Layout, Menu } from "antd"
-import MenuItem from "antd/lib/menu/MenuItem"
 
 interface ShellProps {
   pageContext: any
@@ -16,6 +13,17 @@ interface ShellProps {
 
 const Shell: FC<ShellProps> = ({ children, pageContext, uri }) => {
   console.log(uri)
+
+  const defaultOpenKeys = useMemo(() => {
+    try {
+      const key = /^(.+?)\//.exec(uri)[0].slice(0, -1)
+      return [key]
+    } catch (err) {
+      return [] as string[]
+    }
+  }, [uri])
+
+  console.log(defaultOpenKeys)
   return (
     <>
       <Helmet>
@@ -23,11 +31,17 @@ const Shell: FC<ShellProps> = ({ children, pageContext, uri }) => {
       </Helmet>
       <Layout
         style={{
-          background: "#fff",
+          background: "#111",
         }}
       >
-        <Layout.Sider theme="light">
-          <Menu selectedKeys={[uri]} style={{ height: "100%" }} mode="inline">
+        <Layout.Sider theme="light" breakpoint="lg" collapsedWidth="0">
+          <Menu
+            defaultOpenKeys={defaultOpenKeys}
+            selectedKeys={[uri]}
+            style={{ height: "100%" }}
+            mode="inline"
+          >
+            <Logo />
             {siteMetadata.menuLinks.map(renderMenuItem)}
           </Menu>
         </Layout.Sider>
@@ -41,13 +55,13 @@ const Shell: FC<ShellProps> = ({ children, pageContext, uri }) => {
   )
 }
 
-interface Link {
+interface SiteLink {
   name: string
   link: string
-  links?: Link[]
+  links?: SiteLink[]
 }
 
-const renderMenuItem: FC<Link> = ({ name, link, links }) => {
+const renderMenuItem: FC<SiteLink> = ({ name, link, links }) => {
   if (links === undefined) {
     return (
       <Menu.Item key={link}>
@@ -57,9 +71,34 @@ const renderMenuItem: FC<Link> = ({ name, link, links }) => {
   }
 
   return (
-    <Menu.ItemGroup key={link} title={name}>
+    <Menu.SubMenu key={link} title={<span>{name}</span>}>
       {links.map(l => ({ ...l, link: `${link}${l.link}` })).map(renderMenuItem)}
-    </Menu.ItemGroup>
+    </Menu.SubMenu>
+  )
+}
+
+const Logo = () => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 15,
+      }}
+    >
+      <img style={{ width: 50 }} src={require("../images/logo-dark.svg")} />
+      <p
+        style={{
+          marginTop: 10,
+          fontSize: 18,
+          lineHeight: "initial",
+          marginBottom: 0,
+        }}
+      >
+        Fielder
+      </p>
+    </div>
   )
 }
 
