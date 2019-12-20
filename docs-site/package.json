@@ -7,10 +7,12 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.5.1",
     "@mdx-js/react": "^1.5.1",
-    "antd": "^3.26.0",
+    "antd": "^4.0.0-beta.0",
     "fielder": "^1.0.2",
     "gatsby": "^2.18.4",
     "gatsby-image": "^2.2.34",
+    "gatsby-plugin-antd": "^2.1.0",
+    "gatsby-plugin-less": "^3.0.17",
     "gatsby-plugin-manifest": "^2.2.30",
     "gatsby-plugin-offline": "^3.0.24",
     "gatsby-plugin-react-helmet": "^3.1.16",
@@ -18,6 +20,7 @@
     "gatsby-remark-prismjs": "^3.3.25",
     "gatsby-source-filesystem": "^2.1.39",
     "gatsby-transformer-remark": "^2.6.38",
+    "less": "^3.10.3",
     "prismjs": "^1.17.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
@@ -28,6 +31,7 @@
   "devDependencies": {
     "gatsby-plugin-mdx": "^1.0.58",
     "gatsby-plugin-typescript": "^2.1.20",
+    "gh-pages": "^2.1.1",
     "prettier": "^1.19.1"
   },
   "keywords": [
@@ -41,6 +45,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
+    "deploy": "gh-pages -d public",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "repository": {
