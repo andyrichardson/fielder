@@ -15,6 +15,9 @@
   <a href="https://bundlephobia.com/result?p=fielder">
     <img src="https://img.shields.io/bundlephobia/minzip/fielder.svg" alt="size" />
   </a>
+  <a href="https://codecov.io/gh/andyrichardson/fielder">
+    <img src="https://img.shields.io/codecov/c/github/andyrichardson/fielder.svg" alt="coverage">
+  </a>
   <a href="https://github.com/andyrichardson/fielder/blob/master/LICENSE">
     <img src="https://img.shields.io/npm/l/fielder.svg" alt="licence">
   </a>
