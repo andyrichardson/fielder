@@ -17,7 +17,8 @@
   "scripts": {
     "start": "rollup -c rollup.config.js --watch",
     "test": "jest",
-    "build": "rollup -c rollup.config.js"
+    "build": "rollup -c rollup.config.js",
+    "changelog": "docker run -it --rm -v \"$(pwd)\":/usr/local/src/your-app ferrarimarco/github-changelog-generator -u FormidableLabs -p urql-devtools"
   },
   "repository": {
     "type": "git",
