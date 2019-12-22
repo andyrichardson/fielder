@@ -22,7 +22,7 @@ export interface FormState<T extends Record<string, any> = any> {
   validateFields: () => void;
 }
 
-export interface FieldState<T = string | boolean | number> {
+export interface FieldState<T = string | boolean | number | string[]> {
   readonly _isActive: boolean;
   readonly _validateOnChange: boolean;
   readonly _validateOnBlur: boolean;

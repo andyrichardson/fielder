@@ -255,7 +255,7 @@ describe("on change field", () => {
     mount(<Fixture />);
   });
 
-  describe("field state", () => {
+  describe("field value", () => {
     beforeEach(() => {
       act(() => {
         response.mountField({ name: "IgnoredField" });
@@ -311,6 +311,40 @@ describe("on change field", () => {
       it("is not called", () => {
         expect(validate).toBeCalledTimes(0);
       });
+    });
+  });
+});
+
+describe("on change field (callback)", () => {
+  const fieldName = "TargetField";
+  const initialValue = "old value";
+  const value = "Hello";
+  const callback = jest.fn(() => value);
+
+  beforeEach(() => {
+    mount(<Fixture />);
+  });
+
+  describe("field value", () => {
+    beforeEach(() => {
+      act(() => {
+        response.mountField({ name: "IgnoredField" });
+        response.mountField({ name: fieldName, initialValue });
+        response.setFieldValue({ name: fieldName, value: callback });
+      });
+    });
+
+    it("matches snapshot", () => {
+      expect(response.fields).toMatchSnapshot();
+    });
+
+    it("has new value", () => {
+      expect(response.fields[fieldName]).toHaveProperty("value", value);
+    });
+
+    it("calls callback with old value", () => {
+      expect(callback).toBeCalledTimes(1);
+      expect(callback).toHaveBeenCalledWith(initialValue);
     });
   });
 });
