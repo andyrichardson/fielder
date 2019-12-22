@@ -32,7 +32,8 @@ jobs:
       - restore_cache:
           keys:
             - node-cache-{{ .Revision }}
-      - run: npm run test
+      - run: npm run test -- --coverage
+      - run: npx codecov
 
   deploy:
     docker:
