@@ -45,7 +45,38 @@ Object {
 }
 `;
 
-exports[`on change field field state matches snapshot 1`] = `
+exports[`on change field (callback) field value matches snapshot 1`] = `
+Object {
+  "IgnoredField": Object {
+    "_isActive": true,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": false,
+    "isValidating": false,
+    "name": "IgnoredField",
+    "touched": false,
+    "value": undefined,
+  },
+  "TargetField": Object {
+    "_isActive": true,
+    "_validate": undefined,
+    "_validateOnBlur": false,
+    "_validateOnChange": true,
+    "_validateOnUpdate": false,
+    "error": undefined,
+    "isValid": false,
+    "isValidating": false,
+    "name": "TargetField",
+    "touched": false,
+    "value": "Hello",
+  },
+}
+`;
+
+exports[`on change field field value matches snapshot 1`] = `
 Object {
   "IgnoredField": Object {
     "_isActive": true,
