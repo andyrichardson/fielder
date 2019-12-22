@@ -9,7 +9,7 @@ Set the version attribute in the _package.json_
 > Note: This step requires docker
 
 ```
-npm run changelog --future-release [release version] --token [your github oauth token]
+npm run changelog -- --future-release [release version] --token [your github oauth token]
 ```
 
 ### 3. Push/merge new version to master

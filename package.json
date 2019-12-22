@@ -1,6 +1,6 @@
 {
   "name": "fielder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A dynamic React form library which adapts to change.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -18,7 +18,7 @@
     "start": "rollup -c rollup.config.js --watch",
     "test": "jest",
     "build": "rollup -c rollup.config.js",
-    "changelog": "docker run -it --rm -v \"$(pwd)\":/usr/local/src/your-app ferrarimarco/github-changelog-generator -u FormidableLabs -p urql-devtools"
+    "changelog": "docker run -it --rm -v \"$(pwd)\":/usr/local/src/your-app ferrarimarco/github-changelog-generator -u andyrichardson -p fielder"
   },
   "repository": {
     "type": "git",
