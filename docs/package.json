@@ -6,9 +6,8 @@
     "package.json"
   ],
   "scripts": {
-    "docz:dev": "docz dev",
-    "docz:build": "docz build",
-    "docz:serve": "docz build && docz serve"
+    "start": "docz dev",
+    "build": "docz build"
   },
   "dependencies": {
     "docz": "^2.2.0",
