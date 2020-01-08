@@ -8,7 +8,7 @@ jobs:
       - save_cache:
           key: node-cache-{{ .Revision }}
           paths:
-            - "node_modules"
+            - 'node_modules'
 
   build:
     docker:
@@ -22,7 +22,19 @@ jobs:
       - save_cache:
           key: build-cache-{{ .Revision }}
           paths:
-            - "dist"
+            - 'dist'
+
+  build docs:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-cache-{{ .Revision }}
+      - run: cd docs
+      - run: yarn
+      - run: yarn run build
 
   test:
     docker:
@@ -63,6 +75,12 @@ workflows:
             tags:
               only: /.*/
       - build:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /.*/
+      - build docs:
           requires:
             - install
           filters:
