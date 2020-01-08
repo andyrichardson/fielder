@@ -14,9 +14,7 @@ export const Header = props => {
   const doc = useCurrentDoc()
   const [colorMode, setColorMode] = useColorMode()
 
-  const toggleColorMode = () => {
-    setColorMode(colorMode === 'light' ? 'dark' : 'light')
-  }
+  const link = `${repository}/tree/master/docs/${doc.filepath}`;
 
   return (
     <div sx={styles.wrapper} data-testid="header">
@@ -41,15 +39,15 @@ export const Header = props => {
             </Box>
           )}
         </Flex>
-        {showMarkdownEditButton && doc.link && (
+        {showMarkdownEditButton && (
           <a
             sx={styles.editButton}
-            href={doc.link}
+            href={link}
             target="_blank"
             rel="noopener noreferrer"
           >
             <Edit width={14} />
-            <Box sx={{ pl: 2 }}>Edit page</Box>
+            <Box sx={{ pl: 2 }}>Edit on GitHub</Box>
           </a>
         )}
       </div>

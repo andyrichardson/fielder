@@ -6,4 +6,12 @@ export default {
     themeConfig: { 
         initialColorMode: 'dark',
     },
+    plugins: [
+        {
+            resolve: `gatsby-plugin-offline`,
+            options: {
+                precachePages: ['*'],
+            },
+        }
+    ]
 }
