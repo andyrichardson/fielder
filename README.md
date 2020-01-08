@@ -68,6 +68,14 @@ Your data doesn't need to be coupled to your components (and likely shouldn't be
 
 ## Usage
 
+### Install Fielder
+
+Install using your package manager of choice.
+
+```sh
+npm i fielder
+```
+
 ### Setting up a form
 
 `useForm` is where you initiate your form. In order to expose the form to any child components (and subsequently `useField`), you'll want to expose it via context.
