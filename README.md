@@ -21,6 +21,9 @@
   <a href="https://github.com/andyrichardson/fielder/blob/master/LICENSE">
     <img src="https://img.shields.io/npm/l/fielder.svg" alt="licence">
   </a>
+  <a href="https://fielder.andyrichardson.dev">
+    <img src="https://img.shields.io/badge/docs-visit%20site-orange" alt="docs">
+  </a>
 </p>
 
 ## About
@@ -111,6 +114,8 @@ There are a whole number of additional arguments which can be passed to `useFiel
 
 > Note: Unlike other popular form libraries, _Fielder_ allows you to change config options (such as validation) at any time.
 
-## Documentation
+## Resources
 
-For more info and examples, check out the [docs site](https://fielder.andyrichardson.dev/).
+For more info and examples, check out the **[official docs site](https://fielder.andyrichardson.dev/)**.
+
+For a deeper dive on Fielder and why it exists, check out [this blog post](https://dev.to/andyrichardsonn/why-we-need-another-form-library-fielder-4eah).
