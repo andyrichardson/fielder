@@ -1,0 +1,24 @@
+@import url("./button.css");
+@import url("./card.css");
+@import url("./form.css");
+@import url("./label.css");
+@import url("./site.css");
+@import url("./step.css");
+
+body,
+html {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #232323;
+}
+
+.card {
+  border-radius: 1px !important;
+}

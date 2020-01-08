@@ -1,0 +1,8 @@
+.card {
+  margin: 10px !important;
+}
+
+.disabled-section {
+  max-height: 30px;
+  overflow: hidden;
+}

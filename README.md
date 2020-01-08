@@ -15,6 +15,9 @@
   <a href="https://bundlephobia.com/result?p=fielder">
     <img src="https://img.shields.io/bundlephobia/minzip/fielder.svg" alt="size" />
   </a>
+  <a href="https://codecov.io/gh/andyrichardson/fielder">
+    <img src="https://img.shields.io/codecov/c/github/andyrichardson/fielder.svg" alt="coverage">
+  </a>
   <a href="https://github.com/andyrichardson/fielder/blob/master/LICENSE">
     <img src="https://img.shields.io/npm/l/fielder.svg" alt="licence">
   </a>
@@ -82,12 +85,12 @@ return <FielderProvider value={myForm}>{children}</FielderProvider>;
 ```tsx
 const [nameProps, nameMeta] = useField({
   name: 'userName',
-  validate: useCallback((v) => Yup.string().required().validateSync(v), []);
+  validate: useCallback((v) => Yup.string().required().validateSync(v), [])
 });
 
 return (
   <input type="text" {...nameProps} />
-  {nameMeta.touched && nameMeta.error && <Error>{nameMeta.error}</Error>}
+  {nameMeta.touched && nameMeta.error && <ErrorMsg>{nameMeta.error}</ErrorMsg>}
 );
 ```
 

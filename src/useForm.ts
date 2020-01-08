@@ -399,7 +399,7 @@ const doSetFieldValue = (fields: FieldsState) => <T>({
     ...fields,
     [name]: {
       ...p,
-      value: typeof value === "function" ? (value as any)(p) : value
+      value: typeof value === "function" ? (value as any)(p.value) : value
     }
   };
 };
