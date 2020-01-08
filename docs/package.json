@@ -7,12 +7,16 @@
   ],
   "scripts": {
     "start": "docz dev",
-    "build": "docz build"
+    "build": "docz build",
+    "deploy": "gh-pages -d .docz/dist"
   },
   "dependencies": {
     "docz": "^2.2.0",
     "gatsby-plugin-offline": "^3.0.30",
     "react": "16.8.0",
     "react-dom": "16.8.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.2.0"
   }
 }
