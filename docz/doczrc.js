@@ -1,5 +1,9 @@
 export default {
     name: "Fielder",
     description: "Documentation for Fielder",
-    menu: ['Getting Started', 'Guides', 'Api', 'Examples'],
+    menu: ['About', 'Guides', 'Api', 'Examples'],
+    repository: 'https://github.com/andyrichardson/fielder',
+    themeConfig: { 
+        initialColorMode: 'dark',
+    },
 }
