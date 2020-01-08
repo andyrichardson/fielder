@@ -32,13 +32,13 @@ jobs:
       - restore_cache:
           keys:
             - node-cache-{{ .Revision }}
-      - run: cd docs-site
+      - run: cd docs
       - run: yarn
       - run: yarn run build
       - save_cache:
-          key: build-cache-{{ .Revision }}
+          key: docs-cache-{{ .Revision }}
           paths:
-            - 'public'
+            - '.docz/dist'
       - run: yarn run deploy
 
   test:
