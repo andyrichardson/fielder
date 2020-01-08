@@ -105,4 +105,4 @@ There are a whole number of additional arguments which can be passed to `useFiel
 
 ## Documentation
 
-For more info and examples, check out the [Documentation section](https://fielder.andyrichardson.dev/).
+For more info and examples, check out the [docs site](https://fielder.andyrichardson.dev/).
