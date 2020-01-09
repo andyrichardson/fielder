@@ -7,9 +7,9 @@ import React, {
   useCallback,
   useMemo,
   useLayoutEffect
-} from "react";
-import { FielderContext } from "./context";
-import { FormState, FormError, FieldState, FieldConfig } from "./types";
+} from 'react';
+import { FielderContext } from './context';
+import { FormState, FormError, FieldState, FieldConfig } from './types';
 
 export type UseFieldProps<T = any> = {
   readonly name: string;
@@ -19,10 +19,10 @@ export type UseFieldProps<T = any> = {
 };
 
 export type UseFieldMeta = {
-  readonly touched: FieldState["touched"];
-  readonly error: FieldState["error"];
-  readonly isValid: FieldState["isValid"];
-  readonly isValidating: FieldState["isValidating"];
+  readonly touched: FieldState['touched'];
+  readonly error: FieldState['error'];
+  readonly isValid: FieldState['isValid'];
+  readonly isValidating: FieldState['isValidating'];
 };
 
 type SupportedElements =
@@ -36,7 +36,7 @@ export type UseFieldResponse = [UseFieldProps, UseFieldMeta];
 export const useField = <T = any>({
   name: initialName,
   validate,
-  initialValid = false,
+  initialValid = !validate,
   initialError = undefined,
   initialValue = undefined,
   initialTouched = false,
@@ -68,7 +68,7 @@ export const useField = <T = any>({
 
   useLayoutEffect(() => {
     if (fields[name] && fields[name]._isActive) {
-      throw Error("Duplicate field mounted.");
+      throw Error('Duplicate field mounted.');
     }
 
     mountField({
@@ -95,7 +95,7 @@ export const useField = <T = any>({
       const type = getElementType(e);
       const newVal = e.currentTarget.value;
 
-      if (type !== "checkbox") {
+      if (type !== 'checkbox') {
         return setFieldValue({ name, value: newVal });
       }
 
@@ -130,23 +130,23 @@ const getElementType = (e: ChangeEvent<SupportedElements>) => {
   const target = e.currentTarget || e.target;
   const tagName = target.tagName.toLowerCase();
 
-  if (tagName === "select") {
-    return "select";
+  if (tagName === 'select') {
+    return 'select';
   }
 
-  const type = target.getAttribute("type");
+  const type = target.getAttribute('type');
 
-  if (tagName === "input" && type === "checkbox") {
-    return "checkbox";
+  if (tagName === 'input' && type === 'checkbox') {
+    return 'checkbox';
   }
 
-  if (tagName === "input" && type === "radio") {
-    return "radio";
+  if (tagName === 'input' && type === 'radio') {
+    return 'radio';
   }
 
-  if (tagName === "input") {
-    return "input";
+  if (tagName === 'input') {
+    return 'input';
   }
 
-  throw Error("Unsupported input element");
+  throw Error('Unsupported input element');
 };

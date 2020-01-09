@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import { mount } from "enzyme";
-import { useField, UseFieldResponse } from "./useField";
-import { FielderContext } from "./context";
-import { FieldConfig } from "./types";
+import React, { FC } from 'react';
+import { mount } from 'enzyme';
+import { useField, UseFieldResponse } from './useField';
+import { FielderContext } from './context';
+import { FieldConfig } from './types';
 
 const context = {
   fields: {},
@@ -30,16 +30,16 @@ const Fixture: FC = ({ children }) => {
 
 beforeEach(jest.clearAllMocks);
 
-describe("on mount", () => {
-  it("calls mountField", () => {
-    args = { name: "someField" };
+describe('on mount', () => {
+  it('calls mountField with default values', () => {
+    args = { name: 'someField' };
     mount(<Fixture />);
 
     expect(context.mountField).toBeCalledTimes(1);
     expect(context.mountField).toBeCalledWith({
       name: args.name,
       initialError: undefined,
-      initialValid: false,
+      initialValid: true,
       initialValue: undefined,
       initialTouched: false,
       validate: undefined,
@@ -49,12 +49,30 @@ describe("on mount", () => {
     });
   });
 
-  it("calls mountField with default overrides", () => {
+  it('calls mountField with default values (validate function provided)', () => {
+    args = { name: 'someField', validate: jest.fn() };
+    mount(<Fixture />);
+
+    expect(context.mountField).toBeCalledTimes(1);
+    expect(context.mountField).toBeCalledWith({
+      name: args.name,
+      initialError: undefined,
+      initialValid: false,
+      initialValue: undefined,
+      initialTouched: false,
+      validate: args.validate,
+      validateOnBlur: true,
+      validateOnChange: true,
+      validateOnUpdate: false
+    });
+  });
+
+  it('calls mountField with default overrides', () => {
     args = {
-      name: "someField",
-      initialError: "aaa",
+      name: 'someField',
+      initialError: 'aaa',
       initialValid: true,
-      initialValue: "hello",
+      initialValue: 'hello',
       initialTouched: true,
       validate: jest.fn(),
       validateOnBlur: false,
@@ -70,9 +88,9 @@ describe("on mount", () => {
   });
 });
 
-describe("on unmount", () => {
-  it("calls unmountField", () => {
-    args = { name: "someField" };
+describe('on unmount', () => {
+  it('calls unmountField', () => {
+    args = { name: 'someField' };
     const wrapper = mount(<Fixture />);
     wrapper.unmount();
 
@@ -83,8 +101,8 @@ describe("on unmount", () => {
     });
   });
 
-  it("calls unmountField and destroys value", () => {
-    args = { name: "someField", destroyOnUnmount: true };
+  it('calls unmountField and destroys value', () => {
+    args = { name: 'someField', destroyOnUnmount: true };
     const wrapper = mount(<Fixture />);
     wrapper.unmount();
 
@@ -96,9 +114,9 @@ describe("on unmount", () => {
   });
 });
 
-describe("on blur", () => {
-  it("calls blurField", () => {
-    args = { name: "someField" };
+describe('on blur', () => {
+  it('calls blurField', () => {
+    args = { name: 'someField' };
     mount(<Fixture />);
     response[0].onBlur();
 
@@ -109,16 +127,16 @@ describe("on blur", () => {
   });
 });
 
-describe("on change", () => {
-  describe("basic input", () => {
-    it("calls setFieldValue", () => {
-      const value = "newval";
-      args = { name: "someField" };
+describe('on change', () => {
+  describe('basic input', () => {
+    it('calls setFieldValue', () => {
+      const value = 'newval';
+      args = { name: 'someField' };
 
       mount(<Fixture />);
       response[0].onChange({
         currentTarget: {
-          tagName: "INPUT",
+          tagName: 'INPUT',
           getAttribute: () => undefined,
           value
         }
@@ -132,16 +150,16 @@ describe("on change", () => {
     });
   });
 
-  describe("radio input", () => {
-    it("calls setFieldValue", () => {
-      const value = "newval";
-      args = { name: "someField" };
+  describe('radio input', () => {
+    it('calls setFieldValue', () => {
+      const value = 'newval';
+      args = { name: 'someField' };
 
       mount(<Fixture />);
       response[0].onChange({
         currentTarget: {
-          tagName: "INPUT",
-          getAttribute: () => "radio",
+          tagName: 'INPUT',
+          getAttribute: () => 'radio',
           value
         }
       } as any);
@@ -154,22 +172,22 @@ describe("on change", () => {
     });
   });
 
-  describe("checkbox input", () => {
-    const value = "newval";
-    args = { name: "someField" };
+  describe('checkbox input', () => {
+    const value = 'newval';
+    args = { name: 'someField' };
 
     beforeEach(() => {
       mount(<Fixture />);
       response[0].onChange({
         currentTarget: {
-          tagName: "INPUT",
-          getAttribute: () => "checkbox",
+          tagName: 'INPUT',
+          getAttribute: () => 'checkbox',
           value
         }
       } as any);
     });
 
-    it("calls setFieldValue", () => {
+    it('calls setFieldValue', () => {
       expect(context.setFieldValue).toBeCalledTimes(1);
       expect(context.setFieldValue).toBeCalledWith(
         expect.objectContaining({
@@ -178,37 +196,37 @@ describe("on change", () => {
       );
     });
 
-    describe("on setFieldValue value function", () => {
+    describe('on setFieldValue value function', () => {
       let valueFn: Function;
-      const otherVals = ["other", "again"];
+      const otherVals = ['other', 'again'];
 
       beforeEach(() => {
         valueFn = context.setFieldValue.mock.calls[0][0].value;
       });
 
-      it("instantiates array with value", () => {
+      it('instantiates array with value', () => {
         expect(valueFn()).toEqual([value]);
       });
 
-      it("removes value from array", () => {
+      it('removes value from array', () => {
         expect(valueFn([...otherVals, value])).toEqual(otherVals);
       });
 
-      it("appends value to array", () => {
+      it('appends value to array', () => {
         expect(valueFn(otherVals)).toEqual([...otherVals, value]);
       });
     });
   });
 
-  describe("select input", () => {
-    it("calls setFieldValue", () => {
-      const value = "newval";
-      args = { name: "someField" };
+  describe('select input', () => {
+    it('calls setFieldValue', () => {
+      const value = 'newval';
+      args = { name: 'someField' };
 
       mount(<Fixture />);
       response[0].onChange({
         currentTarget: {
-          tagName: "SELECT",
+          tagName: 'SELECT',
           value,
           getAttribute: () => undefined
         }
