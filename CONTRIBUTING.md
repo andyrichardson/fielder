@@ -37,3 +37,12 @@ git push origin v0.0.0
 Finally, navigate to [releases](https://github.com/andyrichardson/fielder/releases) and choose _draft a new release_.
 
 > Note: You can copy and paste release info from the changelog you just generated
+
+### 6. Release updated docs
+
+```
+cd docs
+yarn
+yarn build
+yarn deploy
+```
