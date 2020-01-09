@@ -19,6 +19,7 @@
     "test": "jest",
     "build": "rollup -c rollup.config.js",
     "check-formatting": "prettier --check \"./**/*.{ts,tsx,md,mdx}\" \"!./CHANGELOG.md\"",
+    "lint": "eslint -c .eslintrc \"src/**.{ts,tsx}\"",
     "changelog": "docker run -it --rm -v \"$(pwd)\":/usr/local/src/your-app ferrarimarco/github-changelog-generator -u andyrichardson -p fielder"
   },
   "repository": {
@@ -38,8 +39,15 @@
     "@types/react": "^16.9.13",
     "@types/react-dom": "^16.9.4",
     "@types/yup": "^0.26.24",
+    "@typescript-eslint/eslint-plugin": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
