@@ -33,10 +33,14 @@ jobs:
           keys:
             - node-cache-{{ .Revision }}
       - run: cd docs
-      - run: yarn
-      - run: yarn run build
+      - run:
+          command: yarn
+          working_directory: docs
+      - run:
+          command: yarn run build
+          working_directory: docs
       - store_artifacts:
-          path: .docz/dist
+          path: docs/.docz/dist
           destination: static-docs
 
   test:
