@@ -4,7 +4,7 @@ jobs:
       - image: node:13
     steps:
       - checkout
-      - run: npm i
+      - run: npm ci
       - save_cache:
           key: node-cache-{{ .Revision }}
           paths:
