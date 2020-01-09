@@ -4,24 +4,23 @@ menu: Api
 route: /api/usefield
 ---
 
-
 # useField
 
 _Hook to mount a field to the form._
 
 ```tsx
-import { useField } from "fielder"
+import { useField } from 'fielder';
 ```
 
 ## Example usage
 
 ```tsx
 const [passwordProps, passwordMeta] = useField({
-  name: "password",
-  validate: passwordValidation,
-})
+  name: 'password',
+  validate: passwordValidation
+});
 
-return <input type={"password"} {...passwordProps} />
+return <input type={'password'} {...passwordProps} />;
 ```
 
 ## Return type
@@ -66,7 +65,9 @@ _Whether the initial value should be considered valid._
 
 Type: `boolean`
 
-Default: `false`
+Default: `false` (see comment below)
+
+> When no `validate` argument is passed to `useField`, the default value is `true`
 
 ### initialError
 
@@ -132,11 +133,11 @@ Props which can be passed to a form element / component.
 
 ```ts
 type UseFieldProps<T = any> = {
-  readonly name: string
-  readonly value: T
-  readonly onChange: ChangeEventHandler
-  readonly onBlur: () => void
-}
+  readonly name: string;
+  readonly value: T;
+  readonly onChange: ChangeEventHandler;
+  readonly onBlur: () => void;
+};
 ```
 
 ### UseFieldMeta
@@ -145,9 +146,9 @@ Additional information about a field and it's validation state.
 
 ```ts
 type UseFieldMeta = {
-  readonly touched: boolean
-  readonly error?: Error | string
-  readonly isValid: boolean
-  readonly isValidating: boolean
-}
+  readonly touched: boolean;
+  readonly error?: Error | string;
+  readonly isValid: boolean;
+  readonly isValidating: boolean;
+};
 ```
