@@ -29,10 +29,6 @@ jobs:
       - image: node:13
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - node-cache-{{ .Revision }}
-      - run: cd docs
       - run:
           command: yarn
           working_directory: docs
