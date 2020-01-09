@@ -1,18 +1,18 @@
-import React, { FC, useCallback } from "react";
-import { useField, useFormContext } from "fielder";
+import React, { FC, useCallback } from 'react';
+import { useField, useFormContext } from 'fielder';
 
 export const TermsSection: FC = () => {
   const { isValid } = useFormContext();
   const [marketingProps] = useField({
-    name: "marketing",
+    name: 'marketing',
     initialValid: true
   });
   const [termsProps] = useField({
-    name: "terms",
+    name: 'terms',
     validate: termsValidation
   });
 
-  const handleSubmit = useCallback(() => alert("Form submitted"), []);
+  const handleSubmit = useCallback(() => alert('Form submitted'), []);
 
   return (
     <form autocomplete="off">
@@ -37,6 +37,6 @@ export const TermsSection: FC = () => {
 
 const termsValidation = v => {
   if (!v || v.length === 0) {
-    throw Error("Opting in is required");
+    throw Error('Opting in is required');
   }
 };

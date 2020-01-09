@@ -4,21 +4,20 @@ menu: Api
 route: /api/provider
 ---
 
-
 # FielderProvider
 
 _Exposes a form instance [(FormState)](/api/useform#formstate) via React context._
 
 ```tsx
-import { FielderProvider } from "fielder"
+import { FielderProvider } from 'fielder';
 ```
 
 ## Example Usage
 
 ```tsx
-const formState = useForm()
+const formState = useForm();
 
-return <FielderProvider value={formState}>{children}</FielderProvider>
+return <FielderProvider value={formState}>{children}</FielderProvider>;
 ```
 
 ## Props

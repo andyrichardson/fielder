@@ -4,21 +4,20 @@ menu: Api
 route: /api/useform
 ---
 
-
 # useForm
 
 _Creates a new form instance._
 
 ```tsx
-import { useForm } from "fielder"
+import { useForm } from 'fielder';
 ```
 
 ## Example Usage
 
 ```tsx
-const formState = useForm()
+const formState = useForm();
 
-return <FielderProvider value={formState}>{children}</FielderProvider>
+return <FielderProvider value={formState}>{children}</FielderProvider>;
 ```
 
 ## Return type
@@ -39,15 +38,15 @@ The state of the whole form along with accessors and mutators.
 
 ```ts
 export interface FormState<T extends Record<string, any> = any> {
-  fields: Record<string, FieldState>
-  isValid: boolean
-  isValidating: boolean
-  mountField: (k: FieldConfig<T>) => void
-  unmountField: (k: UnmountFieldArgs<T>) => void
-  setFieldValue: (a: SetFieldValueArgs<T>) => void
-  blurField: (a: BlurFieldArgs<T>) => void
-  validateField: (a: { name: keyof T & string }) => void
-  validateFields: () => void
+  fields: Record<string, FieldState>;
+  isValid: boolean;
+  isValidating: boolean;
+  mountField: (k: FieldConfig<T>) => void;
+  unmountField: (k: UnmountFieldArgs<T>) => void;
+  setFieldValue: (a: SetFieldValueArgs<T>) => void;
+  blurField: (a: BlurFieldArgs<T>) => void;
+  validateField: (a: { name: keyof T & string }) => void;
+  validateFields: () => void;
 }
 ```
 
@@ -58,20 +57,20 @@ The state of an individual field (including meta information).
 ```tsx
 export interface FieldState<T = string | boolean | number> {
   // Internals
-  readonly _isActive: boolean
-  readonly _validateOnChange: boolean
-  readonly _validateOnBlur: boolean
-  readonly _validateOnUpdate: boolean
-  readonly _validate: FieldConfig["validate"]
+  readonly _isActive: boolean;
+  readonly _validateOnChange: boolean;
+  readonly _validateOnBlur: boolean;
+  readonly _validateOnUpdate: boolean;
+  readonly _validate: FieldConfig['validate'];
 
   // Props
-  readonly name: string
-  readonly value?: T
+  readonly name: string;
+  readonly value?: T;
 
   // Meta
-  readonly error?: FormError
-  readonly touched: boolean
-  readonly isValid: boolean
-  readonly isValidating: boolean
+  readonly error?: FormError;
+  readonly touched: boolean;
+  readonly isValid: boolean;
+  readonly isValidating: boolean;
 }
 ```

@@ -7,47 +7,47 @@ import {
   Dispatch,
   useRef,
   MutableRefObject
-} from "react";
-import { FormState, FieldState, FieldConfig, FieldsState } from "./types";
+} from 'react';
+import { FormState, FieldState, FieldConfig, FieldsState } from './types';
 
 /** Adds a field to the form. */
 interface MountFieldAction<T = any> {
-  type: "MOUNT_FIELD";
+  type: 'MOUNT_FIELD';
   config: FieldConfig<T>;
 }
 
 /** Removes a field to the form or sets it as inactive. */
 interface UnmountFieldAction<T = any> {
-  type: "UNMOUNT_FIELD";
+  type: 'UNMOUNT_FIELD';
   config: UnmountFieldArgs<T>;
 }
 
 /** Sets the value of a field (may trigger validation). */
 interface SetFieldValueAction<T = any> {
-  type: "SET_FIELD_VALUE";
+  type: 'SET_FIELD_VALUE';
   config: SetFieldValueArgs<T>;
 }
 
 /** Sets a field to having been touched. */
 interface BlurFieldAction<T = any> {
-  type: "BLUR_FIELD";
+  type: 'BLUR_FIELD';
   config: BlurFieldArgs<T>;
 }
 
 /** Force validation to be called on a given field. */
 interface ValidateFieldAction<T = any> {
-  type: "VALIDATE_FIELD";
+  type: 'VALIDATE_FIELD';
   config: ValidateFieldArgs<T>;
 }
 
 /** Force validation to be called on all fields. */
 interface ValidateFieldsAction {
-  type: "VALIDATE_FIELDS";
+  type: 'VALIDATE_FIELDS';
 }
 
 /** Set state of a field (without triggering validation). */
 interface SetFieldStateAction<T = any> {
-  type: "SET_FIELD_STATE";
+  type: 'SET_FIELD_STATE';
   config: SetFieldStateArgs<T>;
 }
 
@@ -79,33 +79,33 @@ export const useForm = <T = any>(): FormState<T> => {
 
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
-  const mountField = useCallback<FormState<T>["mountField"]>(
-    config => dispatch({ type: "MOUNT_FIELD", config: config as any }),
+  const mountField = useCallback<FormState<T>['mountField']>(
+    config => dispatch({ type: 'MOUNT_FIELD', config: config as any }),
     [dispatch]
   );
 
-  const unmountField = useCallback<FormState<T>["unmountField"]>(
-    config => dispatch({ type: "UNMOUNT_FIELD", config }),
+  const unmountField = useCallback<FormState<T>['unmountField']>(
+    config => dispatch({ type: 'UNMOUNT_FIELD', config }),
     [dispatch]
   );
 
-  const setFieldValue = useCallback<FormState<T>["setFieldValue"]>(
-    config => dispatch({ type: "SET_FIELD_VALUE", config }),
+  const setFieldValue = useCallback<FormState<T>['setFieldValue']>(
+    config => dispatch({ type: 'SET_FIELD_VALUE', config }),
     [dispatch]
   );
 
-  const blurField = useCallback<FormState<T>["blurField"]>(
-    config => dispatch({ type: "BLUR_FIELD", config: config as any }),
+  const blurField = useCallback<FormState<T>['blurField']>(
+    config => dispatch({ type: 'BLUR_FIELD', config: config as any }),
     [dispatch]
   );
 
-  const validateField = useCallback<FormState<T>["validateField"]>(
-    config => dispatch({ type: "VALIDATE_FIELD", config }),
+  const validateField = useCallback<FormState<T>['validateField']>(
+    config => dispatch({ type: 'VALIDATE_FIELD', config }),
     [dispatch]
   );
 
-  const validateFields = useCallback<FormState<T>["validateFields"]>(
-    () => dispatch({ type: "VALIDATE_FIELDS" }),
+  const validateFields = useCallback<FormState<T>['validateFields']>(
+    () => dispatch({ type: 'VALIDATE_FIELDS' }),
     []
   );
 
@@ -142,23 +142,23 @@ export const useForm = <T = any>(): FormState<T> => {
 
 /** Triggers primary action to state. */
 const applyActionToState = (s: FieldsState, a: FormAction) => {
-  if (a.type === "MOUNT_FIELD") {
+  if (a.type === 'MOUNT_FIELD') {
     return doMountField(s)(a.config);
   }
 
-  if (a.type === "UNMOUNT_FIELD") {
+  if (a.type === 'UNMOUNT_FIELD') {
     return doUnmountField(s)(a.config);
   }
 
-  if (a.type === "SET_FIELD_VALUE") {
+  if (a.type === 'SET_FIELD_VALUE') {
     return doSetFieldValue(s)(a.config);
   }
 
-  if (a.type === "BLUR_FIELD") {
+  if (a.type === 'BLUR_FIELD') {
     return doBlurField(s)(a.config);
   }
 
-  if (a.type === "SET_FIELD_STATE") {
+  if (a.type === 'SET_FIELD_STATE') {
     return doSetFieldState(s)(a.config);
   }
 
@@ -182,7 +182,7 @@ const createHandleAsyncValidation = <T>(
     const validationCallback = (isError: boolean) => (response: any) => {
       if (!dispatch || dispatch.current === undefined) {
         console.warn(
-          "Unable to update validation state. Dispatch not available."
+          'Unable to update validation state. Dispatch not available.'
         );
         return;
       }
@@ -195,7 +195,7 @@ const createHandleAsyncValidation = <T>(
       const isValid = !isError && !response;
 
       dispatch.current({
-        type: "SET_FIELD_STATE",
+        type: 'SET_FIELD_STATE',
         config: {
           name,
           state: s => ({
@@ -222,10 +222,10 @@ const applyValidationToState = (
 ): FieldsState => {
   if (
     ![
-      "SET_FIELD_VALUE",
-      "BLUR_FIELD",
-      "VALIDATE_FIELD",
-      "VALIDATE_FIELDS"
+      'SET_FIELD_VALUE',
+      'BLUR_FIELD',
+      'VALIDATE_FIELD',
+      'VALIDATE_FIELDS'
     ].includes(action.type)
   ) {
     return state;
@@ -239,18 +239,18 @@ const applyValidationToState = (
     }
 
     const validateBlur =
-      action.type === "BLUR_FIELD" &&
+      action.type === 'BLUR_FIELD' &&
       action.config.name === field.name &&
       field._validateOnBlur;
     const validateChange =
-      action.type === "SET_FIELD_VALUE" &&
+      action.type === 'SET_FIELD_VALUE' &&
       action.config.name === field.name &&
       field._validateOnChange;
     const validateUpdate =
-      action.type === "SET_FIELD_VALUE" && field._validateOnChange;
+      action.type === 'SET_FIELD_VALUE' && field._validateOnChange;
     const validateField =
-      action.type === "VALIDATE_FIELD" && action.config.name === field.name;
-    const validateFields = action.type === "VALIDATE_FIELDS";
+      action.type === 'VALIDATE_FIELD' && action.config.name === field.name;
+    const validateFields = action.type === 'VALIDATE_FIELDS';
 
     if (
       !(
@@ -317,7 +317,7 @@ const doMountField = (fields: FieldsState) => ({
   const p = fields[name as string] || ({} as FieldState);
 
   if (p && p._isActive) {
-    throw Error("Field is already mounted");
+    throw Error('Field is already mounted');
   }
 
   return {
@@ -352,7 +352,7 @@ const doUnmountField = (fields: FieldsState) => ({
   const p = fields[name as string];
 
   if (p === undefined) {
-    throw Error("Cannot unmount non-mounted field");
+    throw Error('Cannot unmount non-mounted field');
   }
 
   if (destroy) {
@@ -388,18 +388,18 @@ const doSetFieldValue = (fields: FieldsState) => <T>({
   const p = fields[name as string];
 
   if (p === undefined) {
-    throw Error("Cannot set value on non-mounted field");
+    throw Error('Cannot set value on non-mounted field');
   }
 
   if (!p._isActive) {
-    console.warn("Setting field value for inactive field.");
+    console.warn('Setting field value for inactive field.');
   }
 
   return {
     ...fields,
     [name]: {
       ...p,
-      value: typeof value === "function" ? (value as any)(p.value) : value
+      value: typeof value === 'function' ? (value as any)(p.value) : value
     }
   };
 };
@@ -418,11 +418,11 @@ const doBlurField = (fields: FieldsState) => <T = any>({
   const p = fields[name];
 
   if (p === undefined) {
-    throw Error("Cannot unmount non-mounted field");
+    throw Error('Cannot unmount non-mounted field');
   }
 
   if (!p._isActive) {
-    console.warn("Setting field attribute on inactive field.");
+    console.warn('Setting field attribute on inactive field.');
   }
 
   return {
@@ -441,16 +441,16 @@ const doSetFieldState = (fields: FieldsState) => <T>({
   const p = fields[name];
 
   if (p === undefined) {
-    throw Error("Cannot unmount non-mounted field");
+    throw Error('Cannot unmount non-mounted field');
   }
 
   if (!p._isActive) {
-    console.warn("Setting field attribute on inactive field.");
+    console.warn('Setting field attribute on inactive field.');
   }
 
   return {
     ...fields,
-    [name]: typeof state === "function" ? state(p) : state
+    [name]: typeof state === 'function' ? state(p) : state
   };
 };
 

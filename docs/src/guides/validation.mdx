@@ -59,10 +59,10 @@ The below example demonstrates is a cross field validation function which checks
 
 ```tsx
 const validateDrink = (val, state) => {
-  if (Number(state.age.value) < 21 && val === "Beer") {
-    throw Error("You must be 21 to order Beer")
+  if (Number(state.age.value) < 21 && val === 'Beer') {
+    throw Error('You must be 21 to order Beer');
   }
-}
+};
 ```
 
 ## Conditional validation
@@ -87,7 +87,7 @@ useField({
 You can use simple JS, or any validation library you desire (including `Yup`).
 
 ```tsx
-const validateFn = val => Yup.string().validateSync(val)
+const validateFn = val => Yup.string().validateSync(val);
 ```
 
 > It's advised that you use synchronous validation where possible to reduce the number of

@@ -12,9 +12,9 @@ _Fielder is written in TypeScript and supports type safety out of the box_.
 ## Why to use types
 
 By using types with Fielder, you can:
- 
- - Enforce field types (setters and return values)
- - Enforce field names (prevent typos)
+
+- Enforce field types (setters and return values)
+- Enforce field names (prevent typos)
 
 ## Basic typing
 
@@ -43,7 +43,7 @@ If you prefer not to manually type every hook call, you can re-export them.
 Create a `fielder.ts` file alongside your form's root component and copy the example below.
 
 ```ts
-import { typedHooks } from 'fielder'
+import { typedHooks } from 'fielder';
 import { FormType } from './types';
 
 export const { useField, useForm, useFormContext } = typedHooks<FormType>();
@@ -57,5 +57,5 @@ import { useField } from '../fielder';
 // ...
 const [fieldProps] = useField({
   name: 'invalidName' // Type error!
-})
+});
 ```

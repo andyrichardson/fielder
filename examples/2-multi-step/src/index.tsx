@@ -1,6 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { RegisterForm } from "./register-form";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { RegisterForm } from './register-form';
 
 const App = () => (
   <div className="ui container">
@@ -8,4 +8,4 @@ const App = () => (
   </div>
 );
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+ReactDOM.render(<App />, document.querySelector('#root'));

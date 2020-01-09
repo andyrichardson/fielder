@@ -1,8 +1,8 @@
-import { mount, ReactWrapper } from "enzyme";
-import { act } from "react-dom/test-utils";
-import React from "react";
-import { useForm } from "./useForm";
-import { FormState } from "./types";
+import { mount, ReactWrapper } from 'enzyme';
+import { act } from 'react-dom/test-utils';
+import React from 'react';
+import { useForm } from './useForm';
+import { FormState } from './types';
 
 let response: FormState;
 
@@ -14,38 +14,38 @@ const Fixture = () => {
 
 beforeEach(jest.clearAllMocks);
 
-describe("initial call", () => {
-  it("matches snapshot", () => {
+describe('initial call', () => {
+  it('matches snapshot', () => {
     mount(<Fixture />);
     expect(response).toMatchSnapshot();
   });
 });
 
-describe("on mount field", () => {
+describe('on mount field', () => {
   beforeEach(() => {
     mount(<Fixture />);
   });
 
-  describe("on default args", () => {
+  describe('on default args', () => {
     beforeEach(() => {
-      act(() => response.mountField({ name: "test" }));
+      act(() => response.mountField({ name: 'test' }));
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(response.fields).toMatchSnapshot();
       });
     });
   });
 
-  describe("on provided args", () => {
+  describe('on provided args', () => {
     beforeEach(() => {
       act(() =>
         response.mountField({
-          name: "test",
-          initialError: "some error",
+          name: 'test',
+          initialError: 'some error',
           initialTouched: true,
-          initialValue: "hello",
+          initialValue: 'hello',
           destroyOnUnmount: false,
           initialValid: true,
           validate: jest.fn(),
@@ -56,27 +56,27 @@ describe("on mount field", () => {
       );
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(response.fields).toMatchSnapshot();
       });
     });
   });
 });
 
-describe("on unmount field", () => {
-  const fieldName = "TargetField";
+describe('on unmount field', () => {
+  const fieldName = 'TargetField';
   const value = 5678;
 
   beforeEach(() => {
     mount(<Fixture />);
   });
 
-  describe("form state", () => {
+  describe('form state', () => {
     beforeEach(() => {
       act(() => {
         response.mountField({
-          name: "test",
+          name: 'test',
           initialValue: 1234,
           initialValid: true
         });
@@ -89,16 +89,16 @@ describe("on unmount field", () => {
       });
     });
 
-    it("is valid", () => {
-      expect(response).toHaveProperty("isValid", true);
+    it('is valid', () => {
+      expect(response).toHaveProperty('isValid', true);
     });
   });
 
-  describe("fields state", () => {
+  describe('fields state', () => {
     beforeEach(() => {
       act(() => {
         response.mountField({
-          name: "test",
+          name: 'test',
           initialValue: 1234,
           initialValid: true
         });
@@ -111,24 +111,24 @@ describe("on unmount field", () => {
       });
     });
 
-    it("matches snapshot", () => {
+    it('matches snapshot', () => {
       expect(response.fields).toMatchSnapshot();
     });
 
-    it("is not active", () => {
-      expect(response.fields[fieldName]).toHaveProperty("_isActive", false);
+    it('is not active', () => {
+      expect(response.fields[fieldName]).toHaveProperty('_isActive', false);
     });
 
-    it("still has value", () => {
-      expect(response.fields[fieldName]).toHaveProperty("value", value);
+    it('still has value', () => {
+      expect(response.fields[fieldName]).toHaveProperty('value', value);
     });
   });
 
-  describe("on destroy", () => {
+  describe('on destroy', () => {
     beforeEach(() => {
       act(() => {
         response.mountField({
-          name: "test",
+          name: 'test',
           initialValue: 1234,
           initialValid: true
         });
@@ -141,25 +141,25 @@ describe("on unmount field", () => {
       });
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(response.fields).toMatchSnapshot();
       });
 
-      it("does not contain previous field", () => {
+      it('does not contain previous field', () => {
         expect(response.fields[fieldName]).toBe(undefined);
       });
     });
   });
 
-  describe("on provided args", () => {
+  describe('on provided args', () => {
     beforeEach(() => {
       act(() =>
         response.mountField({
-          name: "test",
-          initialError: "some error",
+          name: 'test',
+          initialError: 'some error',
           initialTouched: true,
-          initialValue: "hello",
+          initialValue: 'hello',
           destroyOnUnmount: false,
           initialValid: true,
           validate: jest.fn(),
@@ -170,44 +170,44 @@ describe("on unmount field", () => {
       );
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(response.fields).toMatchSnapshot();
       });
     });
   });
 });
 
-describe("on blur field", () => {
-  const fieldName = "TargetField";
+describe('on blur field', () => {
+  const fieldName = 'TargetField';
   const validate = jest.fn();
 
   beforeEach(() => {
     mount(<Fixture />);
   });
 
-  describe("field state", () => {
+  describe('field state', () => {
     beforeEach(() => {
       act(() => {
-        response.mountField({ name: "IgnoredField" });
+        response.mountField({ name: 'IgnoredField' });
         response.mountField({ name: fieldName, validate });
         response.blurField({ name: fieldName });
       });
     });
 
-    it("matches snapshot", () => {
+    it('matches snapshot', () => {
       expect(response.fields).toMatchSnapshot();
     });
 
-    it("is touched", () => {
-      expect(response.fields[fieldName]).toHaveProperty("touched", true);
+    it('is touched', () => {
+      expect(response.fields[fieldName]).toHaveProperty('touched', true);
     });
   });
 
-  describe("with [validateOnBlur = true]", () => {
+  describe('with [validateOnBlur = true]', () => {
     beforeEach(() => {
       act(() => {
-        response.mountField({ name: "IgnoredField" });
+        response.mountField({ name: 'IgnoredField' });
         response.mountField({
           name: fieldName,
           validate,
@@ -217,19 +217,19 @@ describe("on blur field", () => {
         response.blurField({ name: fieldName });
       });
     });
-    describe("validate function", () => {
-      it("is called", () => {
+    describe('validate function', () => {
+      it('is called', () => {
         expect(validate).toBeCalledTimes(1);
         expect(validate).toBeCalledWith(undefined, response.fields);
       });
     });
   });
 
-  describe("with [validateOnBlur = false]", () => {
-    describe("validate function", () => {
+  describe('with [validateOnBlur = false]', () => {
+    describe('validate function', () => {
       beforeEach(() => {
         act(() => {
-          response.mountField({ name: "IgnoredField" });
+          response.mountField({ name: 'IgnoredField' });
           response.mountField({
             name: fieldName,
             validate,
@@ -239,44 +239,44 @@ describe("on blur field", () => {
         });
       });
 
-      it("is not called", () => {
+      it('is not called', () => {
         expect(validate).toBeCalledTimes(0);
       });
     });
   });
 });
 
-describe("on change field", () => {
-  const fieldName = "TargetField";
-  const value = "Hello";
+describe('on change field', () => {
+  const fieldName = 'TargetField';
+  const value = 'Hello';
   const validate = jest.fn();
 
   beforeEach(() => {
     mount(<Fixture />);
   });
 
-  describe("field value", () => {
+  describe('field value', () => {
     beforeEach(() => {
       act(() => {
-        response.mountField({ name: "IgnoredField" });
+        response.mountField({ name: 'IgnoredField' });
         response.mountField({ name: fieldName });
         response.setFieldValue({ name: fieldName, value });
       });
     });
 
-    it("matches snapshot", () => {
+    it('matches snapshot', () => {
       expect(response.fields).toMatchSnapshot();
     });
 
-    it("has new value", () => {
-      expect(response.fields[fieldName]).toHaveProperty("value", value);
+    it('has new value', () => {
+      expect(response.fields[fieldName]).toHaveProperty('value', value);
     });
   });
 
-  describe("with [validateOnChange = true]", () => {
+  describe('with [validateOnChange = true]', () => {
     beforeEach(() => {
       act(() => {
-        response.mountField({ name: "IgnoredField" });
+        response.mountField({ name: 'IgnoredField' });
         response.mountField({
           name: fieldName,
           validate,
@@ -286,19 +286,19 @@ describe("on change field", () => {
         response.setFieldValue({ name: fieldName, value });
       });
     });
-    describe("validate function", () => {
-      it("is called", () => {
+    describe('validate function', () => {
+      it('is called', () => {
         expect(validate).toBeCalledTimes(1);
         expect(validate).toBeCalledWith(value, response.fields);
       });
     });
   });
 
-  describe("with [validateOnChange = false]", () => {
-    describe("validate function", () => {
+  describe('with [validateOnChange = false]', () => {
+    describe('validate function', () => {
       beforeEach(() => {
         act(() => {
-          response.mountField({ name: "IgnoredField" });
+          response.mountField({ name: 'IgnoredField' });
           response.mountField({
             name: fieldName,
             validate,
@@ -308,60 +308,60 @@ describe("on change field", () => {
         });
       });
 
-      it("is not called", () => {
+      it('is not called', () => {
         expect(validate).toBeCalledTimes(0);
       });
     });
   });
 });
 
-describe("on change field (callback)", () => {
-  const fieldName = "TargetField";
-  const initialValue = "old value";
-  const value = "Hello";
+describe('on change field (callback)', () => {
+  const fieldName = 'TargetField';
+  const initialValue = 'old value';
+  const value = 'Hello';
   const callback = jest.fn(() => value);
 
   beforeEach(() => {
     mount(<Fixture />);
   });
 
-  describe("field value", () => {
+  describe('field value', () => {
     beforeEach(() => {
       act(() => {
-        response.mountField({ name: "IgnoredField" });
+        response.mountField({ name: 'IgnoredField' });
         response.mountField({ name: fieldName, initialValue });
         response.setFieldValue({ name: fieldName, value: callback });
       });
     });
 
-    it("matches snapshot", () => {
+    it('matches snapshot', () => {
       expect(response.fields).toMatchSnapshot();
     });
 
-    it("has new value", () => {
-      expect(response.fields[fieldName]).toHaveProperty("value", value);
+    it('has new value', () => {
+      expect(response.fields[fieldName]).toHaveProperty('value', value);
     });
 
-    it("calls callback with old value", () => {
+    it('calls callback with old value', () => {
       expect(callback).toBeCalledTimes(1);
       expect(callback).toHaveBeenCalledWith(initialValue);
     });
   });
 });
 
-describe("on validate field", () => {
-  const fieldName = "TargetField";
+describe('on validate field', () => {
+  const fieldName = 'TargetField';
   const validate = jest.fn();
-  const value = "Field Value";
+  const value = 'Field Value';
 
   beforeEach(() => {
     mount(<Fixture />);
   });
 
-  describe("validation function", () => {
+  describe('validation function', () => {
     beforeEach(() => {
       act(() => {
-        response.mountField({ name: "IgnoredField" });
+        response.mountField({ name: 'IgnoredField' });
         response.mountField({
           name: fieldName,
           validate,
@@ -372,7 +372,7 @@ describe("on validate field", () => {
       });
     });
 
-    it("is called", () => {
+    it('is called', () => {
       expect(validate).toBeCalledTimes(1);
       expect(validate).toBeCalledWith(value, {
         ...response.fields,
@@ -385,15 +385,15 @@ describe("on validate field", () => {
     });
   });
 
-  describe("on failed validation", () => {
-    const error = "Name must be longer";
+  describe('on failed validation', () => {
+    const error = 'Name must be longer';
 
     beforeEach(() => {
       validate.mockImplementation(() => {
         throw error;
       });
       act(() => {
-        response.mountField({ name: "IgnoredField" });
+        response.mountField({ name: 'IgnoredField' });
         response.mountField({
           name: fieldName,
           validate,
@@ -404,20 +404,20 @@ describe("on validate field", () => {
       });
     });
 
-    describe("form state", () => {
-      it("is not valid", () => {
-        expect(response).toHaveProperty("isValid", false);
+    describe('form state', () => {
+      it('is not valid', () => {
+        expect(response).toHaveProperty('isValid', false);
       });
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(
           Object.keys(response.fields).reduce(
             // Trim mock from snapshot
             (p, key) => ({
               ...p,
-              [key]: { ...p[key], _validate: "stub" as any }
+              [key]: { ...p[key], _validate: 'stub' as any }
             }),
             response.fields
           )
@@ -453,21 +453,21 @@ describe("on validate field", () => {
         `);
       });
 
-      it("is not valid", () => {
-        expect(response.fields[fieldName]).toHaveProperty("isValid", false);
+      it('is not valid', () => {
+        expect(response.fields[fieldName]).toHaveProperty('isValid', false);
       });
 
-      it("has error value", () => {
-        expect(response.fields[fieldName]).toHaveProperty("error", error);
+      it('has error value', () => {
+        expect(response.fields[fieldName]).toHaveProperty('error', error);
       });
     });
   });
 
-  describe("on successful validation", () => {
+  describe('on successful validation', () => {
     beforeEach(() => {
       validate.mockReturnValue(undefined);
       act(() => {
-        response.mountField({ name: "IgnoredField", initialValid: true });
+        response.mountField({ name: 'IgnoredField', initialValid: true });
         response.mountField({
           name: fieldName,
           validate,
@@ -478,20 +478,20 @@ describe("on validate field", () => {
       });
     });
 
-    describe("form state", () => {
-      it("is valid", () => {
-        expect(response).toHaveProperty("isValid", true);
+    describe('form state', () => {
+      it('is valid', () => {
+        expect(response).toHaveProperty('isValid', true);
       });
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(
           Object.keys(response.fields).reduce(
             // Trim mock from snapshot
             (p, key) => ({
               ...p,
-              [key]: { ...p[key], _validate: "stub" as any }
+              [key]: { ...p[key], _validate: 'stub' as any }
             }),
             response.fields
           )
@@ -527,19 +527,19 @@ describe("on validate field", () => {
         `);
       });
 
-      it("is valid", () => {
-        expect(response.fields[fieldName]).toHaveProperty("isValid", true);
+      it('is valid', () => {
+        expect(response.fields[fieldName]).toHaveProperty('isValid', true);
       });
 
-      it("has no error value", () => {
-        expect(response.fields[fieldName]).toHaveProperty("error", undefined);
+      it('has no error value', () => {
+        expect(response.fields[fieldName]).toHaveProperty('error', undefined);
       });
     });
   });
 });
 
-describe("on validate field (async)", () => {
-  const fieldName = "TargetField";
+describe('on validate field (async)', () => {
+  const fieldName = 'TargetField';
   let resolve: (a?: any) => void;
   let reject: (a?: any) => void;
 
@@ -549,7 +549,7 @@ describe("on validate field (async)", () => {
 
   beforeEach(() => {
     act(() => {
-      response.mountField({ name: "IgnoredField" });
+      response.mountField({ name: 'IgnoredField' });
       response.mountField({
         name: fieldName,
         validate: () =>
@@ -561,21 +561,21 @@ describe("on validate field (async)", () => {
     });
   });
 
-  describe("on call", () => {
+  describe('on call', () => {
     beforeEach(() => {
       act(() => {
         response.validateField({ name: fieldName });
       });
     });
 
-    describe("field state", () => {
-      it("is validating", () => {
-        expect(response.fields[fieldName]).toHaveProperty("isValidating", true);
+    describe('field state', () => {
+      it('is validating', () => {
+        expect(response.fields[fieldName]).toHaveProperty('isValidating', true);
       });
     });
   });
 
-  describe("on resolve", () => {
+  describe('on resolve', () => {
     beforeEach(async () => {
       act(() => {
         response.validateField({ name: fieldName });
@@ -585,30 +585,30 @@ describe("on validate field (async)", () => {
       });
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(response.fields[fieldName]).toMatchSnapshot();
       });
 
-      it("is not validating", () => {
+      it('is not validating', () => {
         expect(response.fields[fieldName]).toHaveProperty(
-          "isValidating",
+          'isValidating',
           false
         );
       });
 
-      it("has no error", () => {
-        expect(response.fields[fieldName]).toHaveProperty("error", undefined);
+      it('has no error', () => {
+        expect(response.fields[fieldName]).toHaveProperty('error', undefined);
       });
 
-      it("is valid", () => {
-        expect(response.fields[fieldName]).toHaveProperty("isValid", true);
+      it('is valid', () => {
+        expect(response.fields[fieldName]).toHaveProperty('isValid', true);
       });
     });
   });
 
-  describe("on resolve (with value)", () => {
-    const val = "Some error";
+  describe('on resolve (with value)', () => {
+    const val = 'Some error';
 
     beforeEach(async () => {
       act(() => {
@@ -619,30 +619,30 @@ describe("on validate field (async)", () => {
       });
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(response.fields[fieldName]).toMatchSnapshot();
       });
 
-      it("is not validating", () => {
+      it('is not validating', () => {
         expect(response.fields[fieldName]).toHaveProperty(
-          "isValidating",
+          'isValidating',
           false
         );
       });
 
-      it("has error", () => {
-        expect(response.fields[fieldName]).toHaveProperty("error", val);
+      it('has error', () => {
+        expect(response.fields[fieldName]).toHaveProperty('error', val);
       });
 
-      it("is not valid", () => {
-        expect(response.fields[fieldName]).toHaveProperty("isValid", false);
+      it('is not valid', () => {
+        expect(response.fields[fieldName]).toHaveProperty('isValid', false);
       });
     });
   });
 
-  describe("on reject (with value)", () => {
-    const val = "Some error";
+  describe('on reject (with value)', () => {
+    const val = 'Some error';
 
     beforeEach(async () => {
       act(() => {
@@ -653,30 +653,30 @@ describe("on validate field (async)", () => {
       });
     });
 
-    describe("field state", () => {
-      it("matches snapshot", () => {
+    describe('field state', () => {
+      it('matches snapshot', () => {
         expect(response.fields[fieldName]).toMatchSnapshot();
       });
 
-      it("is not validating", () => {
+      it('is not validating', () => {
         expect(response.fields[fieldName]).toHaveProperty(
-          "isValidating",
+          'isValidating',
           false
         );
       });
 
-      it("has error", () => {
-        expect(response.fields[fieldName]).toHaveProperty("error", val);
+      it('has error', () => {
+        expect(response.fields[fieldName]).toHaveProperty('error', val);
       });
 
-      it("is not valid", () => {
-        expect(response.fields[fieldName]).toHaveProperty("isValid", false);
+      it('is not valid', () => {
+        expect(response.fields[fieldName]).toHaveProperty('isValid', false);
       });
     });
   });
 
-  describe("on multiple validation calls", () => {
-    const val = "Some error";
+  describe('on multiple validation calls', () => {
+    const val = 'Some error';
 
     beforeEach(() => {
       act(() => {
@@ -684,7 +684,7 @@ describe("on validate field (async)", () => {
       });
     });
 
-    describe("on old resolves -> new pending", () => {
+    describe('on old resolves -> new pending', () => {
       beforeEach(async () => {
         const initialResolve = resolve;
         act(() => {
@@ -696,17 +696,17 @@ describe("on validate field (async)", () => {
         });
       });
 
-      describe("field state", () => {
-        it("is validating", () => {
+      describe('field state', () => {
+        it('is validating', () => {
           expect(response.fields[fieldName]).toHaveProperty(
-            "isValidating",
+            'isValidating',
             true
           );
         });
       });
     });
 
-    describe("on new resolves -> old rejects", () => {
+    describe('on new resolves -> old rejects', () => {
       beforeEach(async () => {
         const initialResolve = resolve;
         act(() => {
@@ -719,42 +719,42 @@ describe("on validate field (async)", () => {
         });
       });
 
-      describe("field state", () => {
-        it("is not validating", () => {
+      describe('field state', () => {
+        it('is not validating', () => {
           expect(response.fields[fieldName]).toHaveProperty(
-            "isValidating",
+            'isValidating',
             false
           );
         });
 
-        it("has no error", () => {
-          expect(response.fields[fieldName]).toHaveProperty("error", undefined);
+        it('has no error', () => {
+          expect(response.fields[fieldName]).toHaveProperty('error', undefined);
         });
 
-        it("is valid", () => {
-          expect(response.fields[fieldName]).toHaveProperty("isValid", true);
+        it('is valid', () => {
+          expect(response.fields[fieldName]).toHaveProperty('isValid', true);
         });
       });
     });
   });
 });
 
-describe("on validate fields", () => {
+describe('on validate fields', () => {
   const validate1 = jest.fn();
   const validate2 = jest.fn();
 
   beforeEach(() => {
     mount(<Fixture />);
     act(() => {
-      response.mountField({ name: "IgnoredField" });
-      response.mountField({ name: "field1", validate: validate1 });
-      response.mountField({ name: "field2", validate: validate2 });
+      response.mountField({ name: 'IgnoredField' });
+      response.mountField({ name: 'field1', validate: validate1 });
+      response.mountField({ name: 'field2', validate: validate2 });
       response.validateFields();
     });
   });
 
-  describe("all validation functions", () => {
-    it("are called", () => {
+  describe('all validation functions', () => {
+    it('are called', () => {
       expect(validate1).toBeCalledTimes(1);
       expect(validate2).toBeCalledTimes(1);
     });

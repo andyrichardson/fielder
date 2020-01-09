@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from "react";
-import { FielderProvider, useForm } from "fielder";
-import { CredentialsSection, TermsSection } from "./sections";
-import { Step } from "semantic-ui-react";
-import { Card, CardSection } from "../components/Card";
+import React, { useState, useCallback } from 'react';
+import { FielderProvider, useForm } from 'fielder';
+import { CredentialsSection, TermsSection } from './sections';
+import { Step } from 'semantic-ui-react';
+import { Card, CardSection } from '../components/Card';
 
 export const RegisterForm = () => {
   const state = useForm();
@@ -13,7 +13,7 @@ export const RegisterForm = () => {
     setActiveStep(1);
   }, []);
   const handleSubmit = useCallback(() => {
-    alert("Form has been submitted");
+    alert('Form has been submitted');
   }, []);
 
   return (

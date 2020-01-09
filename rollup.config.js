@@ -1,26 +1,26 @@
-import typescript from "rollup-plugin-typescript2";
-import { terser } from "rollup-plugin-terser";
-import pkg from "./package.json";
+import typescript from 'rollup-plugin-typescript2';
+import { terser } from 'rollup-plugin-terser';
+import pkg from './package.json';
 
 export default {
-  input: "src/index.ts",
+  input: 'src/index.ts',
   output: [
     {
       file: pkg.main,
-      format: "cjs",
+      format: 'cjs',
       sourcemap: true
     },
     {
       file: pkg.module,
-      format: "es",
+      format: 'es',
       sourcemap: true
     },
     {
-      file: pkg["umd:main"],
-      format: "umd",
+      file: pkg['umd:main'],
+      format: 'umd',
       sourcemap: true,
-      name: "fielder",
-      globals: "react"
+      name: 'fielder',
+      globals: 'react'
     }
   ],
   external: [
