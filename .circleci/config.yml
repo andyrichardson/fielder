@@ -113,6 +113,12 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - lint:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /.*/
       - build docs:
           requires:
             - install
@@ -126,6 +132,7 @@ workflows:
             - test
             - build
             - prettier
+            - lint
           filters:
             tags:
               only: /.*/
