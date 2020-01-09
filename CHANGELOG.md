@@ -1,5 +1,24 @@
 # Changelog
 
+## [v1.1.0](https://github.com/andyrichardson/fielder/tree/v1.1.0) (2020-01-09)
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.0.3...v1.1.0)
+
+**Breaking changes:**
+
+- Fields without validation should be valid by default [\#11](https://github.com/andyrichardson/fielder/issues/11)
+
+**Closed issues:**
+
+- Add docs [\#4](https://github.com/andyrichardson/fielder/issues/4)
+
+**Merged pull requests:**
+
+- Setup linting [\#16](https://github.com/andyrichardson/fielder/pull/16) ([andyrichardson](https://github.com/andyrichardson))
+- Default to valid when no validation is set [\#15](https://github.com/andyrichardson/fielder/pull/15) ([andyrichardson](https://github.com/andyrichardson))
+- Add coverage [\#13](https://github.com/andyrichardson/fielder/pull/13) ([andyrichardson](https://github.com/andyrichardson))
+- Add docs [\#5](https://github.com/andyrichardson/fielder/pull/5) ([andyrichardson](https://github.com/andyrichardson))
+
 ## [v1.0.3](https://github.com/andyrichardson/fielder/tree/v1.0.3) (2019-12-22)
 
 [Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.0.2...v1.0.3)
@@ -15,6 +34,7 @@
 
 **Merged pull requests:**
 
+- Changelog guide + version bump [\#10](https://github.com/andyrichardson/fielder/pull/10) ([andyrichardson](https://github.com/andyrichardson))
 - Remove react-dom [\#9](https://github.com/andyrichardson/fielder/pull/9) ([andyrichardson](https://github.com/andyrichardson))
 - Fix checkbox issue [\#7](https://github.com/andyrichardson/fielder/pull/7) ([andyrichardson](https://github.com/andyrichardson))
 - Remove `;` [\#2](https://github.com/andyrichardson/fielder/pull/2) ([jontansey](https://github.com/jontansey))
