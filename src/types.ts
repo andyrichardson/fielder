@@ -1,4 +1,3 @@
-import { SetStateAction } from 'react';
 import { SetFieldValueArgs, BlurFieldArgs, UnmountFieldArgs } from './useForm';
 
 export type FormError = Error | string;

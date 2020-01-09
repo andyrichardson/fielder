@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import React from 'react';
 import { useForm } from './useForm';
