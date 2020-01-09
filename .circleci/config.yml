@@ -24,16 +24,6 @@ jobs:
           paths:
             - 'dist'
 
-  prettier:
-    docker:
-      - image: node:13
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - node-cache-{{ .Revision }}
-      - run: npm run check-formatting
-
   build docs:
     docker:
       - image: node:13
@@ -45,6 +35,9 @@ jobs:
       - run: cd docs
       - run: yarn
       - run: yarn run build
+      - store_artifacts:
+          path: .docz/dist
+          destination: static-docs
 
   test:
     docker:
@@ -56,6 +49,26 @@ jobs:
             - node-cache-{{ .Revision }}
       - run: npm run test -- --coverage
       - run: npx codecov
+
+  prettier:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-cache-{{ .Revision }}
+      - run: npm run check-formatting
+
+  lint:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-cache-{{ .Revision }}
+      - run: npm run lint
 
   deploy:
     docker:
