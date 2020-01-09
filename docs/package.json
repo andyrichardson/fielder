@@ -8,7 +8,7 @@
   "scripts": {
     "start": "docz dev",
     "build": "docz build",
-    "deploy": "gh-pages -d .docz/dist"
+    "deploy": "(echo \"fielder.andyrichardson.dev\" > .docz/dist/CNAME) && gh-pages -d .docz/dist"
   },
   "dependencies": {
     "docz": "^2.2.0",
