@@ -4,7 +4,7 @@ jobs:
       - image: node:13
     steps:
       - checkout
-      - run: npm i
+      - run: npm ci
       - save_cache:
           key: node-cache-{{ .Revision }}
           paths:
@@ -29,12 +29,15 @@ jobs:
       - image: node:13
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - node-cache-{{ .Revision }}
-      - run: cd docs
-      - run: yarn
-      - run: yarn run build
+      - run:
+          command: yarn
+          working_directory: docs
+      - run:
+          command: yarn run build
+          working_directory: docs
+      - store_artifacts:
+          path: docs/.docz/dist
+          destination: static-docs
 
   test:
     docker:
@@ -46,6 +49,26 @@ jobs:
             - node-cache-{{ .Revision }}
       - run: npm run test -- --coverage
       - run: npx codecov
+
+  prettier:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-cache-{{ .Revision }}
+      - run: npm run check-formatting
+
+  lint:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-cache-{{ .Revision }}
+      - run: npm run lint
 
   deploy:
     docker:
@@ -80,6 +103,18 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - prettier:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /.*/
+      - lint:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /.*/
       - build docs:
           requires:
             - install
@@ -92,6 +127,8 @@ workflows:
             - install
             - test
             - build
+            - prettier
+            - lint
           filters:
             tags:
               only: /.*/

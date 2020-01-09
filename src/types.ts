@@ -1,5 +1,4 @@
-import { SetStateAction } from "react";
-import { SetFieldValueArgs, BlurFieldArgs, UnmountFieldArgs } from "./useForm";
+import { SetFieldValueArgs, BlurFieldArgs, UnmountFieldArgs } from './useForm';
 
 export type FormError = Error | string;
 
@@ -27,7 +26,7 @@ export interface FieldState<T = string | boolean | number | string[]> {
   readonly _validateOnChange: boolean;
   readonly _validateOnBlur: boolean;
   readonly _validateOnUpdate: boolean;
-  readonly _validate: FieldConfig["validate"];
+  readonly _validate: FieldConfig['validate'];
 
   // Props
   readonly name: string;

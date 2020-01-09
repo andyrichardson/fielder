@@ -4,21 +4,20 @@ menu: Api
 route: /api/useformcontext
 ---
 
-
 # useFormContext
 
 _Retrieves form state exposed via context._
 
 ```tsx
-import { useFormContext } from "fielder"
+import { useFormContext } from 'fielder';
 ```
 
 ## Example Usage
 
 ```tsx
-const formState = useFormContext()
+const formState = useFormContext();
 
-return <button disabled={!formState.isValid}>Submit</button>
+return <button disabled={!formState.isValid}>Submit</button>;
 ```
 
 ## Response

@@ -1,2 +1,2 @@
-export * from "./Credentials";
-export * from "./Terms";
+export * from './Credentials';
+export * from './Terms';

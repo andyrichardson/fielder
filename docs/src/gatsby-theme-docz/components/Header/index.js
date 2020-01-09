@@ -1,18 +1,23 @@
 /** @jsx jsx */
-import { jsx, Box, Flex, useColorMode } from 'theme-ui'
-import { useConfig, useCurrentDoc, useComponents } from 'docz'
+import { jsx, Box, Flex, useColorMode } from 'theme-ui';
+import { useConfig, useCurrentDoc, useComponents } from 'docz';
 import * as styles from 'gatsby-theme-docz/src/components/Header/styles';
-import { Edit, Menu, Sun, Github } from 'gatsby-theme-docz/src/components/Icons';
+import {
+  Edit,
+  Menu,
+  Sun,
+  Github
+} from 'gatsby-theme-docz/src/components/Icons';
 import { Logo } from 'gatsby-theme-docz/src/components/Logo';
 
 export const Header = props => {
-  const { onOpen } = props
+  const { onOpen } = props;
   const {
     repository,
-    themeConfig: { showDarkModeSwitch, showMarkdownEditButton },
-  } = useConfig()
-  const doc = useCurrentDoc()
-  const [colorMode, setColorMode] = useColorMode()
+    themeConfig: { showDarkModeSwitch, showMarkdownEditButton }
+  } = useConfig();
+  const doc = useCurrentDoc();
+  const [colorMode, setColorMode] = useColorMode();
 
   const link = `${repository}/tree/master/docs/${doc.filepath}`;
 
@@ -52,5 +57,5 @@ export const Header = props => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,15 +1,13 @@
-import React, {
+import {
   useContext,
-  useEffect,
   ChangeEvent,
   ChangeEventHandler,
-  FocusEventHandler,
   useCallback,
   useMemo,
   useLayoutEffect
 } from 'react';
 import { FielderContext } from './context';
-import { FormState, FormError, FieldState, FieldConfig } from './types';
+import { FormState, FieldState, FieldConfig } from './types';
 
 export type UseFieldProps<T = any> = {
   readonly name: string;

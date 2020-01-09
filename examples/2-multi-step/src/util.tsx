@@ -1,6 +1,6 @@
-import React from "react";
-import { UseFieldMeta } from "fielder";
-import { Label } from "semantic-ui-react";
+import React from 'react';
+import { UseFieldMeta } from 'fielder';
+import { Label } from 'semantic-ui-react';
 
 export const conditionalError = (meta: UseFieldMeta) =>
   meta.touched &&

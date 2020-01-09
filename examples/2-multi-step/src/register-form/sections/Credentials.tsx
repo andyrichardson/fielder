@@ -1,21 +1,21 @@
-import React, { FC } from "react";
-import { useField, useFormContext } from "fielder";
-import { conditionalError } from "../../util";
+import React, { FC } from 'react';
+import { useField, useFormContext } from 'fielder';
+import { conditionalError } from '../../util';
 
 export const CredentialsSection: FC<{ onComplete: () => void }> = ({
   onComplete
 }) => {
   const { isValid } = useFormContext();
   const [usernameProps, usernameMeta] = useField({
-    name: "username",
+    name: 'username',
     validate: usernameValidation
   });
   const [passwordProps, passwordMeta] = useField({
-    name: "password",
+    name: 'password',
     validate: passwordValidation
   });
   const [passwordConfProps, passwordConfMeta] = useField({
-    name: "passwordConfirmation",
+    name: 'passwordConfirmation',
     validate: passwordConfValidation,
     destroyOnUnmount: true
   });
@@ -48,30 +48,30 @@ export const CredentialsSection: FC<{ onComplete: () => void }> = ({
 
 const usernameValidation = value => {
   if (!value) {
-    throw Error("Username is required.");
+    throw Error('Username is required.');
   }
 
   if (value.length < 4) {
-    throw Error("Username must be at least 4 characters.");
+    throw Error('Username must be at least 4 characters.');
   }
 };
 
 const passwordValidation = value => {
   if (!value) {
-    throw Error("Password is required.");
+    throw Error('Password is required.');
   }
 
   if (value.length < 4) {
-    throw Error("Password must be at least 4 characters.");
+    throw Error('Password must be at least 4 characters.');
   }
 };
 
 const passwordConfValidation = (value, form) => {
   if (!value) {
-    throw Error("Password confirmation is required.");
+    throw Error('Password confirmation is required.');
   }
 
   if (value !== form.password.value) {
-    throw Error("Password does not match.");
+    throw Error('Password does not match.');
   }
 };
