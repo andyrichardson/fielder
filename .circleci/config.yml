@@ -24,6 +24,16 @@ jobs:
           paths:
             - 'dist'
 
+  prettier:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-cache-{{ .Revision }}
+      - run: npm run check-formatting
+
   build docs:
     docker:
       - image: node:13
@@ -80,6 +90,12 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - prettier:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /.*/
       - build docs:
           requires:
             - install
@@ -92,6 +108,7 @@ workflows:
             - install
             - test
             - build
+            - prettier
           filters:
             tags:
               only: /.*/

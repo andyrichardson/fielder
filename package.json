@@ -18,6 +18,7 @@
     "start": "rollup -c rollup.config.js --watch",
     "test": "jest",
     "build": "rollup -c rollup.config.js",
+    "check-formatting": "prettier --check \"./**/*.{ts,tsx,md,mdx}\"",
     "changelog": "docker run -it --rm -v \"$(pwd)\":/usr/local/src/your-app ferrarimarco/github-changelog-generator -u andyrichardson -p fielder"
   },
   "repository": {
