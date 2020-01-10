@@ -4,7 +4,8 @@ import {
   ChangeEventHandler,
   useCallback,
   useMemo,
-  useLayoutEffect
+  useLayoutEffect,
+  useRef
 } from 'react';
 import { FielderContext } from './context';
 import { FormState, FieldState, FieldConfig } from './types';
@@ -43,6 +44,7 @@ export const useField = <T = any>({
   validateOnUpdate = false,
   destroyOnUnmount = false
 }: FieldConfig<T>): UseFieldResponse => {
+  const destroyRef = useRef(destroyOnUnmount);
   const {
     fields,
     blurField,
@@ -54,15 +56,17 @@ export const useField = <T = any>({
   const name = useMemo(() => initialName, []);
   const field = useMemo(
     () =>
-      fields[initialName] || {
+      fields[name] || {
         name,
         error: initialError,
         valid: initialValid,
         value: initialValue,
         touched: initialTouched
       },
-    [fields]
+    [fields, name]
   );
+
+  useMemo(() => (destroyRef.current = destroyOnUnmount), [destroyOnUnmount]);
 
   useLayoutEffect(() => {
     if (fields[name] && fields[name]._isActive) {
@@ -81,7 +85,7 @@ export const useField = <T = any>({
       validateOnUpdate
     });
 
-    return () => unmountField({ name, destroy: destroyOnUnmount });
+    return () => unmountField({ name, destroy: destroyRef.current });
   }, [mountField]);
 
   const onBlur = useCallback(() => {

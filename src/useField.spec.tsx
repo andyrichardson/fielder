@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { useField, UseFieldResponse } from './useField';
 import { FielderContext } from './context';
@@ -14,13 +15,13 @@ const context = {
 let response: UseFieldResponse;
 let args: FieldConfig<any>;
 
+const F: FC = ({ children }) => {
+  response = useField(args);
+
+  return <>{children}</>;
+};
+
 const Fixture: FC = ({ children }) => {
-  const F: FC = ({ children }) => {
-    response = useField(args);
-
-    return <>{children}</>;
-  };
-
   return (
     <FielderContext.Provider value={context as any}>
       <F>{children}</F>
@@ -104,6 +105,20 @@ describe('on unmount', () => {
   it('calls unmountField and destroys value', () => {
     args = { name: 'someField', destroyOnUnmount: true };
     const wrapper = mount(<Fixture />);
+    wrapper.unmount();
+
+    expect(context.unmountField).toBeCalledTimes(1);
+    expect(context.unmountField).toBeCalledWith({
+      name: args.name,
+      destroy: true
+    });
+  });
+
+  it('calls unmountField and passes destroy value after change', () => {
+    args = { name: 'someField', destroyOnUnmount: false };
+    const wrapper = mount(<Fixture />);
+    args = { ...args, destroyOnUnmount: true };
+    wrapper.setProps({});
     wrapper.unmount();
 
     expect(context.unmountField).toBeCalledTimes(1);
