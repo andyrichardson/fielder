@@ -1,5 +1,18 @@
 # Changelog
 
+## [v1.1.1](https://github.com/andyrichardson/fielder/tree/v1.1.1) (2020-01-10)
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.1.0...v1.1.1)
+
+**Fixed bugs:**
+
+- Handle destroy on unmount changing value [\#18](https://github.com/andyrichardson/fielder/issues/18)
+
+**Merged pull requests:**
+
+- Update deps [\#20](https://github.com/andyrichardson/fielder/pull/20) ([andyrichardson](https://github.com/andyrichardson))
+- Add detection for destroyOnUnmount change [\#19](https://github.com/andyrichardson/fielder/pull/19) ([andyrichardson](https://github.com/andyrichardson))
+
 ## [v1.1.0](https://github.com/andyrichardson/fielder/tree/v1.1.0) (2020-01-09)
 
 [Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.0.3...v1.1.0)
@@ -17,7 +30,9 @@
 - Setup linting [\#16](https://github.com/andyrichardson/fielder/pull/16) ([andyrichardson](https://github.com/andyrichardson))
 - Default to valid when no validation is set [\#15](https://github.com/andyrichardson/fielder/pull/15) ([andyrichardson](https://github.com/andyrichardson))
 - Add coverage [\#13](https://github.com/andyrichardson/fielder/pull/13) ([andyrichardson](https://github.com/andyrichardson))
+- Changelog guide + version bump [\#10](https://github.com/andyrichardson/fielder/pull/10) ([andyrichardson](https://github.com/andyrichardson))
 - Add docs [\#5](https://github.com/andyrichardson/fielder/pull/5) ([andyrichardson](https://github.com/andyrichardson))
+- Remove `;` [\#2](https://github.com/andyrichardson/fielder/pull/2) ([jontansey](https://github.com/jontansey))
 
 ## [v1.0.3](https://github.com/andyrichardson/fielder/tree/v1.0.3) (2019-12-22)
 
@@ -34,10 +49,8 @@
 
 **Merged pull requests:**
 
-- Changelog guide + version bump [\#10](https://github.com/andyrichardson/fielder/pull/10) ([andyrichardson](https://github.com/andyrichardson))
 - Remove react-dom [\#9](https://github.com/andyrichardson/fielder/pull/9) ([andyrichardson](https://github.com/andyrichardson))
 - Fix checkbox issue [\#7](https://github.com/andyrichardson/fielder/pull/7) ([andyrichardson](https://github.com/andyrichardson))
-- Remove `;` [\#2](https://github.com/andyrichardson/fielder/pull/2) ([jontansey](https://github.com/jontansey))
 
 ## [v1.0.2](https://github.com/andyrichardson/fielder/tree/v1.0.2) (2019-11-27)
 
