@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
-import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { useField, UseFieldResponse } from './useField';
 import { FielderContext } from './context';
 import { FieldConfig } from './types';
 
-const context = {
+let context = {
   fields: {},
   mountField: jest.fn(),
   unmountField: jest.fn(),
@@ -30,6 +29,16 @@ const Fixture: FC = ({ children }) => {
 };
 
 beforeEach(jest.clearAllMocks);
+
+beforeEach(() => {
+  context = {
+    fields: {},
+    mountField: jest.fn(),
+    unmountField: jest.fn(),
+    blurField: jest.fn(),
+    setFieldValue: jest.fn()
+  };
+});
 
 describe('on mount', () => {
   it('calls mountField with default values', () => {
@@ -274,6 +283,82 @@ describe('on change', () => {
         name: args.name,
         value
       });
+    });
+  });
+});
+
+describe('on ref', () => {
+  let ref1: any;
+  let ref2: any;
+  let ref3: any;
+
+  beforeEach(() => {
+    ref1 = {
+      type: 'checkbox',
+      value: 'notmatching'
+    };
+
+    ref2 = {
+      type: 'checkbox',
+      value: 'matching'
+    };
+
+    ref3 = {
+      type: 'text',
+      value: 'matching'
+    };
+  });
+
+  it('sets checked on element (with initial value)', () => {
+    args = { name: 'someField', initialValue: ['matching'] };
+
+    mount(<Fixture />);
+    response[0].ref(ref1);
+    response[0].ref(ref2);
+    response[0].ref(ref3);
+
+    expect(ref1).toHaveProperty('checked', false);
+    expect(ref2).toHaveProperty('checked', true);
+    expect(ref3).not.toHaveProperty('checked');
+  });
+
+  it('sets checked on element (without initial value)', () => {
+    args = { name: 'someField' };
+
+    mount(<Fixture />);
+    response[0].ref(ref1);
+    response[0].ref(ref2);
+
+    expect(ref1).toHaveProperty('checked', false);
+    expect(ref2).toHaveProperty('checked', false);
+    expect(ref3).not.toHaveProperty('checked');
+  });
+
+  describe('on value update', () => {
+    beforeEach(() => {
+      args = { name: 'someField' };
+      const wrapper = mount(<Fixture />);
+
+      response[0].ref(ref1);
+      response[0].ref(ref2);
+      response[0].ref(ref3);
+
+      context = {
+        ...context,
+        fields: {
+          someField: {
+            name: 'someField',
+            value: ['matching']
+          }
+        }
+      };
+      wrapper.setProps({});
+    });
+
+    it('sets checked', () => {
+      expect(ref1).toHaveProperty('checked', false);
+      expect(ref2).toHaveProperty('checked', true);
+      expect(ref3).not.toHaveProperty('checked');
     });
   });
 });

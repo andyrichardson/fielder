@@ -15,6 +15,7 @@ export type UseFieldProps<T = any> = {
   readonly value: T;
   readonly onChange: ChangeEventHandler;
   readonly onBlur: () => void;
+  readonly ref: (e: HTMLInputElement | HTMLTextAreaElement) => void;
 };
 
 export type UseFieldMeta = {
@@ -44,6 +45,7 @@ export const useField = <T = any>({
   validateOnUpdate = false,
   destroyOnUnmount = false
 }: FieldConfig<T>): UseFieldResponse => {
+  const elementRefs = useRef<HTMLInputElement[]>([]);
   const destroyRef = useRef(destroyOnUnmount);
   const {
     fields,
@@ -64,6 +66,11 @@ export const useField = <T = any>({
         touched: initialTouched
       },
     [fields, name]
+  );
+
+  useMemo(
+    () => syncCheckboxes({ elements: elementRefs.current, value: field.value }),
+    [field.value]
   );
 
   useMemo(() => (destroyRef.current = destroyOnUnmount), [destroyOnUnmount]);
@@ -119,9 +126,18 @@ export const useField = <T = any>({
 
   const { value, touched, error, isValid, isValidating } = field;
 
+  const handleRef = useCallback(element => {
+    if (!element) {
+      return;
+    }
+
+    elementRefs.current = [...elementRefs.current, element];
+    syncCheckboxes({ elements: elementRefs.current, value: initialValue });
+  }, []);
+
   return useMemo(
     () => [
-      { name, value, onBlur, onChange },
+      { name, value, onBlur, onChange, ref: handleRef },
       { touched, error, isValid, isValidating }
     ],
     [value, onBlur, onChange, name, touched, error, isValid, isValidating]
@@ -156,3 +172,20 @@ const getElementType = (e: ChangeEvent<SupportedElements>) => {
 
   throw Error('Unsupported input element');
 };
+
+const syncCheckboxes = ({
+  elements,
+  value
+}: {
+  elements: HTMLInputElement[];
+  value: any;
+}) =>
+  elements.forEach(element => {
+    if (element.type !== 'checkbox') {
+      return;
+    }
+
+    element.checked = Array.isArray(value)
+      ? value.includes(element.value)
+      : false;
+  });
