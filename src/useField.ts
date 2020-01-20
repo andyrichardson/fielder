@@ -138,6 +138,10 @@ const getElementType = (e: ChangeEvent<SupportedElements>) => {
 
   const type = target.getAttribute('type');
 
+  if (tagName === 'textarea') {
+    return 'textarea';
+  }
+
   if (tagName === 'input' && type === 'checkbox') {
     return 'checkbox';
   }
