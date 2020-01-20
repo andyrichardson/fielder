@@ -165,6 +165,28 @@ describe('on change', () => {
     });
   });
 
+  describe('textarea input', () => {
+    it('calls setFieldValue', () => {
+      const value = 'newval';
+      args = { name: 'someField' };
+
+      mount(<Fixture />);
+      response[0].onChange({
+        currentTarget: {
+          tagName: 'TEXTAREA',
+          getAttribute: () => undefined,
+          value
+        }
+      } as any);
+
+      expect(context.setFieldValue).toBeCalledTimes(1);
+      expect(context.setFieldValue).toBeCalledWith({
+        name: args.name,
+        value
+      });
+    });
+  });
+
   describe('radio input', () => {
     it('calls setFieldValue', () => {
       const value = 'newval';
