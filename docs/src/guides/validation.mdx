@@ -95,7 +95,7 @@ const validateFn = val => Yup.string().validateSync(val);
 
 ## Presenting validation
 
-Field level validation messages can be presented to the user conditionally.
+Field level validation messages can be presented to the user conditionally using the [field metadata](/api/usefield/#usefieldmeta).
 
 ```jsx
 const [passwordProps, passwordMeta] = useField({
