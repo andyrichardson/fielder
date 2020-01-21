@@ -287,7 +287,7 @@ describe('on change', () => {
   });
 });
 
-describe('on ref', () => {
+describe('on checkbox ref', () => {
   let ref1: any;
   let ref2: any;
   let ref3: any;
@@ -349,6 +349,82 @@ describe('on ref', () => {
           someField: {
             name: 'someField',
             value: ['matching']
+          }
+        }
+      };
+      wrapper.setProps({});
+    });
+
+    it('sets checked', () => {
+      expect(ref1).toHaveProperty('checked', false);
+      expect(ref2).toHaveProperty('checked', true);
+      expect(ref3).not.toHaveProperty('checked');
+    });
+  });
+});
+
+describe('on radio ref', () => {
+  let ref1: any;
+  let ref2: any;
+  let ref3: any;
+
+  beforeEach(() => {
+    ref1 = {
+      type: 'radio',
+      value: 'notmatching'
+    };
+
+    ref2 = {
+      type: 'radio',
+      value: 'matching'
+    };
+
+    ref3 = {
+      type: 'text',
+      value: 'matching'
+    };
+  });
+
+  it('sets checked on element (with initial value)', () => {
+    args = { name: 'someField', initialValue: 'matching' };
+
+    mount(<Fixture />);
+    response[0].ref(ref1);
+    response[0].ref(ref2);
+    response[0].ref(ref3);
+
+    expect(ref1).toHaveProperty('checked', false);
+    expect(ref2).toHaveProperty('checked', true);
+    expect(ref3).not.toHaveProperty('checked');
+  });
+
+  it('sets checked on element (without initial value)', () => {
+    args = { name: 'someField' };
+
+    mount(<Fixture />);
+    response[0].ref(ref1);
+    response[0].ref(ref2);
+
+    expect(ref1).toHaveProperty('checked', false);
+    expect(ref2).toHaveProperty('checked', false);
+    expect(ref3).not.toHaveProperty('checked');
+  });
+
+  describe('on value update', () => {
+    beforeEach(() => {
+      args = { name: 'someField' };
+      const wrapper = mount(<Fixture />);
+
+      response[0].ref(ref1);
+      response[0].ref(ref2);
+      response[0].ref(ref3);
+
+      context = {
+        ...context,
+        fields: {
+          someField: {
+            name: 'someField',
+            value: 'matching'
           }
         }
       };
