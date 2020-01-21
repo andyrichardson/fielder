@@ -155,15 +155,15 @@ describe('on change', () => {
   describe('basic input', () => {
     it('calls setFieldValue', () => {
       const value = 'newval';
+      const target = document.createElement('input');
+      target.type = 'text';
+      target.value = value;
+
       args = { name: 'someField' };
 
       mount(<Fixture />);
       response[0].onChange({
-        currentTarget: {
-          tagName: 'INPUT',
-          getAttribute: () => undefined,
-          value
-        }
+        currentTarget: target
       } as any);
 
       expect(context.setFieldValue).toBeCalledTimes(1);
@@ -288,25 +288,22 @@ describe('on change', () => {
 });
 
 describe('on checkbox ref', () => {
-  let ref1: any;
-  let ref2: any;
-  let ref3: any;
+  let ref1: HTMLInputElement;
+  let ref2: HTMLInputElement;
+  let ref3: HTMLInputElement;
 
   beforeEach(() => {
-    ref1 = {
-      type: 'checkbox',
-      value: 'notmatching'
-    };
+    ref1 = document.createElement('input');
+    ref1.type = 'checkbox';
+    ref1.value = 'notmatching';
 
-    ref2 = {
-      type: 'checkbox',
-      value: 'matching'
-    };
+    ref2 = document.createElement('input');
+    ref2.type = 'checkbox';
+    ref2.value = 'matching';
 
-    ref3 = {
-      type: 'text',
-      value: 'matching'
-    };
+    ref3 = document.createElement('input');
+    ref3.type = 'text';
+    ref3.value = 'matching';
   });
 
   it('sets checked on element (with initial value)', () => {
@@ -317,9 +314,9 @@ describe('on checkbox ref', () => {
     response[0].ref(ref2);
     response[0].ref(ref3);
 
-    expect(ref1).toHaveProperty('checked', false);
-    expect(ref2).toHaveProperty('checked', true);
-    expect(ref3).not.toHaveProperty('checked');
+    expect(ref1.checked).toEqual(false);
+    expect(ref2.checked).toEqual(true);
+    expect(ref3.checked).toEqual(false);
   });
 
   it('sets checked on element (without initial value)', () => {
@@ -328,10 +325,11 @@ describe('on checkbox ref', () => {
     mount(<Fixture />);
     response[0].ref(ref1);
     response[0].ref(ref2);
+    response[0].ref(ref3);
 
-    expect(ref1).toHaveProperty('checked', false);
-    expect(ref2).toHaveProperty('checked', false);
-    expect(ref3).not.toHaveProperty('checked');
+    expect(ref1.checked).toEqual(false);
+    expect(ref2.checked).toEqual(false);
+    expect(ref3.checked).toEqual(false);
   });
 
   describe('on value update', () => {
@@ -356,33 +354,30 @@ describe('on checkbox ref', () => {
     });
 
     it('sets checked', () => {
-      expect(ref1).toHaveProperty('checked', false);
-      expect(ref2).toHaveProperty('checked', true);
-      expect(ref3).not.toHaveProperty('checked');
+      expect(ref1.checked).toEqual(false);
+      expect(ref2.checked).toEqual(true);
+      expect(ref3.checked).toEqual(false);
     });
   });
 });
 
 describe('on radio ref', () => {
-  let ref1: any;
-  let ref2: any;
-  let ref3: any;
+  let ref1: HTMLInputElement;
+  let ref2: HTMLInputElement;
+  let ref3: HTMLInputElement;
 
   beforeEach(() => {
-    ref1 = {
-      type: 'radio',
-      value: 'notmatching'
-    };
+    ref1 = document.createElement('input');
+    ref1.type = 'radio';
+    ref1.value = 'notmatching';
 
-    ref2 = {
-      type: 'radio',
-      value: 'matching'
-    };
+    ref2 = document.createElement('input');
+    ref2.type = 'radio';
+    ref2.value = 'matching';
 
-    ref3 = {
-      type: 'text',
-      value: 'matching'
-    };
+    ref3 = document.createElement('input');
+    ref3.type = 'text';
+    ref3.value = 'matching';
   });
 
   it('sets checked on element (with initial value)', () => {
@@ -393,9 +388,9 @@ describe('on radio ref', () => {
     response[0].ref(ref2);
     response[0].ref(ref3);
 
-    expect(ref1).toHaveProperty('checked', false);
-    expect(ref2).toHaveProperty('checked', true);
-    expect(ref3).not.toHaveProperty('checked');
+    expect(ref1.checked).toEqual(false);
+    expect(ref2.checked).toEqual(true);
+    expect(ref3.checked).toEqual(false);
   });
 
   it('sets checked on element (without initial value)', () => {
@@ -404,10 +399,11 @@ describe('on radio ref', () => {
     mount(<Fixture />);
     response[0].ref(ref1);
     response[0].ref(ref2);
+    response[0].ref(ref3);
 
-    expect(ref1).toHaveProperty('checked', false);
-    expect(ref2).toHaveProperty('checked', false);
-    expect(ref3).not.toHaveProperty('checked');
+    expect(ref1.checked).toEqual(false);
+    expect(ref2.checked).toEqual(false);
+    expect(ref3.checked).toEqual(false);
   });
 
   describe('on value update', () => {
@@ -432,9 +428,9 @@ describe('on radio ref', () => {
     });
 
     it('sets checked', () => {
-      expect(ref1).toHaveProperty('checked', false);
-      expect(ref2).toHaveProperty('checked', true);
-      expect(ref3).not.toHaveProperty('checked');
+      expect(ref1.checked).toEqual(false);
+      expect(ref2.checked).toEqual(true);
+      expect(ref3.checked).toEqual(false);
     });
   });
 });

@@ -72,3 +72,51 @@ const MyFormContent = () => {
   );
 };
 ```
+
+## Checkbox and Radio inputs
+
+Checkbox and radio inputs are different to all other field types as their state is declared by the `checked`
+attribute rather than `value` ([more info here](https://github.com/andyrichardson/fielder/issues/23#issuecomment-576352847)).
+
+```tsx
+const [hobbiesProps] = useField({
+  name: 'hobbies'
+});
+const [termsProps] = useField({
+  name: 'terms'
+});
+
+return (
+  <>
+    <fieldset>
+      <p>What are your hobbies</p>
+      <input type="checkbox" {...hobbiesProps} value="sports" /> Sports
+      <input type="checkbox" {...hobbiesProps} value="coding" /> Coding
+      <input type="checkbox" {...hobbiesProps} value="other" /> Other
+    </fieldset>
+    <fieldset>
+      <p>Do you accept the terms & conditions</p>
+      <input type="radio" {...termsProps} value="yes" /> Yes
+      <input type="radio" {...termsProps} value="no" /> No
+    </fieldset>
+  </>
+);
+```
+
+### Things to note
+
+Use the `input` element, or a component which forwards the `ref` prop
+
+```tsx
+// This will prevent the checked state from being in sync
+<input type="radio" {...radioProps} value="accept" ref={someOtherRef} />
+```
+
+> Because of how checkboxes differ to other elements, `ref` access to checkbox and radio elements is required
+
+**Do not** manually set the checked prop - this is handled by Fielder.
+
+```tsx
+// This is unnecessary and will cause conflicts
+<input type="radio" {...radioProps} value="accept" checked={someCondition} />
+```
