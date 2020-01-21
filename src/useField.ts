@@ -15,7 +15,7 @@ export type UseFieldProps<T = any> = {
   readonly value: T;
   readonly onChange: ChangeEventHandler;
   readonly onBlur: () => void;
-  readonly ref: (e: HTMLInputElement | HTMLTextAreaElement) => void;
+  readonly ref: (e: HTMLElement) => void;
 };
 
 export type UseFieldMeta = {
@@ -126,12 +126,12 @@ export const useField = <T = any>({
 
   const { value, touched, error, isValid, isValidating } = field;
 
-  const handleRef = useCallback(element => {
-    if (!element) {
+  const handleRef = useCallback<UseFieldProps['ref']>(element => {
+    if (!element || element.tagName.toLowerCase() !== 'input') {
       return;
     }
 
-    elementRefs.current = [...elementRefs.current, element];
+    elementRefs.current = [...elementRefs.current, element as HTMLInputElement];
     syncCheckboxes({ elements: elementRefs.current, value: initialValue });
   }, []);
 
@@ -178,7 +178,7 @@ const syncCheckboxes = ({
   value
 }: {
   elements: HTMLInputElement[];
-  value: any;
+  value?: any | any[];
 }) =>
   elements.forEach(element => {
     if (element.type === 'checkbox') {
