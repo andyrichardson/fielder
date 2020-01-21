@@ -92,3 +92,35 @@ const validateFn = val => Yup.string().validateSync(val);
 
 > It's advised that you use synchronous validation where possible to reduce the number of
 > renders in your form.
+
+## Presenting validation
+
+Field level validation messages can be presented to the user conditionally using the [field metadata](/api/usefield/#usefieldmeta).
+
+```jsx
+const [passwordProps, passwordMeta] = useField({
+  name: 'password'
+  validate: validatePassword,
+});
+
+return (
+  <>
+    <input type="password" {...passwordProps} />
+    {passwordMeta.touched && passwordMeta.error && <ErrorMessage>{passwordMeta.error}</ErrorMessage>}
+  </>
+)
+```
+
+You can also use the form-wide validation state to prevent users from proceeding.
+
+```jsx
+const { isValid } = useFormContext();
+
+//...
+
+return (
+  <button disabled={!isValid} onClick={handleSubmit}>
+    Submit
+  </button>
+);
+```
