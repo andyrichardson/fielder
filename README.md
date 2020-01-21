@@ -100,8 +100,10 @@ const [nameProps, nameMeta] = useField({
 });
 
 return (
-  <input type="text" {...nameProps} />
-  {nameMeta.touched && nameMeta.error && <ErrorMsg>{nameMeta.error}</ErrorMsg>}
+  <>
+    <input type="text" {...nameProps} />
+    {nameMeta.touched && nameMeta.error && <ErrorMsg>{nameMeta.error}</ErrorMsg>}
+  </>
 );
 ```
 

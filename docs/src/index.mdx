@@ -69,8 +69,10 @@ const [nameProps, nameMeta] = useField({
 });
 
 return (
-  <input type="text" {...nameProps} />
-  {nameMeta.touched && nameMeta.error && <Error>{nameMeta.error}</Error>}
+  <>
+    <input type="text" {...nameProps} />
+    {nameMeta.touched && nameMeta.error && <ErrorMessage>{nameMeta.error}</ErrorMessage>}
+  </>
 );
 ```
 
