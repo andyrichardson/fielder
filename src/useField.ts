@@ -181,11 +181,13 @@ const syncCheckboxes = ({
   value: any;
 }) =>
   elements.forEach(element => {
-    if (element.type !== 'checkbox') {
-      return;
+    if (element.type === 'checkbox') {
+      element.checked = Array.isArray(value)
+        ? value.includes(element.value)
+        : false;
     }
 
-    element.checked = Array.isArray(value)
-      ? value.includes(element.value)
-      : false;
+    if (element.type === 'radio') {
+      element.checked = element.value === value;
+    }
   });
