@@ -1,6 +1,6 @@
 .vscode
 .rts2*
-.cache
+.*cache*
 dist
 .docz
 
