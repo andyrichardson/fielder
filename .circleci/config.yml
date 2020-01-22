@@ -72,7 +72,7 @@ jobs:
 
   deploy:
     docker:
-      - image: node:12
+      - image: node:13
     steps:
       - checkout
       - restore_cache:
