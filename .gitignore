@@ -1,7 +1,13 @@
 .vscode
 .rts2*
-yarn.lock
-node_modules
+.*cache*
 dist
-.cache
 .docz
+
+node_modules
+package-lock.json
+# Only use lockfile at project root (not example repos)
+!/package-lock.json
+yarn.lock
+# docz requires use of yarn
+!/docs/yarn.lock

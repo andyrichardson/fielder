@@ -1,14 +1,15 @@
 {
-  "name": "vanilla-ts",
-  "version": "1.0.0",
-  "description": "",
+  "name": "fielder-example-2",
+  "version": "0.0.0",
+  "description": "Example fielder project",
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",
+    "dev": "sed -i -e 's|\"react\".*|\"react\": \"file:../../node_modules/react\",|; s|\"react-dom\".*|\"react-dom\": \"file:../../node_modules/react-dom\",|; s|\"fielder\".*|\"fielder\": \"file:../../\",|' package.json && npm run start",
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "fielder": "^1.1.0",
+    "fielder": "1.1.2",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "semantic-ui-css": "2.4.1",
