@@ -18,7 +18,7 @@ export const FormContent: FC = () => {
   }, []);
 
   return (
-    <form autocomplete="off">
+    <form autoComplete="off">
       <div className="field">
         <label>Username</label>
         <input type="text" placeholder="Username" {...usernameProps} />

@@ -1,31 +1,37 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { useField, useFormContext } from 'fielder';
 
 export const TermsSection: FC = () => {
   const { isValid } = useFormContext();
-  const [marketingProps] = useField({
-    name: 'marketing',
-    initialValid: true
-  });
   const [termsProps] = useField({
     name: 'terms',
-    validate: termsValidation
+    validate: termsValidation,
+    initialValue: ['marketing']
   });
+
+  const checkboxes = useMemo(
+    () => [
+      { label: 'Send me marketing mail', value: 'marketing' },
+      { label: 'I accept terms and conditions', value: 'legal' }
+    ],
+    []
+  );
 
   const handleSubmit = useCallback(() => alert('Form submitted'), []);
 
   return (
-    <form autocomplete="off">
-      <div className="field">
-        <label>Marketing</label>
-        <input type="checkbox" {...marketingProps} value="marketing" />
-        Send me marketing mail
-      </div>
-      <div className="field">
-        <label>Terms & Conditions</label>
-        <input type="checkbox" {...termsProps} value="terms" />I accept terms
-        and conditions
-      </div>
+    <form autoComplete="off">
+      {checkboxes.map(({ label, value }) => (
+        <div key={value} className="field">
+          <input
+            type="checkbox"
+            {...termsProps}
+            value={value}
+            checked={termsProps.value.includes(value)}
+          />
+          <span>{label}</span>
+        </div>
+      ))}
       <div className="field">
         <button onClick={handleSubmit} disabled={!isValid} className="primary">
           Submit
@@ -36,7 +42,7 @@ export const TermsSection: FC = () => {
 };
 
 const termsValidation = v => {
-  if (!v || v.length === 0) {
-    throw Error('Opting in is required');
+  if (!v.includes('legal')) {
+    throw Error('Legal terms must be accepted');
   }
 };

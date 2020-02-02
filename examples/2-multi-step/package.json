@@ -5,7 +5,9 @@
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",
-    "dev": "sed -i -e 's|\"react\".*|\"react\": \"file:../../node_modules/react\",|; s|\"react-dom\".*|\"react-dom\": \"file:../../node_modules/react-dom\",|; s|\"fielder\".*|\"fielder\": \"file:../../\",|' package.json && npm run start",
+    "serve": "parcel serve index.html",
+    "setup-dev": "sed -i -e 's|\"react\".*|\"react\": \"file:../../node_modules/react\",|; s|\"react-dom\".*|\"react-dom\": \"file:../../node_modules/react-dom\",|; s|\"fielder\".*|\"fielder\": \"file:../../\",|' package.json",
+    "test": "cypress run",
     "build": "parcel build index.html"
   },
   "dependencies": {
@@ -16,8 +18,9 @@
     "semantic-ui-react": "0.88.2"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.6.1",
-    "typescript": "^3.7.4"
+    "cypress": "^3.8.3",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.7.5"
   },
   "keywords": []
 }

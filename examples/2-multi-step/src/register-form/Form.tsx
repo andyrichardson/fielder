@@ -12,9 +12,6 @@ export const RegisterForm = () => {
   const handleCredentials = useCallback(() => {
     setActiveStep(1);
   }, []);
-  const handleSubmit = useCallback(() => {
-    alert('Form has been submitted');
-  }, []);
 
   return (
     <FielderProvider value={state}>
