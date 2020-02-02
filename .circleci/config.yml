@@ -4,9 +4,12 @@ jobs:
       - image: node:13
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - node-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
-          key: node-cache-{{ .Revision }}
+          key: node-cache-{{ checksum "package-lock.json" }}
           paths:
             - 'node_modules'
 
@@ -17,12 +20,18 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ .Revision }}
+            - node-cache-{{ checksum "package-lock.json" }}
       - run: npm run build
       - save_cache:
           key: build-cache-{{ .Revision }}
           paths:
             - 'dist'
+      - run: npm pack
+      - run: mv fielder*.tgz fielder.tgz
+      - save_cache:
+          key: package-cache-{{ .Revision }}
+          paths:
+            - 'fielder.tgz'
 
   build docs:
     docker:
@@ -46,9 +55,30 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ .Revision }}
+            - node-cache-{{ checksum "package-lock.json" }}
       - run: npm run test -- --coverage
       - run: npx codecov
+
+  e2e:
+    docker:
+      - image: cypress/browsers:chrome67
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - package-cache-{{ .Revision }}
+      - run:
+          command: npm remove fielder
+          working_directory: examples/1-basics
+      - run:
+          command: npm install
+          working_directory: examples/1-basics
+      - run:
+          command: npm install ../../fielder.tgz
+          working_directory: examples/1-basics
+      - run:
+          command: npm run serve & sleep 10 && npm run test
+          working_directory: examples/1-basics
 
   prettier:
     docker:
@@ -57,7 +87,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ .Revision }}
+            - node-cache-{{ checksum "package-lock.json" }}
       - run: npm run check-formatting
 
   lint:
@@ -67,7 +97,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ .Revision }}
+            - node-cache-{{ checksum "package-lock.json" }}
       - run: npm run lint
 
   deploy:
@@ -100,6 +130,13 @@ workflows:
       - build:
           requires:
             - install
+          filters:
+            tags:
+              only: /.*/
+      - e2e:
+          requires:
+            - install
+            - build
           filters:
             tags:
               only: /.*/
