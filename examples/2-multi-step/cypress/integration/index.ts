@@ -2,89 +2,152 @@ beforeEach(() => {
   cy.visit('/');
 });
 
-describe('username', () => {
-  it('changes value', () => {
-    const value = 'hi';
-    const username = cy.get('input[name="username"]');
+describe('auth info', () => {
+  describe('username', () => {
+    it('changes value', () => {
+      const value = 'hi';
 
-    username.focus().type(value);
-    username.should('have.value', value);
+      cy.get('input[name="username"]')
+        .type(value)
+        .should('have.value', value);
+    });
+
+    it('validates on blur', () => {
+      cy.get('input[name="username"]')
+        .type('hi')
+        .blur()
+        .next()
+        .should('contain.text', 'Username must be at least 4 characters.');
+    });
+
+    it('updates validation on change', () => {
+      cy.get('input[name="username"]')
+        .type('hi')
+        .blur()
+        .type('hello there')
+        .next()
+        .should('not.contain.text', 'Username must be at least 4 characters.');
+    });
   });
 
-  it('validates on blur', () => {
-    const username = cy.get('input[name="username"]');
-    username
-      .focus()
-      .type('hi')
-      .blur();
-    username
-      .next()
-      .should('contain.text', 'Username must be at least 4 characters.');
+  describe('password', () => {
+    it('changes value', () => {
+      const value = 'hi';
+      cy.get('input[name="password"]')
+        .type(value)
+        .should('have.value', value);
+    });
+
+    it('validates on blur', () => {
+      cy.get('input[name="password"]')
+        .type('hi')
+        .blur()
+        .next()
+        .should('contain.text', 'Password must be at least 4 characters.');
+    });
+
+    it('updates validation on change', () => {
+      cy.get('input[name="password"]')
+        .type('hi')
+        .blur()
+        .type('hello there')
+        .next()
+        .should('not.contain.text', 'Password must be at least 4 characters.');
+    });
   });
 
-  it('updates validation on change', () => {
-    const username = cy.get('input[name="username"]');
-    username
-      .focus()
-      .type('hi')
-      .blur();
-    username.focus().type('hello there');
-    username
-      .next()
-      .should('not.contain.text', 'Username must be at least 4 characters.');
+  describe('password confirmation', () => {
+    it('changes value', () => {
+      const value = 'hi';
+
+      cy.get('input[name="passwordConfirmation"]')
+        .type(value)
+        .should('have.value', value);
+    });
+
+    it('validates (cross form) on blur', () => {
+      cy.get('input[name="password"]').type('validpassword');
+
+      cy.get('input[name="passwordConfirmation"]')
+        .type('hi')
+        .blur()
+        .next()
+        .should('contain.text', 'Password does not match');
+    });
+
+    it('updates validation (cross form) on change', () => {
+      const value = 'validpassword';
+      cy.get('input[name="password"]')
+        .type(value)
+        .blur();
+
+      cy.get('input[name="passwordConfirmation"]')
+        .type('hi')
+        .blur()
+        .clear()
+        .type(value)
+        .next()
+        .should('not.contain.text', 'Password does not match.');
+    });
+
+    it('updates validation (cross form) on form-wide change', () => {
+      const value = 'validpassword';
+
+      cy.get('input[name="password"]')
+        .type('somegibberish')
+        .blur();
+
+      cy.get('input[name="passwordConfirmation"]')
+        .type(value)
+        .blur();
+
+      cy.get('input[name="password"]')
+        .clear()
+        .type(value);
+
+      cy.get('input[name="passwordConfirmation"]')
+        .next()
+        .should('not.contain.text', 'Password does not match.');
+    });
+  });
+
+  describe('next button', () => {
+    it('is disabled on mount', () => {
+      cy.get('button').should('have.attr', 'disabled');
+    });
+
+    it('is enabled when fields are valid', () => {
+      cy.get('input[name="username"]').type('hello there');
+      cy.get('input[name="password"]').type('hello there');
+      cy.get('input[name="passwordConfirmation"]').type('hello there');
+      cy.get('button').should('not.have.attr', 'disabled');
+    });
   });
 });
 
-describe('password', () => {
-  it('changes value', () => {
-    const value = 'hi';
-    const password = cy.get('input[name="password"]');
-
-    password.focus().type(value);
-    password.should('have.value', value);
-  });
-
-  it('validates on blur', () => {
-    const password = cy.get('input[name="password"]');
-    password
-      .focus()
-      .type('hi')
-      .blur();
-    password
-      .next()
-      .should('contain.text', 'Password must be at least 4 characters.');
-  });
-
-  it('updates validation on change', () => {
-    const password = cy.get('input[name="password"]');
-    password
-      .focus()
-      .type('hi')
-      .blur();
-    password.focus().type('hello there');
-    password
-      .next()
-      .should('not.contain.text', 'Password must be at least 4 characters.');
-  });
-});
-
-describe('next button', () => {
-  it('is disabled on mount', () => {
-    cy.get('button').should('have.attr', 'disabled');
-  });
-
-  it('is enabled when fields are valid', () => {
+describe('terms section', () => {
+  beforeEach(() => {
     cy.get('input[name="username"]').type('hello there');
     cy.get('input[name="password"]').type('hello there');
-    cy.get('button').should('not.have.attr', 'disabled');
+    cy.get('input[name="passwordConfirmation"]').type('hello there');
+    cy.get('button').click();
   });
 
-  it('is disabled when fields are invalid', () => {
-    cy.get('input[name="username"]').type('hello there');
-    cy.get('input[name="password"]').type('hello there');
-    cy.get('input[name="password"]')
-      .clear()
-      .type('hi');
-    cy.get('button').should('have.attr', 'disabled');
+  describe('marketing checkbox', () => {
+    it('is checked', () => {
+      cy.get('input[value="marketing"]').should('have.attr', 'checked');
+    });
+
+    it.only('toggles on click', () => {
+      cy.get('input[value="marketing"]')
+        .click()
+        .should('not.have.attr', 'checked');
+    });
+  });
+
+  describe('submit button', () => {
+    it('is disabled on mount', () => {
+      cy.get('button').should('have.attr', 'disabled');
+    });
   });
 });
