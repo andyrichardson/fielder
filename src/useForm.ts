@@ -334,7 +334,9 @@ const doMountField = (fields: FieldsState) => ({
       isValidating: false,
       value: p.value !== undefined ? p.value : initialValue,
       error: p.error || initialError,
-      touched: p.touched || initialTouched
+      touched: p.touched || initialTouched,
+      hasBlurred: false,
+      hasChanged: false
     }
   };
 };
@@ -399,7 +401,8 @@ const doSetFieldValue = (fields: FieldsState) => <T>({
     ...fields,
     [name]: {
       ...p,
-      value: typeof value === 'function' ? (value as any)(p.value) : value
+      value: typeof value === 'function' ? (value as any)(p.value) : value,
+      hasChanged: true
     }
   };
 };
@@ -429,7 +432,8 @@ const doBlurField = (fields: FieldsState) => <T = any>({
     ...fields,
     [name]: {
       ...p,
-      touched: true
+      touched: true,
+      hasBlurred: true
     }
   };
 };
