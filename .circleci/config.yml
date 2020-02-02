@@ -1,3 +1,9 @@
+variables:
+  - &module-cache node-cache-{{ checksum "package-lock.json" }}
+  - &build-cache build-cache-{{ .Revision }}
+  - &package-cache package-cache-{{ .Revision }}
+  - &docs-module-cache docs-module-cache-{{ checksum "docs/yarn.lock" }}
+
 jobs:
   install:
     docker:
@@ -6,10 +12,10 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - &node-cache node-cache-{{ checksum "package-lock.json" }}
+            - *module-cache
       - run: npm ci
       - save_cache:
-          key: *node-cache
+          key: *module-cache
           paths:
             - 'node_modules'
 
@@ -20,16 +26,16 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ checksum "package-lock.json" }}
+            - *module-cache
       - run: npm run build
       - save_cache:
-          key: build-cache-{{ .Revision }}
+          key: *build-cache
           paths:
             - 'dist'
       - run: npm pack
       - run: mv fielder*.tgz fielder.tgz
       - save_cache:
-          key: package-cache-{{ .Revision }}
+          key: *package-cache
           paths:
             - 'fielder.tgz'
       - store_artifacts:
@@ -42,12 +48,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - docs-module-cache-{{ checksum "docs/yarn.lock" }}
+            - *docs-module-cache
       - run:
           command: yarn
           working_directory: docs
       - save_cache:
-          key: docs-module-cache-{{ checksum "docs/yarn.lock" }}
+          key: *docs-module-cache
           paths:
             - 'docs/node_modules'
       - run:
@@ -64,7 +70,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ checksum "package-lock.json" }}
+            - *module-cache
       - run: npm run test -- --coverage
       - run: npx codecov
 
@@ -75,7 +81,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - package-cache-{{ .Revision }}
+            - *package-cache
       - run:
           command: npm remove fielder
           working_directory: examples/1-basics
@@ -96,7 +102,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ checksum "package-lock.json" }}
+            - *module-cache
       - run: npm run check-formatting
 
   lint:
@@ -106,7 +112,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ checksum "package-lock.json" }}
+            - *module-cache
       - run: npm run lint
 
   deploy:
@@ -116,7 +122,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - build-cache-{{ .Revision }}
+            - *build-cache
       - run:
           command: |
             node -e "process.env.CIRCLE_TAG === \`v\${require('./package.json').version}\` ? process.exit(0) : (console.error('Tag version does not line up with version in package.json') || process.exit(1))"
