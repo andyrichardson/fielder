@@ -135,19 +135,24 @@ describe('terms section', () => {
 
   describe('marketing checkbox', () => {
     it('is checked', () => {
-      cy.get('input[value="marketing"]').should('have.attr', 'checked');
+      cy.get('input[value="marketing"]').should('be.checked');
     });
 
-    it.only('toggles on click', () => {
+    it('toggles on click', () => {
       cy.get('input[value="marketing"]')
         .click()
-        .should('not.have.attr', 'checked');
+        .should('not.be.checked');
     });
   });
 
   describe('submit button', () => {
     it('is disabled on mount', () => {
       cy.get('button').should('have.attr', 'disabled');
+    });
+
+    it('is enabled when legal terms are checked', () => {
+      cy.get('input[value="legal"]').click();
+      cy.get('button').should('not.have.attr', 'disabled');
     });
   });
 });

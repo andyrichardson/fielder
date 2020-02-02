@@ -16,15 +16,15 @@ export const RegisterForm = () => {
   return (
     <FielderProvider value={state}>
       <Card>
-        {/* <CardSection disabled={activeStep !== 0}>
+        <CardSection disabled={activeStep !== 0}>
           <h2>Authentication info</h2>
           {activeStep === 0 && (
             <CredentialsSection onComplete={handleCredentials} />
           )}
-        </CardSection> */}
-        <CardSection disabled={false}>
+        </CardSection>
+        <CardSection disabled={activeStep !== 1}>
           <h2>Terms</h2>
-          {activeStep === 1 || (true && <TermsSection />)}
+          {activeStep === 1 && <TermsSection />}
         </CardSection>
       </Card>
     </FielderProvider>

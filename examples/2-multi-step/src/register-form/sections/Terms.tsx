@@ -6,7 +6,7 @@ export const TermsSection: FC = () => {
   const [{ ref, ...termsProps }] = useField({
     name: 'terms',
     validate: termsValidation,
-    initialValue: [],
+    initialValue: ['marketing'],
   });
 
   const checkboxes = useMemo(
@@ -23,7 +23,7 @@ export const TermsSection: FC = () => {
     <form autoComplete="off">
       {checkboxes.map(({ label, value }) => (
         <div key={value} className="field">
-          <input type="checkbox" {...termsProps} value={value} checked={console.log('checked is', termsProps.value.includes(value)) || termsProps.value.includes(value)} />
+          <input type="checkbox" {...termsProps} value={value} checked={termsProps.value.includes(value)} />
           <span>{label}</span>
         </div>
       )}

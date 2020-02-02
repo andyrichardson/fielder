@@ -92,6 +92,27 @@ jobs:
           command: npm run serve & sleep 10 && npm run test
           working_directory: examples/1-basics
 
+  e2e (example 2):
+    docker:
+      - image: cypress/browsers:chrome67
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - *package-cache
+      - run:
+          command: npm remove fielder
+          working_directory: examples/2-multi-step
+      - run:
+          command: npm install
+          working_directory: examples/2-multi-step
+      - run:
+          command: npm install ../../fielder.tgz
+          working_directory: examples/2-multi-step
+      - run:
+          command: npm run serve & sleep 10 && npm run test
+          working_directory: examples/2-multi-step
+
   build docs:
     docker:
       - image: node:13
@@ -148,6 +169,12 @@ workflows:
             tags:
               only: /.*/
       - e2e (example 1):
+          requires:
+            - build
+          filters:
+            tags:
+              only: /.*/
+      - e2e (example 2):
           requires:
             - build
           filters:
