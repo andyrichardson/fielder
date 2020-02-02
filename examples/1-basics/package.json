@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",
-    "serve": "parcel index.html",
+    "serve": "parcel serve index.html",
     "setup-dev": "sed -i -e 's|\"react\".*|\"react\": \"file:../../node_modules/react\",|; s|\"react-dom\".*|\"react-dom\": \"file:../../node_modules/react-dom\",|; s|\"fielder\".*|\"fielder\": \"file:../../\",|' package.json",
     "test": "cypress run",
     "build": "parcel build index.html"

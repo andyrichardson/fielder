@@ -18,6 +18,36 @@ jobs:
           key: *module-cache
           paths:
             - 'node_modules'
+  prettier:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - *module-cache
+      - run: npm run check-formatting
+
+  lint:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - *module-cache
+      - run: npm run lint
+
+  test:
+    docker:
+      - image: node:13
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - *module-cache
+      - run: npm run test -- --coverage
+      - run: npx codecov
 
   build:
     docker:
@@ -41,39 +71,6 @@ jobs:
       - store_artifacts:
           path: fielder.tgz
 
-  build docs:
-    docker:
-      - image: node:13
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - *docs-module-cache
-      - run:
-          command: yarn
-          working_directory: docs
-      - save_cache:
-          key: *docs-module-cache
-          paths:
-            - 'docs/node_modules'
-      - run:
-          command: yarn run build
-          working_directory: docs
-      - store_artifacts:
-          path: docs/.docz/dist
-          destination: static-docs
-
-  test:
-    docker:
-      - image: node:13
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - *module-cache
-      - run: npm run test -- --coverage
-      - run: npx codecov
-
   e2e (example 1):
     docker:
       - image: cypress/browsers:chrome67
@@ -95,25 +92,27 @@ jobs:
           command: npm run serve & sleep 10 && npm run test
           working_directory: examples/1-basics
 
-  prettier:
+  build docs:
     docker:
       - image: node:13
     steps:
       - checkout
       - restore_cache:
           keys:
-            - *module-cache
-      - run: npm run check-formatting
-
-  lint:
-    docker:
-      - image: node:13
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - *module-cache
-      - run: npm run lint
+            - *docs-module-cache
+      - run:
+          command: yarn
+          working_directory: docs
+      - save_cache:
+          key: *docs-module-cache
+          paths:
+            - 'docs/node_modules'
+      - run:
+          command: yarn run build
+          working_directory: docs
+      - store_artifacts:
+          path: docs/.docz/dist
+          destination: static-docs
 
   deploy:
     docker:
