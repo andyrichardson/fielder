@@ -206,6 +206,8 @@ workflows:
             - build
             - prettier
             - lint
+            - e2e (example 1)
+            - e2e (example 2)
           filters:
             tags:
               only: /.*/
