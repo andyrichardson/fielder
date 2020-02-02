@@ -6,10 +6,10 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-cache-{{ checksum "package-lock.json" }}
+            - &node-cache node-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
-          key: node-cache-{{ checksum "package-lock.json" }}
+          key: *node-cache
           paths:
             - 'node_modules'
 
@@ -68,7 +68,7 @@ jobs:
       - run: npm run test -- --coverage
       - run: npx codecov
 
-  e2e:
+  e2e (example 1):
     docker:
       - image: cypress/browsers:chrome67
     steps:
@@ -142,9 +142,8 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - e2e:
+      - e2e (example 1):
           requires:
-            - install
             - build
           filters:
             tags:
