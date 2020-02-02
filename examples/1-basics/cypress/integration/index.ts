@@ -5,31 +5,24 @@ beforeEach(() => {
 describe('username', () => {
   it('changes value', () => {
     const value = 'hi';
-    const username = cy.get('input[name="username"]');
-
-    username.focus().type(value);
-    username.should('have.value', value);
+    cy.get('input[name="username"]')
+      .type(value)
+      .should('have.value', value);
   });
 
   it('validates on blur', () => {
-    const username = cy.get('input[name="username"]');
-    username
-      .focus()
+    cy.get('input[name="username"]')
       .type('hi')
-      .blur();
-    username
+      .blur()
       .next()
       .should('contain.text', 'Username must be at least 4 characters.');
   });
 
   it('updates validation on change', () => {
-    const username = cy.get('input[name="username"]');
-    username
-      .focus()
+    cy.get('input[name="username"]')
       .type('hi')
-      .blur();
-    username.focus().type('hello there');
-    username
+      .blur()
+      .type('hello there')
       .next()
       .should('not.contain.text', 'Username must be at least 4 characters.');
   });
@@ -38,31 +31,25 @@ describe('username', () => {
 describe('password', () => {
   it('changes value', () => {
     const value = 'hi';
-    const password = cy.get('input[name="password"]');
 
-    password.focus().type(value);
-    password.should('have.value', value);
+    cy.get('input[name="password"]')
+      .type(value)
+      .should('have.value', value);
   });
 
   it('validates on blur', () => {
-    const password = cy.get('input[name="password"]');
-    password
-      .focus()
+    cy.get('input[name="password"]')
       .type('hi')
-      .blur();
-    password
+      .blur()
       .next()
       .should('contain.text', 'Password must be at least 4 characters.');
   });
 
   it('updates validation on change', () => {
-    const password = cy.get('input[name="password"]');
-    password
-      .focus()
+    cy.get('input[name="password"]')
       .type('hi')
-      .blur();
-    password.focus().type('hello there');
-    password
+      .blur()
+      .type('hello there')
       .next()
       .should('not.contain.text', 'Password must be at least 4 characters.');
   });
