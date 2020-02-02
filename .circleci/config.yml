@@ -32,15 +32,24 @@ jobs:
           key: package-cache-{{ .Revision }}
           paths:
             - 'fielder.tgz'
+      - store_artifacts:
+          path: fielder.tgz
 
   build docs:
     docker:
       - image: node:13
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - docs-module-cache-{{ checksum "docs/yarn.lock" }}
       - run:
           command: yarn
           working_directory: docs
+      - save_cache:
+          key: docs-module-cache-{{ checksum "docs/yarn.lock" }}
+          paths:
+            - 'docs/node_modules'
       - run:
           command: yarn run build
           working_directory: docs
