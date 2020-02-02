@@ -22,21 +22,36 @@ export interface FormState<T extends Record<string, any> = any> {
 }
 
 export interface FieldState<T = string | boolean | number | string[]> {
+  /** The field is currently mounted. */
   readonly _isActive: boolean;
+  /** Trigger validation on change. */
   readonly _validateOnChange: boolean;
+  /** Trigger validation on blur. */
   readonly _validateOnBlur: boolean;
+  /** Trigger validation on any form value change. */
   readonly _validateOnUpdate: boolean;
+  /** Validation function. */
   readonly _validate: FieldConfig['validate'];
 
   // Props
+  /** Field name */
   readonly name: string;
+  /** Field value */
   readonly value?: T;
 
   // Meta
+  /** Field error */
   readonly error?: FormError;
-  readonly touched: boolean;
+  /** Field is currently valid. */
   readonly isValid: boolean;
+  /** Field is currently being validated (async). */
   readonly isValidating: boolean;
+  /** Field has been blurred since mount. */
+  readonly hasBlurred: boolean;
+  /** Field has been changed since mount. */
+  readonly hasChanged: boolean;
+  /** @deprecated Field has been touched. */
+  readonly touched: boolean;
 }
 
 export interface FieldConfig<
@@ -61,10 +76,10 @@ export interface FieldConfig<
   readonly initialValue?: V;
   /** Starting error. */
   readonly initialError?: FormError;
-  /** Starting touched state. */
-  readonly initialTouched?: boolean;
   /** Starting valid state. */
   readonly initialValid?: boolean;
   /** Should destroy value when useField hook is unmounted. */
   readonly destroyOnUnmount?: boolean;
+  /** @deprecated Starting touched state. */
+  readonly initialTouched?: boolean;
 }

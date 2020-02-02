@@ -202,6 +202,10 @@ describe('on blur field', () => {
     it('is touched', () => {
       expect(response.fields[fieldName]).toHaveProperty('touched', true);
     });
+
+    it('has blurred state', () => {
+      expect(response.fields[fieldName]).toHaveProperty('hasBlurred', true);
+    });
   });
 
   describe('with [validateOnBlur = true]', () => {
@@ -270,6 +274,10 @@ describe('on change field', () => {
 
     it('has new value', () => {
       expect(response.fields[fieldName]).toHaveProperty('value', value);
+    });
+
+    it('has changed state', () => {
+      expect(response.fields[fieldName]).toHaveProperty('hasChanged', true);
     });
   });
 
@@ -430,6 +438,8 @@ describe('on validate field', () => {
               "_validateOnChange": true,
               "_validateOnUpdate": false,
               "error": undefined,
+              "hasBlurred": false,
+              "hasChanged": false,
               "isValid": false,
               "isValidating": false,
               "name": "IgnoredField",
@@ -443,6 +453,8 @@ describe('on validate field', () => {
               "_validateOnChange": true,
               "_validateOnUpdate": false,
               "error": "Name must be longer",
+              "hasBlurred": false,
+              "hasChanged": false,
               "isValid": false,
               "isValidating": false,
               "name": "TargetField",
@@ -504,6 +516,8 @@ describe('on validate field', () => {
               "_validateOnChange": true,
               "_validateOnUpdate": false,
               "error": undefined,
+              "hasBlurred": false,
+              "hasChanged": false,
               "isValid": true,
               "isValidating": false,
               "name": "IgnoredField",
@@ -517,6 +531,8 @@ describe('on validate field', () => {
               "_validateOnChange": true,
               "_validateOnUpdate": false,
               "error": undefined,
+              "hasBlurred": false,
+              "hasChanged": false,
               "isValid": true,
               "isValidating": false,
               "name": "TargetField",

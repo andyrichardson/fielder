@@ -139,11 +139,14 @@ describe('on unmount', () => {
 });
 
 describe('on blur', () => {
-  it('calls blurField', () => {
+  beforeEach(() => {
     args = { name: 'someField' };
-    mount(<Fixture />);
+    const wrapper = mount(<Fixture />);
     response[0].onBlur();
+    wrapper.setProps({});
+  });
 
+  it('calls blurField', () => {
     expect(context.blurField).toBeCalledTimes(1);
     expect(context.blurField).toBeCalledWith({
       name: args.name

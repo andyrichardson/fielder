@@ -19,10 +19,18 @@ export type UseFieldProps<T = any> = {
 };
 
 export type UseFieldMeta = {
-  readonly touched: FieldState['touched'];
-  readonly error: FieldState['error'];
+  /** Field error */
+  readonly error?: FieldState['error'];
+  /** Field is currently valid. */
   readonly isValid: FieldState['isValid'];
+  /** Field is currently being validated (async). */
   readonly isValidating: FieldState['isValidating'];
+  /** Field has been blurred since mount. */
+  readonly hasBlurred: FieldState['hasBlurred'];
+  /** Field has been changed since mount. */
+  readonly hasChanged: FieldState['hasChanged'];
+  /** @deprecated Field has been touched. */
+  readonly touched: FieldState['touched'];
 };
 
 type SupportedElements =
@@ -63,7 +71,9 @@ export const useField = <T = any>({
         error: initialError,
         valid: initialValid,
         value: initialValue,
-        touched: initialTouched
+        touched: initialTouched,
+        hasBlurred: false,
+        hasChanged: false
       },
     [fields, name]
   );
@@ -124,7 +134,15 @@ export const useField = <T = any>({
     [setFieldValue]
   );
 
-  const { value, touched, error, isValid, isValidating } = field;
+  const {
+    value,
+    touched,
+    error,
+    isValid,
+    isValidating,
+    hasChanged,
+    hasBlurred
+  } = field;
 
   const handleRef = useCallback<UseFieldProps['ref']>(element => {
     if (!element || element.tagName.toLowerCase() !== 'input') {
@@ -138,9 +156,20 @@ export const useField = <T = any>({
   return useMemo(
     () => [
       { name, value, onBlur, onChange, ref: handleRef },
-      { touched, error, isValid, isValidating }
+      { touched, error, isValid, isValidating, hasBlurred, hasChanged }
     ],
-    [value, onBlur, onChange, name, touched, error, isValid, isValidating]
+    [
+      value,
+      onBlur,
+      onChange,
+      name,
+      touched,
+      error,
+      isValid,
+      isValidating,
+      hasChanged,
+      hasBlurred
+    ]
   );
 };
 
