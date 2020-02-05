@@ -11,15 +11,18 @@ import { FielderContext } from './context';
 import { FormState, FieldState, FieldConfig } from './types';
 
 export type UseFieldProps<T = any> = {
+  /** Field name. */
   readonly name: string;
+  /** Field value. */
   readonly value: T;
+  /** Change event handler. */
   readonly onChange: ChangeEventHandler;
+  /** Blur event handler (sets blurred state). */
   readonly onBlur: () => void;
-  readonly ref: (e: HTMLElement) => void;
 };
 
 export type UseFieldMeta = {
-  /** Field error */
+  /** Field error. */
   readonly error?: FieldState['error'];
   /** Field is currently valid. */
   readonly isValid: FieldState['isValid'];
@@ -53,7 +56,6 @@ export const useField = <T = any>({
   validateOnUpdate = false,
   destroyOnUnmount = false
 }: FieldConfig<T>): UseFieldResponse => {
-  const elementRefs = useRef<HTMLInputElement[]>([]);
   const destroyRef = useRef(destroyOnUnmount);
   const {
     fields,
@@ -76,11 +78,6 @@ export const useField = <T = any>({
         hasChanged: false
       },
     [fields, name]
-  );
-
-  useMemo(
-    () => syncCheckboxes({ elements: elementRefs.current, value: field.value }),
-    [field.value]
   );
 
   useMemo(() => (destroyRef.current = destroyOnUnmount), [destroyOnUnmount]);
@@ -144,18 +141,9 @@ export const useField = <T = any>({
     hasBlurred
   } = field;
 
-  const handleRef = useCallback<UseFieldProps['ref']>(element => {
-    if (!element || element.tagName.toLowerCase() !== 'input') {
-      return;
-    }
-
-    elementRefs.current = [...elementRefs.current, element as HTMLInputElement];
-    syncCheckboxes({ elements: elementRefs.current, value: initialValue });
-  }, []);
-
   return useMemo(
     () => [
-      { name, value, onBlur, onChange, ref: handleRef },
+      { name, value, onBlur, onChange },
       { touched, error, isValid, isValidating, hasBlurred, hasChanged }
     ],
     [
