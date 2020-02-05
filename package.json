@@ -1,6 +1,6 @@
 {
   "name": "fielder",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "A dynamic React form library which adapts to change.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",

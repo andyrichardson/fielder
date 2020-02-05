@@ -1,5 +1,26 @@
 # Changelog
 
+## [v1.2.0](https://github.com/andyrichardson/fielder/tree/v1.2.0) (2020-02-05)
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.1.2...v1.2.0)
+
+**Breaking changes:**
+
+- Revert checked state managment using ref [\#39](https://github.com/andyrichardson/fielder/issues/39)
+- Remove checkbox refs [\#40](https://github.com/andyrichardson/fielder/pull/40) ([andyrichardson](https://github.com/andyrichardson))
+
+**Additions:**
+
+- Add tracking of 'hasChanged' and 'hasBlurred' states [\#21](https://github.com/andyrichardson/fielder/issues/21)
+
+**Merged pull requests:**
+
+- Use 'latest' tag for dependencies examples [\#43](https://github.com/andyrichardson/fielder/pull/43) ([andyrichardson](https://github.com/andyrichardson))
+- Update checkbox docs [\#42](https://github.com/andyrichardson/fielder/pull/42) ([andyrichardson](https://github.com/andyrichardson))
+- Add cypress integration [\#38](https://github.com/andyrichardson/fielder/pull/38) ([andyrichardson](https://github.com/andyrichardson))
+- Add hasChanged and hasBlurred props to useField [\#37](https://github.com/andyrichardson/fielder/pull/37) ([andyrichardson](https://github.com/andyrichardson))
+- Update examples [\#36](https://github.com/andyrichardson/fielder/pull/36) ([andyrichardson](https://github.com/andyrichardson))
+
 ## [v1.1.2](https://github.com/andyrichardson/fielder/tree/v1.1.2) (2020-01-21)
 
 [Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.1.1...v1.1.2)
