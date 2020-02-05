@@ -98,6 +98,10 @@ const validateFn = val => Yup.string().validateSync(val);
 Field level validation messages can be presented to the user conditionally using the [field metadata](/api/usefield/#usefieldmeta).
 
 ```jsx
+const [usernameProps, usernameMeta] = useField({
+  name: 'username'
+  validate: validateUsername,
+});
 const [passwordProps, passwordMeta] = useField({
   name: 'password'
   validate: validatePassword,
@@ -105,8 +109,12 @@ const [passwordProps, passwordMeta] = useField({
 
 return (
   <>
+    {/* Field shows any validation errors on change. */}
+    <input type="text" {...usernameProps} />
+    {usernameMeta.hasChanged && usernameMeta.error && <ErrorMessage>{usernameMeta.error}</ErrorMessage>}
+    {/* Field shows any validation errors on blur. */}
     <input type="password" {...passwordProps} />
-    {passwordMeta.touched && passwordMeta.error && <ErrorMessage>{passwordMeta.error}</ErrorMessage>}
+    {passwordMeta.hasBlurred && passwordMeta.error && <ErrorMessage>{passwordMeta.error}</ErrorMessage>}
   </>
 )
 ```

@@ -71,7 +71,7 @@ const [nameProps, nameMeta] = useField({
 return (
   <>
     <input type="text" {...nameProps} />
-    {nameMeta.touched && nameMeta.error && <ErrorMessage>{nameMeta.error}</ErrorMessage>}
+    {nameMeta.hasChanged && nameMeta.error && <ErrorMessage>{nameMeta.error}</ErrorMessage>}
   </>
 );
 ```
@@ -80,7 +80,7 @@ There are a whole number of additional arguments which can be passed to `useFiel
 
 - Set validation
 - Set when validation is triggered (e.g. on blur, change, etc)
-- Set initial value, error, valid and touched states
+- Set initial value, error and valid states
 - Set unmount behaviour
 
 > Note: Unlike other popular form libraries, _Fielder_ allows you to change config options (such as validation) at any time.

@@ -3,7 +3,7 @@ import { UseFieldMeta } from 'fielder';
 import { Label } from 'semantic-ui-react';
 
 export const conditionalError = (meta: UseFieldMeta) =>
-  meta.touched &&
+  meta.hasBlurred &&
   meta.error && (
     <Label basic color="red" pointing="above">
       {meta.error}

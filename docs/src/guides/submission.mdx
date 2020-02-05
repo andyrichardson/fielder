@@ -58,7 +58,7 @@ A simple reducer can be used to get a key-value representation of the form state
 
 ```tsx
 const { fields } = useFormContext();
-// fields = { field1: { value: 'hello', touched: true, ... } ... }
+// fields = { field1: { value: 'hello', hasChanged: true, ... } ... }
 
 const transformed = Object.entries(fields).reduce(
   (p, [key, field]) => ({ [key]: field.value }),
@@ -81,7 +81,7 @@ This function can then be combined with the previous example.
 
 ```tsx
 const { fields } = useFormContext();
-// fields = { field1: { value: ['value1', 'value3'], touched: true, ... } ... }
+// fields = { field1: { value: ['value1', 'value3'], hasChanged: true, ... } ... }
 
 const transformed = Object.entries(fields).reduce(
   (p, [key, field]) =>

@@ -85,7 +85,7 @@ Type: `string | boolean`
 
 Default: `""`
 
-### initialTouched
+### initialTouched **(deprecated)**
 
 _Whether the initial state of the field is 'touched'._
 
@@ -137,7 +137,6 @@ type UseFieldProps<T = any> = {
   readonly value: T;
   readonly onChange: ChangeEventHandler;
   readonly onBlur: () => void;
-  readonly ref: (e: HTMLElement) => void;
 };
 ```
 
@@ -147,9 +146,15 @@ Additional information about a field and it's validation state.
 
 ```ts
 type UseFieldMeta = {
-  readonly touched: boolean;
+  /** Validation error. */
   readonly error?: Error | string;
+  /** Valid state. */
   readonly isValid: boolean;
+  /** Async validation is in progress. */
   readonly isValidating: boolean;
+  /** onBlur has been called since mount/remount. */
+  readonly hasBlurred: boolean;
+  /** onChange has been called since mount/remount. */
+  readonly hasChanged: boolean;
 };
 ```
