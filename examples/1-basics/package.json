@@ -18,9 +18,11 @@
     "semantic-ui-react": "0.88.2"
   },
   "devDependencies": {
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
     "cypress": "^3.8.3",
     "parcel-bundler": "^1.6.1",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "keywords": []
 }
