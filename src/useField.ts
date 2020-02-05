@@ -189,22 +189,3 @@ const getElementType = (e: ChangeEvent<SupportedElements>) => {
 
   throw Error('Unsupported input element');
 };
-
-const syncCheckboxes = ({
-  elements,
-  value
-}: {
-  elements: HTMLInputElement[];
-  value?: any | any[];
-}) =>
-  elements.forEach(element => {
-    if (element.type === 'checkbox') {
-      element.checked = Array.isArray(value)
-        ? value.includes(element.value)
-        : false;
-    }
-
-    if (element.type === 'radio') {
-      element.checked = element.value === value;
-    }
-  });
