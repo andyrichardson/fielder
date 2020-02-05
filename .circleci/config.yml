@@ -73,7 +73,7 @@ jobs:
 
   e2e (example 1):
     docker:
-      - image: cypress/browsers:chrome67
+      - image: cypress/browsers:node13.3.0-chrome-79-ff70
     steps:
       - checkout
       - restore_cache:
@@ -94,7 +94,7 @@ jobs:
 
   e2e (example 2):
     docker:
-      - image: cypress/browsers:chrome67
+      - image: cypress/browsers:node13.3.0-chrome-79-ff70
     steps:
       - checkout
       - restore_cache:
