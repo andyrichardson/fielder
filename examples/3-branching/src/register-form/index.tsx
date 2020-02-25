@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from "react";
-import { useForm, FielderProvider } from "fielder";
-import { SignUp } from "./SignUp";
-import { GettingStarted } from "./GettingStarted";
-import { Login } from "./Login";
+import React, { useState, useMemo } from 'react';
+import { useForm, FielderProvider } from 'fielder';
+import { SignUp } from './SignUp';
+import { GettingStarted } from './GettingStarted';
+import { Login } from './Login';
 
 export const Form = () => {
   const [continued, setContinued] = useState(false);
@@ -10,23 +10,23 @@ export const Form = () => {
 
   const formPage = useMemo(() => {
     if (!continued) {
-      return "init";
+      return 'init';
     }
 
-    if (formState.fields.email.value === "user@mail.com") {
-      return "login";
+    if (formState.fields.email.value === 'user@mail.com') {
+      return 'login';
     }
 
-    return "signup";
+    return 'signup';
   }, [formState, continued]);
 
   return (
     <FielderProvider value={formState}>
-      {formPage === "init" && (
+      {formPage === 'init' && (
         <GettingStarted onNext={() => setContinued(true)} />
       )}
-      {formPage === "login" && <Login />}
-      {formPage === "signup" && <SignUp />}
+      {formPage === 'login' && <Login />}
+      {formPage === 'signup' && <SignUp />}
     </FielderProvider>
   );
 };

@@ -1,6 +1,6 @@
-import React, { FC, useCallback } from "react";
-import { useField, useFormContext } from "fielder";
-import { validateEmail, validateName, validatePassword } from "./validation";
+import React, { FC, useCallback } from 'react';
+import { useField, useFormContext } from 'fielder';
+import { validateEmail, validateName, validatePassword } from './validation';
 import {
   FormGroup,
   Label,
@@ -8,24 +8,24 @@ import {
   FieldHint,
   Card,
   Button
-} from "../components";
+} from '../components';
 
 export const SignUp: FC = () => {
   const { isValid, fields } = useFormContext();
   const [nameProps, nameMeta] = useField({
-    name: "name",
+    name: 'name',
     validate: validateName,
-    initialValue: ""
+    initialValue: ''
   });
   const [emailProps, emailMeta] = useField({
-    name: "email",
+    name: 'email',
     validate: validateEmail,
-    initialValue: ""
+    initialValue: ''
   });
   const [passwordProps, passwordMeta] = useField({
-    name: "password",
+    name: 'password',
     validate: validatePassword,
-    initialValue: ""
+    initialValue: ''
   });
 
   const handleSubmit = useCallback(() => {
@@ -36,7 +36,7 @@ export const SignUp: FC = () => {
     };
 
     // Simulate submission
-    console.log("POST /register", { variables });
+    console.log('POST /register', { variables });
     alert("API call 'POST /register' made. See console for more info");
   }, [fields]);
 
