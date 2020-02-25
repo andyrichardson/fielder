@@ -1,0 +1,31 @@
+{
+  "name": "fielder-example-2",
+  "version": "0.0.0",
+  "description": "Example fielder project",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "serve": "parcel serve index.html",
+    "setup-dev": "sed -i -e 's|\"react\".*|\"react\": \"file:../../node_modules/react\",|; s|\"react-dom\".*|\"react-dom\": \"file:../../node_modules/react-dom\",|; s|\"fielder\".*|\"fielder\": \"file:../../\",|' package.json",
+    "test": "cypress run",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "fielder": "latest",
+    "graphql": "^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0",
+    "react": ">= 16.8.0",
+    "react-dom": "16.12.0",
+    "semantic-ui-css": "2.4.1",
+    "semantic-ui-react": "0.88.2",
+    "spectre.css": "^0.5.8",
+    "urql": "^1.9.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "cypress": "^3.8.3",
+    "parcel-bundler": "^1.6.1",
+    "typescript": "^3.7.5"
+  },
+  "keywords": []
+}
