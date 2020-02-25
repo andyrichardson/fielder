@@ -84,7 +84,9 @@ export const useField = <T = any>({
 
   useLayoutEffect(() => {
     if (fields[name] && fields[name]._isActive) {
-      throw Error('Duplicate field mounted.');
+      console.warn(
+        'Fielder warning: Duplicate field mounted.\nSee this issue for more info https://github.com/andyrichardson/fielder/issues/44'
+      );
     }
 
     mountField({
