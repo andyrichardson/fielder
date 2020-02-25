@@ -1,5 +1,21 @@
 # Changelog
 
+## [v1.2.1](https://github.com/andyrichardson/fielder/tree/v1.2.1) (2020-02-25)
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.2.0...v1.2.1)
+
+**Fixed bugs:**
+
+- Duplicate field - add warning instead of error [\#45](https://github.com/andyrichardson/fielder/pull/45) ([andyrichardson](https://github.com/andyrichardson))
+
+**Closed issues:**
+
+- Add docs for `branching` [\#26](https://github.com/andyrichardson/fielder/issues/26)
+
+**Merged pull requests:**
+
+- Add example branching [\#46](https://github.com/andyrichardson/fielder/pull/46) ([andyrichardson](https://github.com/andyrichardson))
+
 ## [v1.2.0](https://github.com/andyrichardson/fielder/tree/v1.2.0) (2020-02-05)
 
 [Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.1.2...v1.2.0)
@@ -20,6 +36,7 @@
 - Add cypress integration [\#38](https://github.com/andyrichardson/fielder/pull/38) ([andyrichardson](https://github.com/andyrichardson))
 - Add hasChanged and hasBlurred props to useField [\#37](https://github.com/andyrichardson/fielder/pull/37) ([andyrichardson](https://github.com/andyrichardson))
 - Update examples [\#36](https://github.com/andyrichardson/fielder/pull/36) ([andyrichardson](https://github.com/andyrichardson))
+- Add submission docs [\#25](https://github.com/andyrichardson/fielder/pull/25) ([andyrichardson](https://github.com/andyrichardson))
 
 ## [v1.1.2](https://github.com/andyrichardson/fielder/tree/v1.1.2) (2020-01-21)
 
@@ -44,7 +61,6 @@
 - Fix radio input [\#31](https://github.com/andyrichardson/fielder/pull/31) ([andyrichardson](https://github.com/andyrichardson))
 - Add mutation of checkbox element on ref and value change [\#29](https://github.com/andyrichardson/fielder/pull/29) ([andyrichardson](https://github.com/andyrichardson))
 - Add textarea support [\#27](https://github.com/andyrichardson/fielder/pull/27) ([andyrichardson](https://github.com/andyrichardson))
-- Add submission docs [\#25](https://github.com/andyrichardson/fielder/pull/25) ([andyrichardson](https://github.com/andyrichardson))
 
 ## [v1.1.1](https://github.com/andyrichardson/fielder/tree/v1.1.1) (2020-01-10)
 
@@ -75,7 +91,6 @@
 
 - Setup linting [\#16](https://github.com/andyrichardson/fielder/pull/16) ([andyrichardson](https://github.com/andyrichardson))
 - Default to valid when no validation is set [\#15](https://github.com/andyrichardson/fielder/pull/15) ([andyrichardson](https://github.com/andyrichardson))
-- Add coverage [\#13](https://github.com/andyrichardson/fielder/pull/13) ([andyrichardson](https://github.com/andyrichardson))
 - Add docs [\#5](https://github.com/andyrichardson/fielder/pull/5) ([andyrichardson](https://github.com/andyrichardson))
 
 ## [v1.0.3](https://github.com/andyrichardson/fielder/tree/v1.0.3) (2019-12-22)
@@ -93,6 +108,7 @@
 
 **Merged pull requests:**
 
+- Add coverage [\#13](https://github.com/andyrichardson/fielder/pull/13) ([andyrichardson](https://github.com/andyrichardson))
 - Changelog guide + version bump [\#10](https://github.com/andyrichardson/fielder/pull/10) ([andyrichardson](https://github.com/andyrichardson))
 - Remove react-dom [\#9](https://github.com/andyrichardson/fielder/pull/9) ([andyrichardson](https://github.com/andyrichardson))
 - Fix checkbox issue [\#7](https://github.com/andyrichardson/fielder/pull/7) ([andyrichardson](https://github.com/andyrichardson))
