@@ -1,14 +1,6 @@
 import React, { useCallback } from 'react';
 import { useField, useFormContext } from 'fielder';
-import { validateEmail, validatePassword } from './validation';
-import {
-  Card,
-  FormGroup,
-  Label,
-  Input,
-  FieldHint,
-  Button
-} from '../components';
+import { validateEmail, validatePassword } from '../validation';
 
 export const Login = () => {
   const { isValid, fields } = useFormContext();
@@ -35,21 +27,28 @@ export const Login = () => {
   }, [fields]);
 
   return (
-    <Card>
+    <div className="ui card">
       <h1>Log in</h1>
-      <FormGroup>
-        <Label>Email</Label>
-        <Input type="text" {...emailProps} />
-        <FieldHint>{emailMeta.touched && emailMeta.error}</FieldHint>
-      </FormGroup>
-      <FormGroup>
-        <Label>Password</Label>
-        <Input type="password" {...passwordProps} />
-        <FieldHint>{passwordMeta.touched && passwordMeta.error}</FieldHint>
-      </FormGroup>
-      <Button disabled={!isValid} onClick={handleSubmit}>
+
+      <div className="field">
+        <label>Email</label>
+        <input type="text" {...emailProps} />
+        <span style={{ color: 'red' }}>
+          {emailMeta.touched && emailMeta.error}
+        </span>
+      </div>
+
+      <div className="field">
+        <label>Password</label>
+        <input type="password" {...passwordProps} />
+        <span style={{ color: 'red' }}>
+          {passwordMeta.touched && passwordMeta.error}
+        </span>
+      </div>
+
+      <button className="primary" disabled={!isValid} onClick={handleSubmit}>
         Sign up
-      </Button>
-    </Card>
+      </button>
+    </div>
   );
 };
