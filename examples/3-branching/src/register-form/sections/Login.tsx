@@ -29,26 +29,27 @@ export const Login = () => {
   return (
     <div className="ui card">
       <h1>Log in</h1>
+      <form>
+        <div className="field">
+          <label>Email</label>
+          <input type="text" {...emailProps} />
+          <span style={{ color: 'red' }}>
+            {emailMeta.touched && emailMeta.error}
+          </span>
+        </div>
 
-      <div className="field">
-        <label>Email</label>
-        <input type="text" {...emailProps} />
-        <span style={{ color: 'red' }}>
-          {emailMeta.touched && emailMeta.error}
-        </span>
-      </div>
+        <div className="field">
+          <label>Password</label>
+          <input type="password" {...passwordProps} />
+          <span style={{ color: 'red' }}>
+            {passwordMeta.touched && passwordMeta.error}
+          </span>
+        </div>
 
-      <div className="field">
-        <label>Password</label>
-        <input type="password" {...passwordProps} />
-        <span style={{ color: 'red' }}>
-          {passwordMeta.touched && passwordMeta.error}
-        </span>
-      </div>
-
-      <button className="primary" disabled={!isValid} onClick={handleSubmit}>
-        Sign up
-      </button>
+        <button className="primary" disabled={!isValid} onClick={handleSubmit}>
+          Sign up
+        </button>
+      </form>
     </div>
   );
 };

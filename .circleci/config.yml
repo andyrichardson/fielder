@@ -113,6 +113,27 @@ jobs:
           command: npm run serve & sleep 10 && npm run test
           working_directory: examples/2-multi-step
 
+  e2e (example 3):
+    docker:
+      - image: cypress/browsers:node13.3.0-chrome-79-ff70
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - *package-cache
+      - run:
+          command: npm remove fielder
+          working_directory: examples/3-branching
+      - run:
+          command: npm install
+          working_directory: examples/3-branching
+      - run:
+          command: npm install ../../fielder.tgz
+          working_directory: examples/3-branching
+      - run:
+          command: npm run serve & sleep 10 && npm run test
+          working_directory: examples/3-branching
+
   build docs:
     docker:
       - image: node:13
