@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, MouseEventHandler } from 'react';
 import { useField, useFormContext } from 'fielder';
 import { validateEmail, validateName, validatePassword } from '../validation';
 import { span, Card } from '../../components';
@@ -21,17 +21,21 @@ export const SignUp: FC = () => {
     initialValue: ''
   });
 
-  const handleSubmit = useCallback(() => {
-    const variables = {
-      name: fields.name.value,
-      email: fields.email.value,
-      password: fields.password.value
-    };
+  const handleSubmit = useCallback<MouseEventHandler>(
+    e => {
+      e.preventDefault();
+      const variables = {
+        name: fields.name.value,
+        email: fields.email.value,
+        password: fields.password.value
+      };
 
-    // Simulate submission
-    console.log('POST /register', { variables });
-    alert("API call 'POST /register' made. See console for more info");
-  }, [fields]);
+      // Simulate submission
+      console.log('POST /register', { variables });
+      alert("API call 'POST /register' made. See console for more info");
+    },
+    [fields]
+  );
 
   return (
     <div className="ui card">
