@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
-    "cypress": "^3.8.3",
+    "cypress": "^4.0.2",
     "parcel-bundler": "^1.6.1",
     "typescript": "^3.7.5"
   },
