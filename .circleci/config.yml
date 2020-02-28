@@ -202,11 +202,11 @@ workflows:
             tags:
               only: /.*/
       - e2e (example 3):
-        requires:
-          - build
-        filters:
-          tags:
-            only: /.*/
+          requires:
+            - build
+          filters:
+            tags:
+              only: /.*/
       - prettier:
           requires:
             - install
