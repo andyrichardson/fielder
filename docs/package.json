@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "start": "docz dev",
-    "build": "docz build",
+    "build": "docz build && npm run sitemap",
+    "sitemap": "sitemap-static --prefix=https://fielder.andyrichardson.dev/ --pretty --ignore-file=sitemap-ignore.json .docz/dist > .docz/dist/sitemap.xml",
     "deploy": "(echo \"fielder.andyrichardson.dev\" > .docz/dist/CNAME) && gh-pages -d .docz/dist"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "react-dom": "16.8.0"
   },
   "devDependencies": {
-    "gh-pages": "^2.2.0"
+    "gh-pages": "^2.2.0",
+    "sitemap-static": "^0.4.4"
   }
 }
