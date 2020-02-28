@@ -9,7 +9,7 @@ export default {
   },
   plugins: [
     {
-      resolve: `gatsby-plugin-offline`,
+      resolve: 'gatsby-plugin-offline',
       options: {
         precachePages: ['*']
       }
