@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "docz": "^2.2.0",
-    "gatsby-plugin-offline": "^3.0.37",
+    "gatsby-plugin-offline": "^3.0.38",
     "react": "16.8.0",
     "react-dom": "16.8.0"
   },
