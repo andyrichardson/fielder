@@ -15,7 +15,7 @@
     "docz": "^2.2.0",
     "gatsby-plugin-offline": "^3.0.40",
     "react": "16.8.0",
-    "react-dom": "16.8.0"
+    "react-dom": "16.13.0"
   },
   "devDependencies": {
     "gh-pages": "^2.2.0",
