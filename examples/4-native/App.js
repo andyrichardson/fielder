@@ -38,9 +38,14 @@ const FormRoot = () => {
   );
 };
 
+/**
+ * Here's an example of adapting Fielder props to work with
+ * the Input component in NativeBase.
+ *
+ * 'onChange' expects a new value (or DOM event)
+ * NativeBase's Input uses the prop 'onChangeText' for this purpose.
+ */
 const TextInput = () => {
-  // 'onChange' expects a new value (or event)
-  // For NativeBase and Native, this prop is called onChangeText
   const [{ onChange: onChangeText, ...textProps }, fieldMeta] = useField({
     name: 'textinput',
     initialValue: '',
@@ -66,12 +71,21 @@ const TextInput = () => {
   );
 };
 
+/**
+ * Here's an example of adapting Fielder props to work with
+ * the Picker component in NativeBase.
+ *
+ * 'onChange' expects a new value (or DOM event)
+ * NativeBase's Picker uses the prop 'onChangeValue' for this purpose.
+ *
+ * 'value' returns the current value of the field
+ * NativeBase's Picker uses the prop 'selectedValue' for this purpose.
+ *
+ * NativeBase's Picker doesn't have an onBlur so we don't forward
+ * that prop or use 'hasBlurred' from Fielder as it will always be false.
+ */
 const PickerInput = () => {
-  // 'onChange' expects a new value (or event)
-  // For NativeBase and Native, this prop is called onChangeText
-  const [
-    { onChange: onValueChange, value: selectedValue, ...pickerProps }
-  ] = useField({
+  const [{ onChange: onValueChange, value: selectedValue }] = useField({
     name: 'pickerinput',
     initialValue: 'credit'
   });
@@ -103,6 +117,13 @@ const PickerInput = () => {
   );
 };
 
+/**
+ * Here's an example of adapting Fielder props to work with
+ * the Checkbox component in NativeBase.
+ *
+ * 'onChange' expects a new value (or DOM event)
+ * NativeBase's Checkbox uses the 'onPress' and does not provide the pressed value.
+ */
 const CheckboxInput = () => {
   const [{ value, onChange }, fieldMeta] = useField({
     name: 'checkboxinput',
