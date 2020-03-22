@@ -155,14 +155,12 @@ describe('on blur', () => {
 });
 
 describe('on change', () => {
-  describe('basic input', () => {
-    it('calls setFieldValue', () => {
+  describe('on event arg', () => {
+    it('calls setFieldValue with field name', () => {
       const value = 'newval';
       const target = document.createElement('input');
       target.type = 'text';
       target.value = value;
-
-      args = { name: 'someField' };
 
       mount(<Fixture />);
       response[0].onChange({
@@ -170,73 +168,21 @@ describe('on change', () => {
       } as any);
 
       expect(context.setFieldValue).toBeCalledTimes(1);
-      expect(context.setFieldValue).toBeCalledWith({
-        name: args.name,
-        value
-      });
+      expect(context.setFieldValue).toBeCalledWith(
+        expect.objectContaining({
+          name: args.name
+        })
+      );
     });
   });
 
-  describe('textarea input', () => {
-    it('calls setFieldValue', () => {
+  describe('on value arg', () => {
+    it('calls setFieldValue with field name', () => {
       const value = 'newval';
-      args = { name: 'someField' };
 
       mount(<Fixture />);
-      response[0].onChange({
-        currentTarget: {
-          tagName: 'TEXTAREA',
-          getAttribute: () => undefined,
-          value
-        }
-      } as any);
+      response[0].onChange(value);
 
-      expect(context.setFieldValue).toBeCalledTimes(1);
-      expect(context.setFieldValue).toBeCalledWith({
-        name: args.name,
-        value
-      });
-    });
-  });
-
-  describe('radio input', () => {
-    it('calls setFieldValue', () => {
-      const value = 'newval';
-      args = { name: 'someField' };
-
-      mount(<Fixture />);
-      response[0].onChange({
-        currentTarget: {
-          tagName: 'INPUT',
-          getAttribute: () => 'radio',
-          value
-        }
-      } as any);
-
-      expect(context.setFieldValue).toBeCalledTimes(1);
-      expect(context.setFieldValue).toBeCalledWith({
-        name: args.name,
-        value
-      });
-    });
-  });
-
-  describe('checkbox input', () => {
-    const value = 'newval';
-    args = { name: 'someField' };
-
-    beforeEach(() => {
-      mount(<Fixture />);
-      response[0].onChange({
-        currentTarget: {
-          tagName: 'INPUT',
-          getAttribute: () => 'checkbox',
-          value
-        }
-      } as any);
-    });
-
-    it('calls setFieldValue', () => {
       expect(context.setFieldValue).toBeCalledTimes(1);
       expect(context.setFieldValue).toBeCalledWith(
         expect.objectContaining({
@@ -244,47 +190,57 @@ describe('on change', () => {
         })
       );
     });
-
-    describe('on setFieldValue value function', () => {
-      let valueFn: Function;
-      const otherVals = ['other', 'again'];
-
-      beforeEach(() => {
-        valueFn = context.setFieldValue.mock.calls[0][0].value;
-      });
-
-      it('instantiates array with value', () => {
-        expect(valueFn()).toEqual([value]);
-      });
-
-      it('removes value from array', () => {
-        expect(valueFn([...otherVals, value])).toEqual(otherVals);
-      });
-
-      it('appends value to array', () => {
-        expect(valueFn(otherVals)).toEqual([...otherVals, value]);
-      });
-    });
   });
 
-  describe('select input', () => {
-    it('calls setFieldValue', () => {
-      const value = 'newval';
-      args = { name: 'someField' };
+  describe('on value action dispatch', () => {
+    describe('on no existing value', () => {
+      it('returns change value', () => {
+        const value = 'newval';
 
-      mount(<Fixture />);
-      response[0].onChange({
-        currentTarget: {
-          tagName: 'SELECT',
-          value,
-          getAttribute: () => undefined
-        }
-      } as any);
+        mount(<Fixture />);
+        response[0].onChange(value);
 
-      expect(context.setFieldValue).toBeCalledTimes(1);
-      expect(context.setFieldValue).toBeCalledWith({
-        name: args.name,
-        value
+        const action = context.setFieldValue.mock.calls[0][0].value;
+        expect(action()).toEqual(value);
+      });
+    });
+
+    describe('on existing value is string', () => {
+      it('returns change value', () => {
+        const oldValue = 'oldval';
+        const value = 'newval';
+
+        mount(<Fixture />);
+        response[0].onChange(value);
+
+        const action = context.setFieldValue.mock.calls[0][0].value;
+        expect(action(oldValue)).toEqual(value);
+      });
+    });
+
+    describe('on existing value is array (without new value)', () => {
+      it('appends change value to array', () => {
+        const oldValue = ['oldval'];
+        const value = 'newval';
+
+        mount(<Fixture />);
+        response[0].onChange(value);
+
+        const action = context.setFieldValue.mock.calls[0][0].value;
+        expect(action(oldValue)).toEqual([...oldValue, value]);
+      });
+    });
+
+    describe('on existing value is array (with change value)', () => {
+      it('removes change value from array', () => {
+        const oldValue = ['newval', 'oldval'];
+        const value = 'newval';
+
+        mount(<Fixture />);
+        response[0].onChange(value);
+
+        const action = context.setFieldValue.mock.calls[0][0].value;
+        expect(action(oldValue)).toEqual(oldValue.filter(v => v !== value));
       });
     });
   });
