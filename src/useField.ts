@@ -16,7 +16,7 @@ export type UseFieldProps<T = any> = {
   /** Field value. */
   readonly value: T;
   /** Change event handler. */
-  readonly onChange: ChangeEventHandler;
+  readonly onChange: (e: ChangeEvent | T) => void;
   /** Blur event handler (sets blurred state). */
   readonly onBlur: () => void;
 };
@@ -108,25 +108,23 @@ export const useField = <T = any>({
     blurField({ name });
   }, [blurField]);
 
-  const onChange = useCallback<ChangeEventHandler<SupportedElements>>(
+  const onChange = useCallback<UseFieldProps['onChange']>(
     e => {
-      const type = getElementType(e);
-      const newVal = e.currentTarget.value;
-
-      if (type !== 'checkbox') {
-        return setFieldValue({ name, value: newVal });
-      }
+      const value =
+        typeof e === 'object' && 'currentTarget' in e
+          ? e.currentTarget.value
+          : e;
 
       return setFieldValue({
         name,
-        value: (value: any[]) => {
-          if (value === undefined) {
-            return [newVal];
+        value: (previousValue: any) => {
+          if (!Array.isArray(previousValue)) {
+            return value;
           }
 
-          return value.includes(newVal)
-            ? value.filter(v => v !== newVal)
-            : [...value, newVal];
+          return previousValue.includes(value)
+            ? previousValue.filter(v => v !== value)
+            : [...previousValue, value];
         }
       });
     },
@@ -161,33 +159,4 @@ export const useField = <T = any>({
       hasBlurred
     ]
   );
-};
-
-const getElementType = (e: ChangeEvent<SupportedElements>) => {
-  const target = e.currentTarget || e.target;
-  const tagName = target.tagName.toLowerCase();
-
-  if (tagName === 'select') {
-    return 'select';
-  }
-
-  const type = target.getAttribute('type');
-
-  if (tagName === 'textarea') {
-    return 'textarea';
-  }
-
-  if (tagName === 'input' && type === 'checkbox') {
-    return 'checkbox';
-  }
-
-  if (tagName === 'input' && type === 'radio') {
-    return 'radio';
-  }
-
-  if (tagName === 'input') {
-    return 'input';
-  }
-
-  throw Error('Unsupported input element');
 };
