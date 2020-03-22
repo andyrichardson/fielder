@@ -63,15 +63,18 @@ return <FielderProvider value={myForm}>{children}</FielderProvider>;
 `useField` is where you harness the power of _Fielder_.
 
 ```tsx
-const [nameProps, nameMeta] = useField({
-  name: 'userName',
-  validate: useCallback((v) => Yup.string().required().validateSync(v), []);
+const [usernameProps, usernameMeta] = useField({
+  name: 'username',
+  initialValue: 'fielder-user',
+  validate: validateUsername
 });
 
 return (
   <>
-    <input type="text" {...nameProps} />
-    {nameMeta.hasChanged && nameMeta.error && <ErrorMessage>{nameMeta.error}</ErrorMessage>}
+    <input type="text" {...usernameProps} />
+    {usernameMeta.hasChanged && usernameMeta.error && (
+      <ErrorMsg>{usernameMeta.error}</ErrorMsg>
+    )}
   </>
 );
 ```

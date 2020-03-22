@@ -46,7 +46,7 @@ Fewer renders, better performance and no weird "intermediary states".
 
 ### 🔍 Optimized for flexibility
 
-While Yup is supported, you're not limited to using a large Yup schema. Validation functions receive the form state as well as the field value.
+While Yup is supported, you're not limited to using a single large Yup schema. Validation functions receive the form state as well as the field value.
 
 ```tsx
 (value, state) =>
@@ -94,22 +94,17 @@ return <FielderProvider value={myForm}>{children}</FielderProvider>;
 `useField` is where you harness the power of _Fielder_.
 
 ```tsx
-const [nameProps, nameMeta] = useField({
-  name: 'userName',
-  validate: useCallback(
-    v =>
-      Yup.string()
-        .required()
-        .validateSync(v),
-    []
-  )
+const [usernameProps, usernameMeta] = useField({
+  name: 'username',
+  initialValue: 'fielder-user',
+  validate: validateUsername
 });
 
 return (
   <>
-    <input type="text" {...nameProps} />
-    {nameMeta.hasChanged && nameMeta.error && (
-      <ErrorMsg>{nameMeta.error}</ErrorMsg>
+    <input type="text" {...usernameProps} />
+    {usernameMeta.hasChanged && usernameMeta.error && (
+      <ErrorMsg>{usernameMeta.error}</ErrorMsg>
     )}
   </>
 );
@@ -124,8 +119,11 @@ There are a whole number of additional arguments which can be passed to `useFiel
 
 > Note: Unlike other popular form libraries, _Fielder_ allows you to change config options (such as validation) at any time.
 
-## Resources
+## Additional resources
 
-For more info and examples, check out the **[official docs site](https://fielder.andyrichardson.dev/)**.
+For more info, tutorials and examples, visit the **[official docs site](https://fielder.andyrichardson.dev/)**!
 
-For a deeper dive on Fielder and why it exists, check out [this blog post](https://dev.to/andyrichardsonn/why-we-need-another-form-library-fielder-4eah).
+Also check out:
+
+- [[Article] Why we need another form library](https://dev.to/andyrichardsonn/why-we-need-another-form-library-fielder-4eah)
+- [[Video] Getting started with Fielder](https://www.youtube.com/watch?v=wSorSlCkJwk)
