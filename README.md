@@ -124,8 +124,11 @@ There are a whole number of additional arguments which can be passed to `useFiel
 
 > Note: Unlike other popular form libraries, _Fielder_ allows you to change config options (such as validation) at any time.
 
-## Resources
+## Additional resources
 
-For more info and examples, check out the **[official docs site](https://fielder.andyrichardson.dev/)**.
+For more info, tutorials and examples, visit the **[official docs site](https://fielder.andyrichardson.dev/)**!
 
-For a deeper dive on Fielder and why it exists, check out [this blog post](https://dev.to/andyrichardsonn/why-we-need-another-form-library-fielder-4eah).
+Also check out:
+
+- [[Article] Why we need another form library](https://dev.to/andyrichardsonn/why-we-need-another-form-library-fielder-4eah)
+- [[Video] Getting started with Fielder](https://www.youtube.com/watch?v=wSorSlCkJwk)
