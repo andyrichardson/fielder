@@ -46,7 +46,7 @@ Fewer renders, better performance and no weird "intermediary states".
 
 ### 🔍 Optimized for flexibility
 
-While Yup is supported, you're not limited to using a large Yup schema. Validation functions receive the form state as well as the field value.
+While Yup is supported, you're not limited to using a single large Yup schema. Validation functions receive the form state as well as the field value.
 
 ```tsx
 (value, state) =>
@@ -94,22 +94,17 @@ return <FielderProvider value={myForm}>{children}</FielderProvider>;
 `useField` is where you harness the power of _Fielder_.
 
 ```tsx
-const [nameProps, nameMeta] = useField({
-  name: 'userName',
-  validate: useCallback(
-    v =>
-      Yup.string()
-        .required()
-        .validateSync(v),
-    []
-  )
+const [usernameProps, usernameMeta] = useField({
+  name: 'username',
+  initialValue: 'fielder-user',
+  validate: validateUsername
 });
 
 return (
   <>
-    <input type="text" {...nameProps} />
-    {nameMeta.hasChanged && nameMeta.error && (
-      <ErrorMsg>{nameMeta.error}</ErrorMsg>
+    <input type="text" {...usernameProps} />
+    {usernameMeta.hasChanged && usernameMeta.error && (
+      <ErrorMsg>{usernameMeta.error}</ErrorMsg>
     )}
   </>
 );
