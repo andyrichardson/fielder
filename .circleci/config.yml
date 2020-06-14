@@ -9,6 +9,10 @@ executors:
     working_directory: /mnt/ramdisk
     docker:
       - image: node:14
+  cypress:
+    working_directory: /mnt/ramdisk
+    docker:
+      - image: cypress/browsers:node13.3.0-chrome-79-ff70
 
 jobs:
   install:
@@ -73,8 +77,7 @@ jobs:
           path: fielder.tgz
 
   e2e (example 1):
-    docker:
-      - image: cypress/browsers:node13.3.0-chrome-79-ff70
+    executor: cypress
     steps:
       - checkout
       - restore_cache:
@@ -94,8 +97,7 @@ jobs:
           working_directory: examples/1-basics
 
   e2e (example 2):
-    docker:
-      - image: cypress/browsers:node13.3.0-chrome-79-ff70
+    executor: cypress
     steps:
       - checkout
       - restore_cache:
@@ -115,8 +117,7 @@ jobs:
           working_directory: examples/2-multi-step
 
   e2e (example 3):
-    docker:
-      - image: cypress/browsers:node13.3.0-chrome-79-ff70
+    executor: cypress
     steps:
       - checkout
       - restore_cache:
