@@ -5,9 +5,7 @@ beforeEach(() => {
 describe('username', () => {
   it('changes value', () => {
     const value = 'hi';
-    cy.get('input[name="username"]')
-      .type(value)
-      .should('have.value', value);
+    cy.get('input[name="username"]').type(value).should('have.value', value);
   });
 
   it('validates on blur', () => {
@@ -32,9 +30,7 @@ describe('password', () => {
   it('changes value', () => {
     const value = 'hi';
 
-    cy.get('input[name="password"]')
-      .type(value)
-      .should('have.value', value);
+    cy.get('input[name="password"]').type(value).should('have.value', value);
   });
 
   it('validates on blur', () => {
@@ -69,9 +65,7 @@ describe('next button', () => {
   it('is disabled when fields are invalid', () => {
     cy.get('input[name="username"]').type('hello there');
     cy.get('input[name="password"]').type('hello there');
-    cy.get('input[name="password"]')
-      .clear()
-      .type('hi');
+    cy.get('input[name="password"]').clear().type('hi');
     cy.get('button').should('have.attr', 'disabled');
   });
 });

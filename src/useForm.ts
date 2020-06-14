@@ -6,7 +6,7 @@ import {
   SetStateAction,
   Dispatch,
   useRef,
-  MutableRefObject
+  MutableRefObject,
 } from 'react';
 import { FormState, FieldState, FieldConfig, FieldsState } from './types';
 
@@ -80,27 +80,27 @@ export const useForm = <T = any>(): FormState<T> => {
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
   const mountField = useCallback<FormState<T>['mountField']>(
-    config => dispatch({ type: 'MOUNT_FIELD', config: config as any }),
+    (config) => dispatch({ type: 'MOUNT_FIELD', config: config as any }),
     [dispatch]
   );
 
   const unmountField = useCallback<FormState<T>['unmountField']>(
-    config => dispatch({ type: 'UNMOUNT_FIELD', config }),
+    (config) => dispatch({ type: 'UNMOUNT_FIELD', config }),
     [dispatch]
   );
 
   const setFieldValue = useCallback<FormState<T>['setFieldValue']>(
-    config => dispatch({ type: 'SET_FIELD_VALUE', config }),
+    (config) => dispatch({ type: 'SET_FIELD_VALUE', config }),
     [dispatch]
   );
 
   const blurField = useCallback<FormState<T>['blurField']>(
-    config => dispatch({ type: 'BLUR_FIELD', config: config as any }),
+    (config) => dispatch({ type: 'BLUR_FIELD', config: config as any }),
     [dispatch]
   );
 
   const validateField = useCallback<FormState<T>['validateField']>(
-    config => dispatch({ type: 'VALIDATE_FIELD', config }),
+    (config) => dispatch({ type: 'VALIDATE_FIELD', config }),
     [dispatch]
   );
 
@@ -112,17 +112,18 @@ export const useForm = <T = any>(): FormState<T> => {
   const mountedFields = useMemo(
     () =>
       Object.values(fields as FieldsState).filter(
-        f => !(f === undefined || !f._isActive)
+        (f) => !(f === undefined || !f._isActive)
       ) as FieldState[],
     [fields]
   );
-  const isValid = useMemo(() => mountedFields.every(f => f.isValid), [
-    mountedFields
+  const isValid = useMemo(() => mountedFields.every((f) => f.isValid), [
+    mountedFields,
   ]);
 
-  const isValidating = useMemo(() => mountedFields.some(f => f.isValidating), [
-    mountedFields
-  ]);
+  const isValidating = useMemo(
+    () => mountedFields.some((f) => f.isValidating),
+    [mountedFields]
+  );
 
   return useMemo(
     () => ({
@@ -134,7 +135,7 @@ export const useForm = <T = any>(): FormState<T> => {
       validateField,
       validateFields,
       isValid,
-      isValidating
+      isValidating,
     }),
     [fields, mountField, unmountField, isValid, isValidating]
   );
@@ -176,7 +177,7 @@ const createHandleAsyncValidation = <T>(
     const promiseId = promises[name] !== undefined ? promises[name] + 1 : 0;
     promises = {
       ...promises,
-      [name]: promiseId
+      [name]: promiseId,
     };
 
     const validationCallback = (isError: boolean) => (response: any) => {
@@ -198,13 +199,13 @@ const createHandleAsyncValidation = <T>(
         type: 'SET_FIELD_STATE',
         config: {
           name,
-          state: s => ({
+          state: (s) => ({
             ...s,
             isValidating: false,
             isValid,
-            error: response
-          })
-        }
+            error: response,
+          }),
+        },
       });
     };
 
@@ -225,7 +226,7 @@ const applyValidationToState = (
       'SET_FIELD_VALUE',
       'BLUR_FIELD',
       'VALIDATE_FIELD',
-      'VALIDATE_FIELDS'
+      'VALIDATE_FIELDS',
     ].includes(action.type)
   ) {
     return state;
@@ -274,8 +275,8 @@ const applyValidationToState = (
             ...field,
             isValid: true,
             isValidating: false,
-            error: undefined
-          }
+            error: undefined,
+          },
         };
       }
 
@@ -285,8 +286,8 @@ const applyValidationToState = (
         ...state,
         [key]: {
           ...field,
-          isValidating: true
-        }
+          isValidating: true,
+        },
       };
     } catch (err) {
       return {
@@ -295,8 +296,8 @@ const applyValidationToState = (
           ...field,
           isValid: false,
           isValidating: false,
-          error: err && err.message ? err.message : err
-        }
+          error: err && err.message ? err.message : err,
+        },
       };
     }
   }, state);
@@ -312,7 +313,7 @@ const doMountField = (fields: FieldsState) => ({
   initialValue = undefined,
   initialError = undefined,
   initialValid = false,
-  initialTouched = false
+  initialTouched = false,
 }: FieldConfig): FieldsState => {
   const p = fields[name as string] || ({} as FieldState);
 
@@ -336,8 +337,8 @@ const doMountField = (fields: FieldsState) => ({
       error: p.error || initialError,
       touched: p.touched || initialTouched,
       hasBlurred: false,
-      hasChanged: false
-    }
+      hasChanged: false,
+    },
   };
 };
 
@@ -349,7 +350,7 @@ export interface UnmountFieldArgs<T = any> {
 /** Unmount of field. */
 const doUnmountField = (fields: FieldsState) => ({
   name,
-  destroy = false
+  destroy = false,
 }: UnmountFieldArgs): FieldsState => {
   const p = fields[name as string];
 
@@ -369,8 +370,8 @@ const doUnmountField = (fields: FieldsState) => ({
     ...fields,
     [name]: {
       ...p,
-      _isActive: false
-    }
+      _isActive: false,
+    },
   };
 };
 
@@ -385,7 +386,7 @@ export interface SetFieldValueArgs<
 /** Triggers a change to the given field. */
 const doSetFieldValue = (fields: FieldsState) => <T>({
   name,
-  value
+  value,
 }: SetFieldValueArgs<T>): FieldsState => {
   const p = fields[name as string];
 
@@ -402,8 +403,8 @@ const doSetFieldValue = (fields: FieldsState) => <T>({
     [name]: {
       ...p,
       value: typeof value === 'function' ? (value as any)(p.value) : value,
-      hasChanged: true
-    }
+      hasChanged: true,
+    },
   };
 };
 
@@ -416,7 +417,7 @@ export interface BlurFieldArgs<
 
 /** Triggers a change to the given field. */
 const doBlurField = (fields: FieldsState) => <T = any>({
-  name
+  name,
 }: BlurFieldArgs): FieldsState => {
   const p = fields[name];
 
@@ -433,14 +434,14 @@ const doBlurField = (fields: FieldsState) => <T = any>({
     [name]: {
       ...p,
       touched: true,
-      hasBlurred: true
-    }
+      hasBlurred: true,
+    },
   };
 };
 
 const doSetFieldState = (fields: FieldsState) => <T>({
   name,
-  state
+  state,
 }: SetFieldStateArgs<T>) => {
   const p = fields[name];
 
@@ -454,7 +455,7 @@ const doSetFieldState = (fields: FieldsState) => <T>({
 
   return {
     ...fields,
-    [name]: typeof state === 'function' ? state(p) : state
+    [name]: typeof state === 'function' ? state(p) : state,
   };
 };
 

@@ -8,26 +8,26 @@ export const SignUp: FC = () => {
   const [nameProps, nameMeta] = useField({
     name: 'name',
     validate: validateName,
-    initialValue: ''
+    initialValue: '',
   });
   const [emailProps, emailMeta] = useField({
     name: 'email',
     validate: validateEmail,
-    initialValue: ''
+    initialValue: '',
   });
   const [passwordProps, passwordMeta] = useField({
     name: 'password',
     validate: validatePassword,
-    initialValue: ''
+    initialValue: '',
   });
 
   const handleSubmit = useCallback<MouseEventHandler>(
-    e => {
+    (e) => {
       e.preventDefault();
       const variables = {
         name: fields.name.value,
         email: fields.email.value,
-        password: fields.password.value
+        password: fields.password.value,
       };
 
       // Simulate submission

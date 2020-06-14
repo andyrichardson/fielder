@@ -17,7 +17,7 @@ import { useField } from 'fielder';
 ```tsx
 const [passwordProps, passwordMeta] = useField({
   name: 'password',
-  validate: passwordValidation
+  validate: passwordValidation,
 });
 
 return <input type={'password'} {...passwordProps} />;

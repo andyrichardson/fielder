@@ -51,7 +51,7 @@ describe('on mount field', () => {
           validate: jest.fn(),
           validateOnBlur: false,
           validateOnChange: false,
-          validateOnUpdate: true
+          validateOnUpdate: true,
         })
       );
     });
@@ -78,12 +78,12 @@ describe('on unmount field', () => {
         response.mountField({
           name: 'test',
           initialValue: 1234,
-          initialValid: true
+          initialValid: true,
         });
         response.mountField({
           name: fieldName,
           initialValue: value,
-          initialValid: false
+          initialValid: false,
         });
         response.unmountField({ name: fieldName });
       });
@@ -100,12 +100,12 @@ describe('on unmount field', () => {
         response.mountField({
           name: 'test',
           initialValue: 1234,
-          initialValid: true
+          initialValid: true,
         });
         response.mountField({
           name: fieldName,
           initialValue: value,
-          initialValid: false
+          initialValid: false,
         });
         response.unmountField({ name: fieldName });
       });
@@ -130,12 +130,12 @@ describe('on unmount field', () => {
         response.mountField({
           name: 'test',
           initialValue: 1234,
-          initialValid: true
+          initialValid: true,
         });
         response.mountField({
           name: fieldName,
           initialValue: value,
-          initialValid: false
+          initialValid: false,
         });
         response.unmountField({ name: fieldName, destroy: true });
       });
@@ -165,7 +165,7 @@ describe('on unmount field', () => {
           validate: jest.fn(),
           validateOnBlur: false,
           validateOnChange: false,
-          validateOnUpdate: true
+          validateOnUpdate: true,
         })
       );
     });
@@ -216,7 +216,7 @@ describe('on blur field', () => {
           name: fieldName,
           validate,
           validateOnBlur: true,
-          initialValid: true
+          initialValid: true,
         });
         response.blurField({ name: fieldName });
       });
@@ -237,7 +237,7 @@ describe('on blur field', () => {
           response.mountField({
             name: fieldName,
             validate,
-            validateOnBlur: false
+            validateOnBlur: false,
           });
           response.blurField({ name: fieldName });
         });
@@ -289,7 +289,7 @@ describe('on change field', () => {
           name: fieldName,
           validate,
           validateOnChange: true,
-          initialValid: true
+          initialValid: true,
         });
         response.setFieldValue({ name: fieldName, value });
       });
@@ -310,7 +310,7 @@ describe('on change field', () => {
           response.mountField({
             name: fieldName,
             validate,
-            validateOnChange: false
+            validateOnChange: false,
           });
           response.blurField({ name: fieldName });
         });
@@ -374,7 +374,7 @@ describe('on validate field', () => {
           name: fieldName,
           validate,
           initialValid: true,
-          initialValue: value
+          initialValue: value,
         });
         response.validateField({ name: fieldName });
       });
@@ -387,8 +387,8 @@ describe('on validate field', () => {
         [fieldName]: {
           ...response.fields[fieldName],
           isValid: true,
-          error: undefined
-        }
+          error: undefined,
+        },
       });
     });
   });
@@ -406,7 +406,7 @@ describe('on validate field', () => {
           name: fieldName,
           validate,
           initialValid: true,
-          initialValue: value
+          initialValue: value,
         });
         response.validateField({ name: fieldName });
       });
@@ -425,7 +425,7 @@ describe('on validate field', () => {
             // Trim mock from snapshot
             (p, key) => ({
               ...p,
-              [key]: { ...p[key], _validate: 'stub' as any }
+              [key]: { ...p[key], _validate: 'stub' as any },
             }),
             response.fields
           )
@@ -484,7 +484,7 @@ describe('on validate field', () => {
           name: fieldName,
           validate,
           initialValid: true,
-          initialValue: value
+          initialValue: value,
         });
         response.validateField({ name: fieldName });
       });
@@ -503,7 +503,7 @@ describe('on validate field', () => {
             // Trim mock from snapshot
             (p, key) => ({
               ...p,
-              [key]: { ...p[key], _validate: 'stub' as any }
+              [key]: { ...p[key], _validate: 'stub' as any },
             }),
             response.fields
           )
@@ -572,7 +572,7 @@ describe('on validate field (async)', () => {
           new Promise((res, rej) => {
             resolve = res;
             reject = rej;
-          })
+          }),
       });
     });
   });

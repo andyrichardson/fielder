@@ -33,7 +33,7 @@ const MySubmitComponent = () => {
 
     fetch('/api/submit', {
       method: 'POST',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
   }, [fields]);
 

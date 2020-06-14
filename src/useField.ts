@@ -1,11 +1,10 @@
 import {
   useContext,
   ChangeEvent,
-  ChangeEventHandler,
   useCallback,
   useMemo,
   useLayoutEffect,
-  useRef
+  useRef,
 } from 'react';
 import { FielderContext } from './context';
 import { FormState, FieldState, FieldConfig } from './types';
@@ -54,7 +53,7 @@ export const useField = <T = any>({
   validateOnBlur = true,
   validateOnChange = true,
   validateOnUpdate = false,
-  destroyOnUnmount = false
+  destroyOnUnmount = false,
 }: FieldConfig<T>): UseFieldResponse => {
   const destroyRef = useRef(destroyOnUnmount);
   const {
@@ -62,7 +61,7 @@ export const useField = <T = any>({
     blurField,
     mountField,
     unmountField,
-    setFieldValue
+    setFieldValue,
   } = useContext<FormState>(FielderContext);
 
   const name = useMemo(() => initialName, []);
@@ -75,7 +74,7 @@ export const useField = <T = any>({
         value: initialValue,
         touched: initialTouched,
         hasBlurred: false,
-        hasChanged: false
+        hasChanged: false,
       },
     [fields, name]
   );
@@ -98,7 +97,7 @@ export const useField = <T = any>({
       validate,
       validateOnBlur,
       validateOnChange,
-      validateOnUpdate
+      validateOnUpdate,
     });
 
     return () => unmountField({ name, destroy: destroyRef.current });
@@ -109,7 +108,7 @@ export const useField = <T = any>({
   }, [blurField]);
 
   const onChange = useCallback<UseFieldProps['onChange']>(
-    e => {
+    (e) => {
       const value =
         typeof e === 'object' && 'currentTarget' in e
           ? e.currentTarget.value
@@ -123,9 +122,9 @@ export const useField = <T = any>({
           }
 
           return previousValue.includes(value)
-            ? previousValue.filter(v => v !== value)
+            ? previousValue.filter((v) => v !== value)
             : [...previousValue, value];
-        }
+        },
       });
     },
     [setFieldValue]
@@ -138,13 +137,13 @@ export const useField = <T = any>({
     isValid,
     isValidating,
     hasChanged,
-    hasBlurred
+    hasBlurred,
   } = field;
 
   return useMemo(
     () => [
       { name, value, onBlur, onChange },
-      { touched, error, isValid, isValidating, hasBlurred, hasChanged }
+      { touched, error, isValid, isValidating, hasBlurred, hasChanged },
     ],
     [
       value,
@@ -156,7 +155,7 @@ export const useField = <T = any>({
       isValid,
       isValidating,
       hasChanged,
-      hasBlurred
+      hasBlurred,
     ]
   );
 };

@@ -6,15 +6,15 @@ import {
   Edit,
   Menu,
   Sun,
-  Github
+  Github,
 } from 'gatsby-theme-docz/src/components/Icons';
 import { Logo } from 'gatsby-theme-docz/src/components/Logo';
 
-export const Header = props => {
+export const Header = (props) => {
   const { onOpen } = props;
   const {
     repository,
-    themeConfig: { showDarkModeSwitch, showMarkdownEditButton }
+    themeConfig: { showDarkModeSwitch, showMarkdownEditButton },
   } = useConfig();
   const doc = useCurrentDoc();
   const [colorMode, setColorMode] = useColorMode();

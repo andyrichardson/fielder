@@ -58,10 +58,10 @@ Next we want to add some fields to our form.
 ```tsx
 const MyFormContent = () => {
   const [usernameProps] = useField({
-    name: 'username'
+    name: 'username',
   });
   const [passwordProps] = useField({
-    name: 'password'
+    name: 'password',
   });
 
   return (
@@ -149,6 +149,6 @@ Set the initial value of your checkbox state to an array
 ```tsx
 const [hobbiesProps] = useField({
   name: 'hobbies',
-  initialValue: ['sports', 'coding'] // checkboxes with these values will be checked
+  initialValue: ['sports', 'coding'], // checkboxes with these values will be checked
 });
 ```

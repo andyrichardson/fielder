@@ -3,21 +3,21 @@ import { useField, useFormContext } from 'fielder';
 import { conditionalError } from '../../util';
 
 export const CredentialsSection: FC<{ onComplete: () => void }> = ({
-  onComplete
+  onComplete,
 }) => {
   const { isValid } = useFormContext();
   const [usernameProps, usernameMeta] = useField({
     name: 'username',
-    validate: usernameValidation
+    validate: usernameValidation,
   });
   const [passwordProps, passwordMeta] = useField({
     name: 'password',
-    validate: passwordValidation
+    validate: passwordValidation,
   });
   const [passwordConfProps, passwordConfMeta] = useField({
     name: 'passwordConfirmation',
     validate: passwordConfValidation,
-    destroyOnUnmount: true
+    destroyOnUnmount: true,
   });
 
   return (
@@ -46,7 +46,7 @@ export const CredentialsSection: FC<{ onComplete: () => void }> = ({
   );
 };
 
-const usernameValidation = value => {
+const usernameValidation = (value) => {
   if (!value) {
     throw Error('Username is required.');
   }
@@ -56,7 +56,7 @@ const usernameValidation = value => {
   }
 };
 
-const passwordValidation = value => {
+const passwordValidation = (value) => {
   if (!value) {
     throw Error('Password is required.');
   }
