@@ -1,3 +1,5 @@
+version: 2.1
+
 variables:
   - &module-cache node-cache-v1-{{ checksum "package-lock.json" }}
   - &build-cache build-cache-v1-{{ .Revision }}
@@ -76,7 +78,7 @@ jobs:
       - store_artifacts:
           path: fielder.tgz
 
-  e2e (example 1):
+  e2e - example 1:
     executor: cypress
     steps:
       - checkout
@@ -96,7 +98,7 @@ jobs:
           command: npm run serve & sleep 10 && npm run test
           working_directory: examples/1-basics
 
-  e2e (example 2):
+  e2e - example 2:
     executor: cypress
     steps:
       - checkout
@@ -116,7 +118,7 @@ jobs:
           command: npm run serve & sleep 10 && npm run test
           working_directory: examples/2-multi-step
 
-  e2e (example 3):
+  e2e - example 3:
     executor: cypress
     steps:
       - checkout
@@ -190,19 +192,19 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - e2e (example 1):
+      - e2e - example 1:
           requires:
             - build
           filters:
             tags:
               only: /.*/
-      - e2e (example 2):
+      - e2e - example 2:
           requires:
             - build
           filters:
             tags:
               only: /.*/
-      - e2e (example 3):
+      - e2e - example 3:
           requires:
             - build
           filters:
@@ -234,8 +236,9 @@ workflows:
             - build
             - prettier
             - lint
-            - e2e (example 1)
-            - e2e (example 2)
+            - e2e - example 1
+            - e2e - example 2
+            - e2e - example 3
           filters:
             tags:
               only: /.*/
