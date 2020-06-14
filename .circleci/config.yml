@@ -1,13 +1,18 @@
 variables:
-  - &module-cache node-cache-{{ checksum "package-lock.json" }}
-  - &build-cache build-cache-{{ .Revision }}
-  - &package-cache package-cache-{{ .Revision }}
-  - &docs-module-cache docs-module-cache-{{ checksum "docs/yarn.lock" }}
+  - &module-cache node-cache-v1-{{ checksum "package-lock.json" }}
+  - &build-cache build-cache-v1-{{ .Revision }}
+  - &package-cache package-cache-v1-{{ .Revision }}
+  - &docs-module-cache docs-module-cache-v1-{{ checksum "docs/yarn.lock" }}
+
+executors:
+  node:
+    working_directory: /mnt/ramdisk
+    docker:
+      - image: node:14
 
 jobs:
   install:
-    docker:
-      - image: node:13
+    executor: node
     steps:
       - checkout
       - restore_cache:
@@ -19,8 +24,7 @@ jobs:
           paths:
             - 'node_modules'
   prettier:
-    docker:
-      - image: node:13
+    executor: node
     steps:
       - checkout
       - restore_cache:
@@ -29,8 +33,7 @@ jobs:
       - run: npm run check-formatting
 
   lint:
-    docker:
-      - image: node:13
+    executor: node
     steps:
       - checkout
       - restore_cache:
@@ -39,8 +42,7 @@ jobs:
       - run: npm run lint
 
   test:
-    docker:
-      - image: node:13
+    executor: node
     steps:
       - checkout
       - restore_cache:
@@ -50,8 +52,7 @@ jobs:
       - run: npx codecov
 
   build:
-    docker:
-      - image: node:13
+    executor: node
     steps:
       - checkout
       - restore_cache:
@@ -135,8 +136,7 @@ jobs:
           working_directory: examples/3-branching
 
   build docs:
-    docker:
-      - image: node:13
+    executor: node
     steps:
       - checkout
       - restore_cache:
@@ -157,8 +157,7 @@ jobs:
           destination: static-docs
 
   deploy:
-    docker:
-      - image: node:13
+    executor: node
     steps:
       - checkout
       - restore_cache:
@@ -169,6 +168,7 @@ jobs:
             node -e "process.env.CIRCLE_TAG === \`v\${require('./package.json').version}\` ? process.exit(0) : (console.error('Tag version does not line up with version in package.json') || process.exit(1))"
             npm config set "//registry.npmjs.org/:_authToken" "$npm_TOKEN"
             npm publish --access=public
+
 workflows:
   version: 2
   build_and_test:
