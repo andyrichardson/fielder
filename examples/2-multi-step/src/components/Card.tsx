@@ -9,7 +9,7 @@ export const Card: FC = ({ children }) => (
 
 export const CardSection: FC<{ disabled?: boolean }> = ({
   children,
-  disabled
+  disabled,
 }) => (
   <div className={`content ${disabled ? 'disabled-section' : ''}`}>
     {children}

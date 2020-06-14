@@ -7,9 +7,7 @@ describe('auth info', () => {
     it('changes value', () => {
       const value = 'hi';
 
-      cy.get('input[name="username"]')
-        .type(value)
-        .should('have.value', value);
+      cy.get('input[name="username"]').type(value).should('have.value', value);
     });
 
     it('validates on blur', () => {
@@ -33,9 +31,7 @@ describe('auth info', () => {
   describe('password', () => {
     it('changes value', () => {
       const value = 'hi';
-      cy.get('input[name="password"]')
-        .type(value)
-        .should('have.value', value);
+      cy.get('input[name="password"]').type(value).should('have.value', value);
     });
 
     it('validates on blur', () => {
@@ -77,9 +73,7 @@ describe('auth info', () => {
 
     it('updates validation (cross form) on change', () => {
       const value = 'validpassword';
-      cy.get('input[name="password"]')
-        .type(value)
-        .blur();
+      cy.get('input[name="password"]').type(value).blur();
 
       cy.get('input[name="passwordConfirmation"]')
         .type('hi')
@@ -93,17 +87,11 @@ describe('auth info', () => {
     it('updates validation (cross form) on form-wide change', () => {
       const value = 'validpassword';
 
-      cy.get('input[name="password"]')
-        .type('somegibberish')
-        .blur();
+      cy.get('input[name="password"]').type('somegibberish').blur();
 
-      cy.get('input[name="passwordConfirmation"]')
-        .type(value)
-        .blur();
+      cy.get('input[name="passwordConfirmation"]').type(value).blur();
 
-      cy.get('input[name="password"]')
-        .clear()
-        .type(value);
+      cy.get('input[name="password"]').clear().type(value);
 
       cy.get('input[name="passwordConfirmation"]')
         .next()
@@ -139,9 +127,7 @@ describe('terms section', () => {
     });
 
     it('toggles on click', () => {
-      cy.get('input[value="marketing"]')
-        .click()
-        .should('not.be.checked');
+      cy.get('input[value="marketing"]').click().should('not.be.checked');
     });
   });
 

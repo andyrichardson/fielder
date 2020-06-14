@@ -6,9 +6,7 @@ describe('email', () => {
   it('changes value', () => {
     const value = 'hi';
 
-    cy.get('input[name="email"]')
-      .type(value)
-      .should('have.value', value);
+    cy.get('input[name="email"]').type(value).should('have.value', value);
   });
 
   it('validates on blur', () => {

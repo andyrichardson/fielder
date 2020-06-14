@@ -9,7 +9,7 @@ let context = {
   mountField: jest.fn(),
   unmountField: jest.fn(),
   blurField: jest.fn(),
-  setFieldValue: jest.fn()
+  setFieldValue: jest.fn(),
 };
 let response: UseFieldResponse;
 let args: FieldConfig<any>;
@@ -36,7 +36,7 @@ beforeEach(() => {
     mountField: jest.fn(),
     unmountField: jest.fn(),
     blurField: jest.fn(),
-    setFieldValue: jest.fn()
+    setFieldValue: jest.fn(),
   };
 });
 
@@ -55,7 +55,7 @@ describe('on mount', () => {
       validate: undefined,
       validateOnBlur: true,
       validateOnChange: true,
-      validateOnUpdate: false
+      validateOnUpdate: false,
     });
   });
 
@@ -73,7 +73,7 @@ describe('on mount', () => {
       validate: args.validate,
       validateOnBlur: true,
       validateOnChange: true,
-      validateOnUpdate: false
+      validateOnUpdate: false,
     });
   });
 
@@ -87,13 +87,13 @@ describe('on mount', () => {
       validate: jest.fn(),
       validateOnBlur: false,
       validateOnChange: false,
-      validateOnUpdate: true
+      validateOnUpdate: true,
     };
     mount(<Fixture />);
 
     expect(context.mountField).toBeCalledTimes(1);
     expect(context.mountField).toBeCalledWith({
-      ...args
+      ...args,
     });
   });
 });
@@ -107,7 +107,7 @@ describe('on unmount', () => {
     expect(context.unmountField).toBeCalledTimes(1);
     expect(context.unmountField).toBeCalledWith({
       name: args.name,
-      destroy: false
+      destroy: false,
     });
   });
 
@@ -119,7 +119,7 @@ describe('on unmount', () => {
     expect(context.unmountField).toBeCalledTimes(1);
     expect(context.unmountField).toBeCalledWith({
       name: args.name,
-      destroy: true
+      destroy: true,
     });
   });
 
@@ -133,7 +133,7 @@ describe('on unmount', () => {
     expect(context.unmountField).toBeCalledTimes(1);
     expect(context.unmountField).toBeCalledWith({
       name: args.name,
-      destroy: true
+      destroy: true,
     });
   });
 });
@@ -149,7 +149,7 @@ describe('on blur', () => {
   it('calls blurField', () => {
     expect(context.blurField).toBeCalledTimes(1);
     expect(context.blurField).toBeCalledWith({
-      name: args.name
+      name: args.name,
     });
   });
 });
@@ -164,13 +164,13 @@ describe('on change', () => {
 
       mount(<Fixture />);
       response[0].onChange({
-        currentTarget: target
+        currentTarget: target,
       } as any);
 
       expect(context.setFieldValue).toBeCalledTimes(1);
       expect(context.setFieldValue).toBeCalledWith(
         expect.objectContaining({
-          name: args.name
+          name: args.name,
         })
       );
     });
@@ -186,7 +186,7 @@ describe('on change', () => {
       expect(context.setFieldValue).toBeCalledTimes(1);
       expect(context.setFieldValue).toBeCalledWith(
         expect.objectContaining({
-          name: args.name
+          name: args.name,
         })
       );
     });
@@ -240,7 +240,7 @@ describe('on change', () => {
         response[0].onChange(value);
 
         const action = context.setFieldValue.mock.calls[0][0].value;
-        expect(action(oldValue)).toEqual(oldValue.filter(v => v !== value));
+        expect(action(oldValue)).toEqual(oldValue.filter((v) => v !== value));
       });
     });
   });

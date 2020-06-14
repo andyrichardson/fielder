@@ -51,9 +51,7 @@ While Yup is supported, you're not limited to using a single large Yup schema. V
 ```tsx
 (value, state) =>
   state.otherField.value === 'string'
-    ? Yup.string()
-        .required()
-        .validateSync(value)
+    ? Yup.string().required().validateSync(value)
     : Yup.number().validateSync(value);
 ```
 
@@ -97,7 +95,7 @@ return <FielderProvider value={myForm}>{children}</FielderProvider>;
 const [usernameProps, usernameMeta] = useField({
   name: 'username',
   initialValue: 'fielder-user',
-  validate: validateUsername
+  validate: validateUsername,
 });
 
 return (

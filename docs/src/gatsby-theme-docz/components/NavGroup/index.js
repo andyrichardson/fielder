@@ -31,7 +31,7 @@ export const NavGroup = ({ item, sidebarRef }) => {
           subheadingsVisible &&
           menu
             .sort((a, b) => (a.order === undefined ? 0 : a.order - b.order))
-            .map(menu => {
+            .map((menu) => {
               if (currentDoc.route === menu.route) {
                 return (
                   <NavLink key={menu.id} item={menu} ref={currentDocRef}>

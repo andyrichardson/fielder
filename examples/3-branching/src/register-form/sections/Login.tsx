@@ -7,18 +7,18 @@ export const Login = () => {
   const [emailProps, emailMeta] = useField({
     name: 'email',
     validate: validateEmail,
-    initialValue: ''
+    initialValue: '',
   });
   const [passwordProps, passwordMeta] = useField({
     name: 'password',
     validate: validatePassword,
-    initialValue: ''
+    initialValue: '',
   });
 
   const handleSubmit = useCallback(() => {
     const variables = {
       email: fields.email.value,
-      password: fields.password.value
+      password: fields.password.value,
     };
 
     // Simulate submission

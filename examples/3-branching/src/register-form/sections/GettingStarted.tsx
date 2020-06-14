@@ -7,7 +7,7 @@ export const GettingStarted: FC<{ onNext: () => void }> = ({ onNext }) => {
   const [emailProps, emailMeta] = useField({
     name: 'email',
     validate: validateEmail,
-    initialValue: ''
+    initialValue: '',
   });
 
   return (

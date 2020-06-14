@@ -6,13 +6,13 @@ export const TermsSection: FC = () => {
   const [termsProps] = useField({
     name: 'terms',
     validate: termsValidation,
-    initialValue: ['marketing']
+    initialValue: ['marketing'],
   });
 
   const checkboxes = useMemo(
     () => [
       { label: 'Send me marketing mail', value: 'marketing' },
-      { label: 'I accept terms and conditions', value: 'legal' }
+      { label: 'I accept terms and conditions', value: 'legal' },
     ],
     []
   );
@@ -41,7 +41,7 @@ export const TermsSection: FC = () => {
   );
 };
 
-const termsValidation = v => {
+const termsValidation = (v) => {
   if (!v.includes('legal')) {
     throw Error('Legal terms must be accepted');
   }

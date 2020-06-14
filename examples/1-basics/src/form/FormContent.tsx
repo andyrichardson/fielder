@@ -6,11 +6,11 @@ export const FormContent: FC = () => {
   const { isValid } = useFormContext();
   const [usernameProps, usernameMeta] = useField({
     name: 'username',
-    validate: usernameValidation
+    validate: usernameValidation,
   });
   const [passwordProps, passwordMeta] = useField({
     name: 'password',
-    validate: passwordValidation
+    validate: passwordValidation,
   });
 
   const handleSubmit = useCallback(() => {
@@ -38,7 +38,7 @@ export const FormContent: FC = () => {
   );
 };
 
-const usernameValidation = value => {
+const usernameValidation = (value) => {
   if (!value) {
     throw Error('Username is required.');
   }
@@ -48,7 +48,7 @@ const usernameValidation = value => {
   }
 };
 
-const passwordValidation = value => {
+const passwordValidation = (value) => {
   if (!value) {
     throw Error('Password is required.');
   }
