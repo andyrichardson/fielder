@@ -5,7 +5,7 @@ route: /
 
 # About
 
-_Fielder_ is a React form library that has been built from the ground up with a **field-first** approach to validation.
+_Fielder_ is a form library for React and React Native that has been built from the ground up with a **field-first** approach to validation.
 
 What does this mean?
 
@@ -26,10 +26,11 @@ Fewer renders, better performance and no weird "intermediary states".
 While Yup is supported, you're not limited to using a large Yup schema. Validation functions receive the form state as well as the field value.
 
 ```tsx
-(value, state) =>
-  state.otherField.value === 'string'
-    ? Yup.string().required().validateSync(value)
-    : Yup.number().validateSync(value);
+(value, state) => {
+  if (state.otherField.value === 'yes' && !value) {
+    throw Error('This field is required');
+  }
+},
 ```
 
 ### User focused API

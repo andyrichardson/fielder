@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">Fielder</h1>
-<p align="center">A React form library which adapts to change.</p>
+<p align="center"><i>A field-first form library for React and React Native.</i></p>
 
 <p align="center">
   <a href="https://circleci.com/gh/andyrichardson/fielder">
@@ -49,10 +49,11 @@ Fewer renders, better performance and no weird "intermediary states".
 While Yup is supported, you're not limited to using a single large Yup schema. Validation functions receive the form state as well as the field value.
 
 ```tsx
-(value, state) =>
-  state.otherField.value === 'string'
-    ? Yup.string().required().validateSync(value)
-    : Yup.number().validateSync(value);
+(value, state) => {
+  if (state.otherField.value === 'yes' && !value) {
+    throw Error('This field is required');
+  }
+},
 ```
 
 ### 🤓User focused API

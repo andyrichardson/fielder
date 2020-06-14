@@ -135,7 +135,7 @@ Props which can be passed to a form element / component.
 type UseFieldProps<T = any> = {
   readonly name: string;
   readonly value: T;
-  readonly onChange: ChangeEventHandler;
+  readonly onChange: ChangeEventHandler | (value: T) => void;
   readonly onBlur: () => void;
 };
 ```

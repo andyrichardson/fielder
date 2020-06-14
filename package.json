@@ -1,7 +1,7 @@
 {
   "name": "fielder",
   "version": "1.2.1",
-  "description": "A dynamic React form library which adapts to change.",
+  "description": "A field-first form library for React and React Native",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "umd:main": "dist/index.umd.js",
