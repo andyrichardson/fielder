@@ -13,7 +13,7 @@ Because Fielder, at it's core, is a state management library, React Native is fu
 
 The API is identical with the only limitations being dependent on your component library.
 
-Unlike in web, most popular React Native form component's don't adhere to a prop naming standard (i.e. _onChange_, _onBlur_, _value_, etc). 
+Unlike in web, most popular React Native form component's don't adhere to a prop naming standard (i.e. _onChange_, _onBlur_, _value_, etc).
 Because of this, you'll need to proxy the provided [UseFieldProps](../api/usefield/#usefieldprops) to work with your components.
 
 ```tsx
@@ -45,5 +45,3 @@ export const useTextField = (...args: Parameters<typeof useField>) => {
 ## Examples
 
 Check out the [React Native example repo](https://github.com/andyrichardson/fielder/tree/master/examples/4-native).
-
-
