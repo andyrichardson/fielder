@@ -8,29 +8,24 @@ export default {
     {
       file: pkg.main,
       format: 'cjs',
-      sourcemap: true
+      sourcemap: true,
     },
     {
       file: pkg.module,
       format: 'es',
-      sourcemap: true
+      sourcemap: true,
     },
     {
       file: pkg['umd:main'],
       format: 'umd',
       sourcemap: true,
       name: 'fielder',
-      globals: 'react'
-    }
+      globals: 'react',
+    },
   ],
   external: [
     ...Object.keys(pkg.dependencies || {}),
-    ...Object.keys(pkg.peerDependencies || {})
+    ...Object.keys(pkg.peerDependencies || {}),
   ],
-  plugins: [
-    typescript(),
-    terser({
-      sourcemap: true
-    })
-  ]
+  plugins: [typescript(), terser({})],
 };
