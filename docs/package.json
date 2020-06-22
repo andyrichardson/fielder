@@ -18,7 +18,7 @@
     "react-dom": "16.13.1"
   },
   "devDependencies": {
-    "gh-pages": "^2.2.0",
+    "gh-pages": "^3.1.0",
     "sitemap-static": "^0.4.4"
   }
 }
