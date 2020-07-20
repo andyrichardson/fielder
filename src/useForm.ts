@@ -94,6 +94,11 @@ export const useForm = <T = any>(): FormState<T> => {
     [dispatch]
   );
 
+  const setFieldState = useCallback<FormState<T>['setFieldState']>(
+    (config) => dispatch({ type: 'SET_FIELD_STATE', config }),
+    [dispatch]
+  );
+
   const blurField = useCallback<FormState<T>['blurField']>(
     (config) => dispatch({ type: 'BLUR_FIELD', config: config as any }),
     [dispatch]
@@ -128,16 +133,28 @@ export const useForm = <T = any>(): FormState<T> => {
   return useMemo(
     () => ({
       fields,
-      mountField,
-      unmountField,
+      isValid,
+      isValidating,
       setFieldValue,
       blurField,
       validateField,
       validateFields,
+      mountField,
+      unmountField,
+      setFieldState,
+    }),
+    [
+      fields,
       isValid,
       isValidating,
-    }),
-    [fields, mountField, unmountField, isValid, isValidating]
+      setFieldValue,
+      blurField,
+      validateField,
+      validateFields,
+      mountField,
+      unmountField,
+      setFieldState,
+    ]
   );
 };
 
@@ -453,9 +470,16 @@ const doSetFieldState = (fields: FieldsState) => <T>({
     console.warn('Setting field attribute on inactive field.');
   }
 
+  const newState = typeof state === 'function' ? state(p) : state;
+
+  /** Same object reference was returned. */
+  if (newState === p) {
+    return fields;
+  }
+
   return {
     ...fields,
-    [name]: typeof state === 'function' ? state(p) : state,
+    [name]: newState,
   };
 };
 

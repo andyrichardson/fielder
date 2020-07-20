@@ -1,4 +1,9 @@
-import { SetFieldValueArgs, BlurFieldArgs, UnmountFieldArgs } from './useForm';
+import {
+  SetFieldValueArgs,
+  BlurFieldArgs,
+  UnmountFieldArgs,
+  SetFieldStateArgs,
+} from './useForm';
 
 export type FormError = Error | string;
 
@@ -11,14 +16,25 @@ export type FieldsState<T = any> = Record<
 
 export interface FormState<T extends Record<string, any> = any> {
   fields: FieldsState<T>;
+  /** All mounted fields are valid. */
   isValid: boolean;
+  /** Async validation currently active on a mounted fields. */
   isValidating: boolean;
-  mountField: (k: FieldConfig<T>) => void;
-  unmountField: (k: UnmountFieldArgs<T>) => void;
+  /** Set value for a field. */
   setFieldValue: (a: SetFieldValueArgs<T>) => void;
+  /** Trigger blur event for a mounted field. */
   blurField: (a: BlurFieldArgs<T>) => void;
+  /** Force trigger validation on a mounted field. */
   validateField: (a: { name: keyof T & string }) => void;
+  /** Force trigger validation  */
   validateFields: () => void;
+
+  /** Internal: Manually mount field. */
+  mountField: (k: FieldConfig<T>) => void;
+  /** Internal: Manually unmount field. */
+  unmountField: (k: UnmountFieldArgs<T>) => void;
+  /** Internal: Manually set field state. */
+  setFieldState: (a: SetFieldStateArgs<T>) => void;
 }
 
 export interface FieldState<T = string | boolean | number | string[]> {

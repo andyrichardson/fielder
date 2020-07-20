@@ -62,6 +62,7 @@ export const useField = <T = any>({
     mountField,
     unmountField,
     setFieldValue,
+    setFieldState,
   } = useContext<FormState>(FielderContext);
 
   const name = useMemo(() => initialName, []);
@@ -81,6 +82,7 @@ export const useField = <T = any>({
 
   useMemo(() => (destroyRef.current = destroyOnUnmount), [destroyOnUnmount]);
 
+  /** (re)mount field on first render */
   useLayoutEffect(() => {
     if (fields[name] && fields[name]._isActive) {
       console.warn(
@@ -101,7 +103,33 @@ export const useField = <T = any>({
     });
 
     return () => unmountField({ name, destroy: destroyRef.current });
-  }, [mountField]);
+  }, [mountField, name]);
+
+  /** Update field state on validation config change. */
+  useLayoutEffect(() => {
+    setFieldState({
+      name,
+      state: (s) => {
+        if (
+          s._validate === validate &&
+          s._validateOnBlur === validateOnBlur &&
+          s._validateOnChange === validateOnChange &&
+          s._validateOnUpdate === validateOnUpdate
+        ) {
+          return s;
+        }
+
+        return {
+          ...s,
+          _validate: validate,
+          _validateOnBlur: validateOnBlur,
+          _validateOnChange: validateOnChange,
+          _validateOnUpdate: validateOnUpdate,
+          hasChanged: true,
+        };
+      },
+    });
+  }, [validate, validateOnBlur, validateOnChange, validateOnUpdate, name]);
 
   const onBlur = useCallback(() => {
     blurField({ name });
