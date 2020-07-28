@@ -125,9 +125,10 @@ export const useField = <T = any>({
           _validateOnBlur: validateOnBlur,
           _validateOnChange: validateOnChange,
           _validateOnUpdate: validateOnUpdate,
-          hasChanged: true,
         };
       },
+      validate: (s) =>
+        s._validate !== validate && validateOnChange && s.hasChanged,
     });
   }, [validate, validateOnBlur, validateOnChange, validateOnUpdate, name]);
 
