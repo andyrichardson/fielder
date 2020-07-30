@@ -138,9 +138,7 @@ export const useField = <T = any>({
     });
   }, [validate, validateOnBlur, validateOnChange, validateOnUpdate, name]);
 
-  const onBlur = useCallback(() => {
-    blurField({ name });
-  }, [blurField]);
+  const onBlur = useCallback(() => blurField({ name }), [blurField]);
 
   const onChange = useCallback<UseFieldProps['onChange']>(
     (e) => {
