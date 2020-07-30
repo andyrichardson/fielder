@@ -1,4 +1,7 @@
+user=andyrichardson
+project=fielder
 header-label=# Changelog
 enhancement-label=**Additions:**
 enhancement-labels=Feature
 breaking-labels=Breaking
+exclude-labels=Dependencies,Question,No Changelog

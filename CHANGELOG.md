@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.3.1](https://github.com/andyrichardson/fielder/tree/v1.3.1) (2020-07-30)
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.3.0...v1.3.1)
+
+**Fixed bugs:**
+
+- Changes to validation arg doesn't update validation function [\#235](https://github.com/andyrichardson/fielder/issues/235)
+
+**Merged pull requests:**
+
+- Add setFieldState call to useField on validation change [\#278](https://github.com/andyrichardson/fielder/pull/278) ([andyrichardson](https://github.com/andyrichardson))
+
 ## [v1.3.0](https://github.com/andyrichardson/fielder/tree/v1.3.0) (2020-06-14)
 
 [Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.2.1...v1.3.0)
