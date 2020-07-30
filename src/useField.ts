@@ -56,6 +56,7 @@ export const useField = <T = any>({
   destroyOnUnmount = false,
 }: FieldConfig<T>): UseFieldResponse => {
   const destroyRef = useRef(destroyOnUnmount);
+  const initialMount = useRef(true);
   const {
     fields,
     blurField,
@@ -107,6 +108,11 @@ export const useField = <T = any>({
 
   /** Update field state on validation config change. */
   useLayoutEffect(() => {
+    if (initialMount.current) {
+      initialMount.current = false;
+      return;
+    }
+
     setFieldState({
       name,
       state: (s) => {
