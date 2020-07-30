@@ -9,6 +9,7 @@ import {
   MutableRefObject,
 } from 'react';
 import { FormState, FieldState, FieldConfig, FieldsState } from './types';
+import { boolean } from 'yup';
 
 /** Adds a field to the form. */
 interface MountFieldAction<T = any> {
@@ -94,6 +95,11 @@ export const useForm = <T = any>(): FormState<T> => {
     [dispatch]
   );
 
+  const setFieldState = useCallback<FormState<T>['setFieldState']>(
+    (config) => dispatch({ type: 'SET_FIELD_STATE', config }),
+    [dispatch]
+  );
+
   const blurField = useCallback<FormState<T>['blurField']>(
     (config) => dispatch({ type: 'BLUR_FIELD', config: config as any }),
     [dispatch]
@@ -128,16 +134,28 @@ export const useForm = <T = any>(): FormState<T> => {
   return useMemo(
     () => ({
       fields,
-      mountField,
-      unmountField,
+      isValid,
+      isValidating,
       setFieldValue,
       blurField,
       validateField,
       validateFields,
+      mountField,
+      unmountField,
+      setFieldState,
+    }),
+    [
+      fields,
       isValid,
       isValidating,
-    }),
-    [fields, mountField, unmountField, isValid, isValidating]
+      setFieldValue,
+      blurField,
+      validateField,
+      validateFields,
+      mountField,
+      unmountField,
+      setFieldState,
+    ]
   );
 };
 
@@ -223,6 +241,7 @@ const applyValidationToState = (
 ): FieldsState => {
   if (
     ![
+      'SET_FIELD_STATE',
       'SET_FIELD_VALUE',
       'BLUR_FIELD',
       'VALIDATE_FIELD',
@@ -240,24 +259,54 @@ const applyValidationToState = (
     }
 
     const validateBlur =
+      // Blur field
       action.type === 'BLUR_FIELD' &&
+      // Matching field
       action.config.name === field.name &&
+      // Should validate
       field._validateOnBlur;
+
     const validateChange =
+      // Set field value (change)
       action.type === 'SET_FIELD_VALUE' &&
+      // Matching field
       action.config.name === field.name &&
+      // Should validate
       field._validateOnChange;
+
     const validateUpdate =
-      action.type === 'SET_FIELD_VALUE' && field._validateOnChange;
+      // Set field value (change)
+      action.type === 'SET_FIELD_VALUE' &&
+      // Should validate (any change event)
+      field._validateOnChange;
+
+    const validateSetFieldState =
+      // Set field state
+      action.type === 'SET_FIELD_STATE' &&
+      // Matching field
+      action.config.name === field.name &&
+      // Validation requested (boolean)
+      (action.config.validate === true ||
+        // Validation requested (function)
+        (typeof action.config.validate === 'function' &&
+          action.config.validate(field)));
+
     const validateField =
-      action.type === 'VALIDATE_FIELD' && action.config.name === field.name;
-    const validateFields = action.type === 'VALIDATE_FIELDS';
+      // Validate field
+      action.type === 'VALIDATE_FIELD' &&
+      // Matching field
+      action.config.name === field.name;
+
+    const validateFields =
+      // Validate all fields
+      action.type === 'VALIDATE_FIELDS';
 
     if (
       !(
         validateBlur ||
         validateChange ||
         validateUpdate ||
+        validateSetFieldState ||
         validateField ||
         validateFields
       )
@@ -439,6 +488,15 @@ const doBlurField = (fields: FieldsState) => <T = any>({
   };
 };
 
+export interface SetFieldStateArgs<
+  T = any,
+  K extends keyof T & string = keyof T & string
+> {
+  name: K;
+  state: SetStateAction<FieldState<T[K]>>;
+  validate?: ((state: FieldState<T[K]>) => boolean) | boolean;
+}
+
 const doSetFieldState = (fields: FieldsState) => <T>({
   name,
   state,
@@ -453,9 +511,16 @@ const doSetFieldState = (fields: FieldsState) => <T>({
     console.warn('Setting field attribute on inactive field.');
   }
 
+  const newState = typeof state === 'function' ? state(p) : state;
+
+  /** Same object reference was returned. */
+  if (newState === p) {
+    return fields;
+  }
+
   return {
     ...fields,
-    [name]: typeof state === 'function' ? state(p) : state,
+    [name]: newState,
   };
 };
 
@@ -464,12 +529,4 @@ export interface ValidateFieldArgs<
   K extends keyof T & string = keyof T & string
 > {
   name: K;
-}
-
-export interface SetFieldStateArgs<
-  T = any,
-  K extends keyof T & string = keyof T & string
-> {
-  name: K;
-  state: SetStateAction<FieldState<T[K]>>;
 }

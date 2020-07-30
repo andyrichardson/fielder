@@ -56,12 +56,14 @@ export const useField = <T = any>({
   destroyOnUnmount = false,
 }: FieldConfig<T>): UseFieldResponse => {
   const destroyRef = useRef(destroyOnUnmount);
+  const initialMount = useRef(true);
   const {
     fields,
     blurField,
     mountField,
     unmountField,
     setFieldValue,
+    setFieldState,
   } = useContext<FormState>(FielderContext);
 
   const name = useMemo(() => initialName, []);
@@ -81,6 +83,7 @@ export const useField = <T = any>({
 
   useMemo(() => (destroyRef.current = destroyOnUnmount), [destroyOnUnmount]);
 
+  /** (re)mount field on first render */
   useLayoutEffect(() => {
     if (fields[name] && fields[name]._isActive) {
       console.warn(
@@ -101,11 +104,41 @@ export const useField = <T = any>({
     });
 
     return () => unmountField({ name, destroy: destroyRef.current });
-  }, [mountField]);
+  }, [mountField, name]);
 
-  const onBlur = useCallback(() => {
-    blurField({ name });
-  }, [blurField]);
+  /** Update field state on validation config change. */
+  useLayoutEffect(() => {
+    if (initialMount.current) {
+      initialMount.current = false;
+      return;
+    }
+
+    setFieldState({
+      name,
+      state: (s) => {
+        if (
+          s._validate === validate &&
+          s._validateOnBlur === validateOnBlur &&
+          s._validateOnChange === validateOnChange &&
+          s._validateOnUpdate === validateOnUpdate
+        ) {
+          return s;
+        }
+
+        return {
+          ...s,
+          _validate: validate,
+          _validateOnBlur: validateOnBlur,
+          _validateOnChange: validateOnChange,
+          _validateOnUpdate: validateOnUpdate,
+        };
+      },
+      validate: (s) =>
+        s._validate !== validate && validateOnChange && s.hasChanged,
+    });
+  }, [validate, validateOnBlur, validateOnChange, validateOnUpdate, name]);
+
+  const onBlur = useCallback(() => blurField({ name }), [blurField]);
 
   const onChange = useCallback<UseFieldProps['onChange']>(
     (e) => {
