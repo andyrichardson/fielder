@@ -34,8 +34,9 @@ export const useFieldGroup = <T = any>({
   validateOnUpdate = false,
   destroyOnUnmount = false,
 }: FieldConfig<T>) => {
-  const fieldsRef = useRef<FieldsState<T>>({});
+  const initialMount = useRef(true);
   const destroyRef = useRef(destroyOnUnmount);
+  const fieldsRef = useRef<FieldsState<T>>({});
   const keyRef = useRef<Record<string, number>>({});
   const dispatchRef = useRef<Dispatch<FormAction<T>>>();
   const form = useContext(FielderContext);
@@ -62,6 +63,7 @@ export const useFieldGroup = <T = any>({
     [form.fields, name]
   );
 
+  /** (re)mount field on first render */
   useLayoutEffect(() => {
     if (form.fields[name] && form.fields[name]._isActive) {
       console.warn(
@@ -82,6 +84,45 @@ export const useFieldGroup = <T = any>({
 
     return () => form.unmountField({ name, destroy: destroyRef.current });
   }, []);
+
+  /** Update field state on validation config change. */
+  useLayoutEffect(() => {
+    if (initialMount.current) {
+      initialMount.current = false;
+      return;
+    }
+
+    form.setFieldState({
+      name,
+      state: (s) => {
+        if (
+          s._validate === validate &&
+          s._validateOnBlur === validateOnBlur &&
+          s._validateOnChange === validateOnChange &&
+          s._validateOnUpdate === validateOnUpdate
+        ) {
+          return s;
+        }
+
+        return {
+          ...s,
+          _validate: validate,
+          _validateOnBlur: validateOnBlur,
+          _validateOnChange: validateOnChange,
+          _validateOnUpdate: validateOnUpdate,
+        };
+      },
+      validate: (s) =>
+        s._validate !== validate && validateOnChange && s.hasChanged,
+    });
+  }, [
+    form.setFieldState,
+    validate,
+    validateOnBlur,
+    validateOnChange,
+    validateOnUpdate,
+    name,
+  ]);
 
   const incrementKey = useCallback((name: string) => {
     if (keyRef.current[name] === undefined) {
