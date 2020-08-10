@@ -776,3 +776,176 @@ describe('on validate fields', () => {
     });
   });
 });
+
+describe('on set field state', () => {
+  const validateFn = jest.fn();
+
+  beforeEach(() => {
+    mount(<Fixture />);
+    act(() => {
+      response.mountField({
+        name: 'myField',
+        validate: validateFn,
+        validateOnChange: true,
+        validateOnBlur: false,
+      });
+      response.mountField({ name: 'otherField' });
+    });
+  });
+
+  describe('on state object', () => {
+    it('sets state', () => {
+      const newState = {
+        name: 'myField',
+        _validateOnBlur: true,
+        _validateOnChange: false,
+        value: 'new value',
+      } as any;
+
+      act(() => {
+        response.setFieldState({
+          name: 'myField',
+          state: newState,
+        });
+      });
+
+      expect(response.fields.myField).toBe(newState);
+    });
+  });
+
+  describe('on state function', () => {
+    const stateFn = jest.fn((s) => ({
+      ...s,
+      _validateOnBlur: true,
+      value: 'new value',
+    }));
+
+    beforeEach(() => {
+      act(() => {
+        response.setFieldState({
+          name: 'myField',
+          state: stateFn,
+        });
+      });
+    });
+
+    it('calls function with state value', () => {
+      expect(stateFn).toBeCalledTimes(1);
+      expect(stateFn).toBeCalledWith(
+        expect.objectContaining({
+          name: 'myField',
+          _validate: validateFn,
+          _validateOnChange: true,
+          _validateOnBlur: false,
+        })
+      );
+    });
+
+    it('sets state', () => {
+      expect(response.fields.myField).toEqual(
+        expect.objectContaining({ _validateOnBlur: true, value: 'new value' })
+      );
+    });
+  });
+
+  describe('validation arg', () => {
+    describe('on undefined', () => {
+      beforeEach(() => {
+        act(() => {
+          response.setFieldState({
+            name: 'myField',
+            state: (s) => ({ ...s, value: 'new value' }),
+          });
+        });
+      });
+
+      it('does not validate field', () => {
+        expect(validateFn).toBeCalledTimes(0);
+      });
+    });
+
+    describe('on false', () => {
+      beforeEach(() => {
+        act(() => {
+          response.setFieldState({
+            name: 'myField',
+            state: (s) => ({ ...s, value: 'new value' }),
+            validate: false,
+          });
+        });
+      });
+
+      it('does not validate field', () => {
+        expect(validateFn).toBeCalledTimes(0);
+      });
+    });
+
+    describe('on true', () => {
+      beforeEach(() => {
+        act(() => {
+          response.setFieldState({
+            name: 'myField',
+            state: (s) => ({ ...s, value: 'new value' }),
+            validate: true,
+          });
+        });
+      });
+
+      it('validates field', () => {
+        expect(validateFn).toBeCalledTimes(1);
+      });
+    });
+
+    describe('on validation fn', () => {
+      const fn = jest.fn();
+      beforeEach(() => {
+        act(() => {
+          response.setFieldState({
+            name: 'myField',
+            state: (s) => ({ ...s, value: 'new value' }),
+            validate: fn,
+          });
+        });
+      });
+
+      it('call function with state', () => {
+        expect(fn).toBeCalledTimes(1);
+        expect(fn).toBeCalledWith(expect.objectContaining({ name: 'myField' }));
+      });
+    });
+
+    describe('on validation truthy', () => {
+      const fn = jest.fn(() => true);
+      beforeEach(() => {
+        act(() => {
+          response.setFieldState({
+            name: 'myField',
+            state: (s) => ({ ...s, value: 'new value' }),
+            validate: fn,
+          });
+        });
+      });
+
+      it('validates field', () => {
+        expect(validateFn).toBeCalledTimes(1);
+      });
+    });
+
+    describe('on validation falsy', () => {
+      const fn = jest.fn(() => false);
+      beforeEach(() => {
+        act(() => {
+          response.setFieldState({
+            name: 'myField',
+            state: (s) => ({ ...s, value: 'new value' }),
+            validate: fn,
+          });
+        });
+      });
+
+      it('does not validate field', () => {
+        expect(validateFn).toBeCalledTimes(0);
+      });
+    });
+  });
+});

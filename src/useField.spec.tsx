@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { useField, UseFieldResponse } from './useField';
 import { FielderContext } from './context';
 import { FieldConfig } from './types';
@@ -10,6 +10,7 @@ let context = {
   unmountField: jest.fn(),
   blurField: jest.fn(),
   setFieldValue: jest.fn(),
+  setFieldState: jest.fn(),
 };
 let response: UseFieldResponse;
 let args: FieldConfig<any>;
@@ -37,6 +38,7 @@ beforeEach(() => {
     unmountField: jest.fn(),
     blurField: jest.fn(),
     setFieldValue: jest.fn(),
+    setFieldState: jest.fn(),
   };
 });
 
@@ -95,6 +97,24 @@ describe('on mount', () => {
     expect(context.mountField).toBeCalledWith({
       ...args,
     });
+  });
+
+  it('does not call setFieldState with validation args', () => {
+    args = {
+      name: 'someField',
+      initialError: 'aaa',
+      initialValid: true,
+      initialValue: 'hello',
+      initialTouched: true,
+      validate: jest.fn(),
+      validateOnBlur: false,
+      validateOnChange: false,
+      validateOnUpdate: true,
+    };
+
+    mount(<Fixture />);
+
+    expect(context.setFieldState).toBeCalledTimes(0);
   });
 });
 
@@ -242,6 +262,105 @@ describe('on change', () => {
         const action = context.setFieldValue.mock.calls[0][0].value;
         expect(action(oldValue)).toEqual(oldValue.filter((v) => v !== value));
       });
+    });
+  });
+});
+
+describe('on validation arg change', () => {
+  let wrapper: ReactWrapper<any>;
+
+  beforeEach(() => {
+    args = {
+      name: 'someField',
+      validateOnBlur: false,
+      validateOnChange: true,
+      validateOnUpdate: false,
+      validate: jest.fn(),
+    };
+    wrapper = mount(<Fixture />);
+  });
+
+  describe('on validate change', () => {
+    it('calls setFieldState with new function', () => {
+      const oldState = { ...args };
+
+      args = {
+        ...args,
+        validate: jest.fn(),
+      };
+
+      wrapper.setProps({});
+
+      expect(context.setFieldState).toBeCalledTimes(1);
+      expect(context.setFieldState.mock.calls[0][0].state(oldState)).toEqual(
+        expect.objectContaining({
+          ...oldState,
+          _validate: args.validate,
+        })
+      );
+    });
+  });
+
+  describe('on validateOnBlur change', () => {
+    it('calls setFieldState with new value', () => {
+      const oldState = { ...args };
+
+      args = {
+        ...args,
+        validateOnBlur: true,
+      };
+
+      wrapper.setProps({});
+
+      expect(context.setFieldState).toBeCalledTimes(1);
+      expect(context.setFieldState.mock.calls[0][0].state(oldState)).toEqual(
+        expect.objectContaining({
+          ...oldState,
+          _validateOnBlur: true,
+        })
+      );
+    });
+  });
+
+  describe('on validateOnUpdate change', () => {
+    it('calls setFieldState with new value', () => {
+      const oldState = { ...args };
+
+      args = {
+        ...args,
+        validateOnUpdate: true,
+      };
+
+      wrapper.setProps({});
+
+      expect(context.setFieldState).toBeCalledTimes(1);
+      expect(context.setFieldState.mock.calls[0][0].state(oldState)).toEqual(
+        expect.objectContaining({
+          ...oldState,
+          _validateOnUpdate: true,
+        })
+      );
+    });
+  });
+
+  describe('on validateOnChange change', () => {
+    it('calls setFieldState with new value', () => {
+      const oldState = { ...args };
+
+      args = {
+        ...args,
+        validateOnChange: false,
+      };
+
+      wrapper.setProps({});
+
+      expect(context.setFieldState).toBeCalledTimes(1);
+      expect(context.setFieldState.mock.calls[0][0].state(oldState)).toEqual(
+        expect.objectContaining({
+          ...oldState,
+          _validateOnChange: false,
+        })
+      );
     });
   });
 });

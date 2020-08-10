@@ -126,3 +126,4 @@ Also check out:
 
 - [[Article] Why we need another form library](https://dev.to/andyrichardsonn/why-we-need-another-form-library-fielder-4eah)
 - [[Video] Getting started with Fielder](https://www.youtube.com/watch?v=wSorSlCkJwk)
+- [[Benchmark] Fielder vs Formik](https://github.com/andyrichardson/fielder-benchmark)
