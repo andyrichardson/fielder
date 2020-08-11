@@ -16,6 +16,8 @@ export type FieldsState<T = any> = Record<
 
 export interface FormState<T extends Record<string, any> = any> {
   fields: FieldsState<T>;
+  /** Current state of form. */
+  values: T;
   /** All mounted fields are valid. */
   isValid: boolean;
   /** Async validation currently active on a mounted fields. */

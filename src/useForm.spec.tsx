@@ -949,3 +949,81 @@ describe('on set field state', () => {
     });
   });
 });
+
+describe.only('on normalized fields', () => {
+  beforeEach(() => {
+    mount(<Fixture />);
+  });
+
+  describe('on single item', () => {
+    beforeEach(() => {
+      act(() => {
+        response.mountField({ name: 'bSecond' });
+        response.mountField({ name: 'aFirst' });
+        response.mountField({
+          name: 'aFirst[0].name',
+          initialValue: 'name zero',
+        });
+        response.mountField({
+          name: 'aFirst[0].age',
+          initialValue: 'age zero',
+        });
+      });
+    });
+
+    describe('field state', () => {
+      it('matches snapshot', () => {
+        expect(response.values).toMatchInlineSnapshot(`
+          Object {
+            "aFirst": Array [
+              Object {
+                "age": "age zero",
+                "name": "name zero",
+              },
+            ],
+            "bSecond": undefined,
+          }
+        `);
+      });
+    });
+  });
+
+  describe('on multiple items', () => {
+    beforeEach(() => {
+      act(() => {
+        response.mountField({ name: 'bSecond' });
+        response.mountField({ name: 'aFirst' });
+        response.mountField({
+          name: 'aFirst[0].name',
+          initialValue: 'name zero',
+        });
+        response.mountField({
+          name: 'aFirst[0].age',
+          initialValue: 'age zero',
+        });
+        response.mountField({
+          name: 'aFirst[1].name',
+          initialValue: 'name one',
+        });
+        response.mountField({
+          name: 'aFirst[1].age',
+          initialValue: 'age one',
+        });
+        response.mountField({
+          name: 'aFirst[3].name',
+          initialValue: 'name three',
+        });
+        response.mountField({
+          name: 'aFirst[3].age',
+          initialValue: 'age three',
+        });
+      });
+    });
+
+    describe('field state', () => {
+      it('matches snapshot', () => {
+        console.log((response as any).values);
+      });
+    });
+  });
+});

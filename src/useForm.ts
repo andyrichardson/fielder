@@ -9,7 +9,6 @@ import {
   MutableRefObject,
 } from 'react';
 import { FormState, FieldState, FieldConfig, FieldsState } from './types';
-import { boolean } from 'yup';
 
 /** Adds a field to the form. */
 interface MountFieldAction<T = any> {
@@ -69,14 +68,13 @@ export const useForm = <T = any>(): FormState<T> => {
     []
   );
 
-  const [fields, dispatch] = useReducer<Reducer<FieldsState<T>, FormAction<T>>>(
-    (state, action) => {
-      const newState = applyActionToState(state, action);
+  const [fields, dispatch] = useReducer<
+    Reducer<FieldsState<any>, FormAction<T>>
+  >((state, action) => {
+    const newState = applyActionToState(state, action);
 
-      return applyValidationToState(newState, action, handleAsyncValidation);
-    },
-    {} as FieldsState<T>
-  );
+    return applyValidationToState(newState, action, handleAsyncValidation);
+  }, {} as FieldsState<T>);
 
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
@@ -132,8 +130,54 @@ export const useForm = <T = any>(): FormState<T> => {
     [mountedFields]
   );
 
+  const values = useMemo(
+    () =>
+      Object.keys(fields)
+        .sort((a, b) => {
+          // Convert to sortable string
+          const serialize = (s: string) => s.replace(/(\[|\])/g, '');
+          return serialize(a).localeCompare(serialize(b));
+        })
+        .reduce((result, key) => {
+          // Non normalized field
+          if (!key.includes('[')) {
+            return {
+              ...result,
+              [key]: fields[key].value,
+            };
+          }
+
+          const parentKey = key.substring(0, key.indexOf('['));
+          const fieldName = key.substring(key.indexOf(']') + 2);
+
+          const parentValue = (result[parentKey] || []) as any[];
+          const targetIndex =
+            parentValue.length === 0
+              ? 0
+              : fieldName in parentValue[parentValue.length - 1]
+              ? parentValue.length
+              : parentValue.length - 1;
+
+          console.log({ parentValue });
+          const targetValue = {
+            ...(parentValue[targetIndex] || {}),
+            [fieldName]: fields[key].value,
+          };
+
+          return {
+            ...result,
+            [parentKey]:
+              parentValue.length === 0
+                ? [targetValue]
+                : [...parentValue.slice(0, targetIndex), targetValue],
+          } as any;
+        }, {} as any),
+    [fields]
+  );
+
   return useMemo(
     () => ({
+      values,
       fields,
       isValid,
       isValidating,
@@ -146,6 +190,7 @@ export const useForm = <T = any>(): FormState<T> => {
       setFieldState,
     }),
     [
+      values,
       fields,
       isValid,
       isValidating,
