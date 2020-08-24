@@ -99,3 +99,29 @@ export interface FieldConfig<
   /** @deprecated Starting touched state. */
   readonly initialTouched?: boolean;
 }
+
+export interface FieldGroupConfig<
+  S = any,
+  K extends (keyof S & string) | string = S extends Record<string, any>
+    ? keyof S & string
+    : string,
+  V = S extends Record<string, any> ? S[K] : S,
+  F = S extends Record<string, any> ? S : unknown
+> {
+  /** Unique identifier for field group. */
+  readonly name: K;
+  /** Validation function for group (throws errors). */
+  readonly validate?: (value: V, form: F) => void;
+  /** When the given group's value changes. */
+  readonly validateOnChange?: boolean;
+  /** When any change is made to the form state (global). */
+  readonly validateOnUpdate?: boolean;
+  /** Starting value. */
+  readonly initialValue?: V | [];
+  /** Starting error. */
+  readonly initialError?: FormError;
+  /** Starting valid state. */
+  readonly initialValid?: boolean;
+  /** Should destroy value when useFieldGroup hook is unmounted. */
+  readonly destroyOnUnmount?: boolean;
+}

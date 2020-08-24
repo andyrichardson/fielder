@@ -52,7 +52,7 @@ interface SetFieldStateAction<T = any> {
   config: SetFieldStateArgs<T>;
 }
 
-type FormAction<T = any> =
+export type FormAction<T = any> =
   | MountFieldAction<T>
   | UnmountFieldAction<T>
   | SetFieldValueAction<T>
@@ -122,6 +122,7 @@ export const useForm = <T = any>(): FormState<T> => {
       ) as FieldState[],
     [fields]
   );
+
   const isValid = useMemo(() => mountedFields.every((f) => f.isValid), [
     mountedFields,
   ]);
@@ -160,7 +161,7 @@ export const useForm = <T = any>(): FormState<T> => {
 };
 
 /** Triggers primary action to state. */
-const applyActionToState = (s: FieldsState, a: FormAction) => {
+export const applyActionToState = (s: FieldsState, a: FormAction) => {
   if (a.type === 'MOUNT_FIELD') {
     return doMountField(s)(a.config);
   }
@@ -185,7 +186,7 @@ const applyActionToState = (s: FieldsState, a: FormAction) => {
 };
 
 /** Tracks async validation and updates state on completion. */
-const createHandleAsyncValidation = <T>(
+export const createHandleAsyncValidation = <T>(
   dispatch: MutableRefObject<Dispatch<FormAction<T>> | undefined>
 ) => {
   let promises: Record<string, number> = {};
@@ -234,7 +235,7 @@ const createHandleAsyncValidation = <T>(
 };
 
 /** Triggers validation on fields items. */
-const applyValidationToState = (
+export const applyValidationToState = (
   state: FieldsState,
   action: FormAction,
   handleAsyncValidation: (name: any, promise: Promise<any>) => void
