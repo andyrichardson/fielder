@@ -12,7 +12,7 @@
     "deploy": "(echo \"fielder.andyrichardson.dev\" > .docz/dist/CNAME) && gh-pages -d .docz/dist"
   },
   "dependencies": {
-    "docz": "^2.2.0",
+    "docz": "^2.3.1",
     "gatsby-plugin-offline": "^3.2.9",
     "react": "16.13.1",
     "react-dom": "16.13.1"
