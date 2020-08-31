@@ -15,6 +15,9 @@ module.exports = {
     `gatsby-plugin-typescript`,
     `gatsby-plugin-preact`,
     {
+      resolve: "gatsby-plugin-react-svg",
+    },
+    {
       resolve: `gatsby-plugin-mdx`,
       options: {
         remarkPlugins: [
@@ -25,6 +28,12 @@ module.exports = {
         defaultLayouts: {
           default: require.resolve("./src/components/layout.tsx"),
         },
+      },
+    },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        icon: "src/images/favicon.svg",
       },
     },
   ],

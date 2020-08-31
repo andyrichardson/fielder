@@ -2,7 +2,7 @@ import "typeface-inter"
 import "typeface-source-code-pro"
 import "prism-themes/themes/prism-material-light.css"
 
-import React from "react"
+import React, { useState } from "react"
 import { MDXProvider } from "@mdx-js/react"
 import { FC } from "react"
 import * as components from "./components"
@@ -11,11 +11,13 @@ import { Navigation } from "./navigation"
 import { Header } from "./header"
 
 const Layout: FC = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(true)
+
   return (
     <>
       <GlobalStyle />
       <PageContent>
-        <Navigation />
+        <Navigation data-collapsed={collapsed} />
         <MDXProvider components={components}>
           <Content>{children}</Content>
         </MDXProvider>
@@ -44,13 +46,14 @@ const PageContent = styled.div`
 
 const Content = styled.main`
   box-sizing: border-box;
-  max-width: 100%;
+  width: 100vw;
   padding: 10px 10px;
   flex-grow: 1;
 
   @media (min-width: 600px) {
     padding: 20px 40px;
     max-width: 800px;
+    width: auto;
   }
 `
 

@@ -1,0 +1,16 @@
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="74" y="158" width="41" height="41" transform="rotate(90 74 158)" fill="black"/>
+  <rect x="143" y="89" width="42" height="110" transform="rotate(90 143 89)" fill="black"/>
+  <rect x="187" y="20" width="42" height="154" transform="rotate(90 187 20)" fill="black"/>
+  <style>
+    rect {
+      fill: white;
+    }
+
+    @media (prefers-color-scheme: light) {
+      rect {
+        fill: black;
+      }
+    }
+  </style>
+</svg>
