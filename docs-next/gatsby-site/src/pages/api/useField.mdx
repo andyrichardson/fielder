@@ -1,0 +1,160 @@
+---
+name: useField
+menu: Api
+route: /api/usefield
+---
+
+# useField
+
+_Hook to mount a field to the form._
+
+```tsx
+import { useField } from 'fielder';
+```
+
+## Example usage
+
+```tsx
+const [passwordProps, passwordMeta] = useField({
+  name: 'password',
+  validate: passwordValidation,
+});
+
+return <input type={'password'} {...passwordProps} />;
+```
+
+## Return type
+
+_An array containing props for the target component [(UseFieldProps)](#usefieldprops) and metadata [(UseFieldMeta)](#usefieldmeta)._
+
+Type: `[UseFieldProps, UseFieldMeta]`
+
+## Arguments
+
+_useField_ takes a single object with the following properties:
+
+### name **(required)**
+
+_The name/key of the field to be added to the form state._
+
+Type: `string`
+
+Example: `password`
+
+### validate
+
+_A validation function which throws an error when validation has failed._
+
+Type: `(value: string, formState: FormState) => (void | Promise<void>)`
+
+Default: `undefined`
+
+Example:
+
+```js
+(v, f) => {
+  if (v < f.otherField.value) {
+    throw Error("Value must be more than 'from' value")
+  }
+}`
+```
+
+### initialValid
+
+_Whether the initial value should be considered valid._
+
+Type: `boolean`
+
+Default: `false` (see comment below)
+
+> When no `validate` argument is passed to `useField`, the default value is `true`
+
+### initialError
+
+_The initial error of the field._
+
+Type: `string | Error`
+
+Default: `undefined`
+
+### initialValue
+
+_The value of the field on first mount (first mount after being destroyed)._
+
+Type: `string | boolean`
+
+Default: `""`
+
+### initialTouched **(deprecated)**
+
+_Whether the initial state of the field is 'touched'._
+
+Type: `boolean`
+
+Default: `false`
+
+### validateOnBlur
+
+_Whether the provided validate function should be called on blur._
+
+Type: `boolean`
+
+Default: `true`
+
+### validateOnChange
+
+_Whether the provided validate function should be called on change._
+
+Type: `boolean`
+
+Default: `true`
+
+### validateOnUpdate
+
+_Whether the provided validate function should be called on **any** form change._
+
+Type: `boolean`
+
+Default: `false`
+
+### destroyOnUnmount
+
+_Whether the field should be completely removed from the form state on unmount._
+
+Type: `boolean`
+
+Default: `false`
+
+## Types
+
+### UseFieldProps
+
+Props which can be passed to a form element / component.
+
+```ts
+type UseFieldProps<T = any> = {
+  readonly name: string;
+  readonly value: T;
+  readonly onChange: ChangeEventHandler | (value: T) => void;
+  readonly onBlur: () => void;
+};
+```
+
+### UseFieldMeta
+
+Additional information about a field and it's validation state.
+
+```ts
+type UseFieldMeta = {
+  /** Validation error. */
+  readonly error?: Error | string;
+  /** Valid state. */
+  readonly isValid: boolean;
+  /** Async validation is in progress. */
+  readonly isValidating: boolean;
+  /** onBlur has been called since mount/remount. */
+  readonly hasBlurred: boolean;
+  /** onChange has been called since mount/remount. */
+  readonly hasChanged: boolean;
+};
+```

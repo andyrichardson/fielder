@@ -1,0 +1,94 @@
+---
+name: Submission
+menu: Guides
+order: 3
+route: /guides/submission
+---
+
+# Submission
+
+Unsure what to do once you're ready to submit your form? Look no further.
+
+## How it works
+
+Just as fields and their validation is [conditional on your application's state](/guides/validation#how-validation-works), so is submission logic.
+
+> Particularly with branching forms, there may be multiple different end results (and therefore differing submission logic).
+
+This is why **there is no onSubmit argument** for `useField`.
+
+## Example submission
+
+Submission logic should be colocated with the associated submission trigger (such as a 'submit' button).
+
+> To access the form state on submission, there's [`useFormContext`](/api/useformcontext)
+
+```tsx
+const MySubmitComponent = () => {
+  const { fields, isValid } = useFormContext();
+  const [nameProps] = useField({ name: 'name' });
+
+  const handleSubmit = useCallback(() => {
+    const data = transformFields(fields); // Create your own transformer
+
+    fetch('/api/submit', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }, [fields]);
+
+  return (
+    <>
+      <input type="text" {...nameProps} />
+      <button disabled={!isValid} onClick={handleSubmit}>
+        Submit
+      </button>
+    </>
+  );
+};
+```
+
+## Transforming form state
+
+You'll want to transform the form state into values your API can consume.
+
+### Extracting values
+
+A simple reducer can be used to get a key-value representation of the form state.
+
+```tsx
+const { fields } = useFormContext();
+// fields = { field1: { value: 'hello', hasChanged: true, ... } ... }
+
+const transformed = Object.entries(fields).reduce(
+  (p, [key, field]) => ({ [key]: field.value }),
+  {}
+);
+// transformed = { field1: 'hello', ... }
+```
+
+### Converting checkbox values
+
+If you find yourself needing to transform your checkbox values to objects, a reducer can also be used.
+
+```tsx
+const arrayToObject = (array: string[]) =>
+  Object.values(array).reduce((p, value) => ({ ...p, [value]: true }), {});
+// ['a', 'b'] -> { a: true, b: true }
+```
+
+This function can then be combined with the previous example.
+
+```tsx
+const { fields } = useFormContext();
+// fields = { field1: { value: ['value1', 'value3'], hasChanged: true, ... } ... }
+
+const transformed = Object.entries(fields).reduce(
+  (p, [key, field]) =>
+    Array.isArray(field.value)
+      ? { ...p, ...arrayToObject(field.value) }
+      : { ...p, [key]: field.value },
+  {}
+);
+// transformed = { value1: true, value3: true, ... }
+```

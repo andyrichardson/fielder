@@ -26,6 +26,7 @@ const Layout: FC = ({ children }) => {
 
 const GlobalStyle = createGlobalStyle`
   body {
+    margin: 0;
     font-family: "Inter", sans-serif;
   }
 
@@ -37,18 +38,20 @@ const GlobalStyle = createGlobalStyle`
 const PageContent = styled.div`
   display: flex;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 1200px;
   padding-left: -200px;
 `
 
 const Content = styled.main`
+  box-sizing: border-box;
+  max-width: 100%;
   padding: 10px 10px;
   flex-grow: 1;
 
   @media (min-width: 600px) {
     padding: 20px 40px;
+    max-width: 800px;
   }
-  /* max-width: 800px; */
 `
 
 export default Layout

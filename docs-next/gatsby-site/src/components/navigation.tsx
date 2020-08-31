@@ -1,31 +1,52 @@
 import React, { FC } from "react"
-import { useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import { scale } from "./components"
+import { useMemo } from "react"
 
 export const Navigation: FC = () => {
-  const data = useStaticQuery(graphql`
-    {
-      allMdx {
-        nodes {
-          id
-          slug
-          tableOfContents
-        }
-      }
-    }
-  `)
+  const routes = useMemo(
+    () => [
+      { title: "About", url: "/" },
+      {
+        title: "Guides",
+        url: "/guides/getting-started",
+        children: [
+          { title: "Getting started", url: "/guides/getting-started" },
+          { title: "Validation", url: "/guides/validation" },
+          { title: "Submission", url: "/guides/submission" },
+          { title: "Field events", url: "/guides/field-events" },
+          { title: "Type safety", url: "/guides/type-safety" },
+          { title: "React Native", url: "/guides/react-native" },
+        ],
+      },
+      {
+        title: "Api",
+        url: "/guides/getting-started",
+        children: [
+          { title: "useField", url: "/api/useField" },
+          { title: "useForm", url: "/api/useForm" },
+          { title: "useFormContext", url: "/api/field-events" },
+          { title: "FielderProvider", url: "/api/FielderProvider" },
+        ],
+      },
+      { title: "Examples", url: "/examples" },
+    ],
+    []
+  )
 
   return (
     <Nav>
-      {data.allMdx.nodes.map(({ tableOfContents, slug }) => (
+      {routes.map(r => (
         <>
-          <NavLink href={`/${slug}`}>{tableOfContents.items[0].title}</NavLink>
-          {tableOfContents.items[0].items.map(i => (
-            <NavSubLink href={`/${slug}/${i.url}`} key={i}>
-              {i.title}
-            </NavSubLink>
-          ))}
+          <NavLink key={r.url} href={r.url}>
+            {r.title}
+          </NavLink>
+          {r.children &&
+            r.children.map(c => (
+              <NavSubLink key={c.url} href={c.url}>
+                {c.title}
+              </NavSubLink>
+            ))}
         </>
       ))}
     </Nav>
