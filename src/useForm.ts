@@ -9,7 +9,6 @@ import {
   MutableRefObject,
 } from 'react';
 import { FormState, FieldState, FieldConfig, FieldsState } from './types';
-import { boolean } from 'yup';
 
 /** Adds a field to the form. */
 interface MountFieldAction<T = any> {
@@ -62,6 +61,7 @@ type FormAction<T = any> =
   | SetFieldStateAction<T>;
 
 export const useForm = <T = any>(): FormState<T> => {
+  const stateRef = useRef<FieldsState<T>>({} as FieldsState<T>);
   const dispatchRef = useRef<Dispatch<FormAction<T>>>();
 
   const handleAsyncValidation = useMemo(
@@ -72,8 +72,14 @@ export const useForm = <T = any>(): FormState<T> => {
   const [fields, dispatch] = useReducer<Reducer<FieldsState<T>, FormAction<T>>>(
     (state, action) => {
       const newState = applyActionToState(state, action);
+      const validatedState = applyValidationToState(
+        newState,
+        action,
+        handleAsyncValidation
+      );
 
-      return applyValidationToState(newState, action, handleAsyncValidation);
+      stateRef.current = validatedState;
+      return validatedState;
     },
     {} as FieldsState<T>
   );
@@ -81,7 +87,10 @@ export const useForm = <T = any>(): FormState<T> => {
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
   const mountField = useCallback<FormState<T>['mountField']>(
-    (config) => dispatch({ type: 'MOUNT_FIELD', config: config as any }),
+    (config) => {
+      dispatch({ type: 'MOUNT_FIELD', config: config as any });
+      return stateRef.current[config.name as keyof T] as any;
+    },
     [dispatch]
   );
 
@@ -239,18 +248,6 @@ const applyValidationToState = (
   action: FormAction,
   handleAsyncValidation: (name: any, promise: Promise<any>) => void
 ): FieldsState => {
-  if (
-    ![
-      'SET_FIELD_STATE',
-      'SET_FIELD_VALUE',
-      'BLUR_FIELD',
-      'VALIDATE_FIELD',
-      'VALIDATE_FIELDS',
-    ].includes(action.type)
-  ) {
-    return state;
-  }
-
   return Object.keys(state).reduce((state, key) => {
     const field = state[key];
 
@@ -258,64 +255,53 @@ const applyValidationToState = (
       return state;
     }
 
-    const validateBlur =
-      // Blur field
-      action.type === 'BLUR_FIELD' &&
-      // Matching field
-      action.config.name === field.name &&
-      // Should validate
-      field._validateOnBlur;
+    const validationEvent = (() => {
+      if (
+        action.type === 'SET_FIELD_VALUE' &&
+        action.config.name !== field.name
+      ) {
+        return 'formChange';
+      }
 
-    const validateChange =
-      // Set field value (change)
-      action.type === 'SET_FIELD_VALUE' &&
-      // Matching field
-      action.config.name === field.name &&
-      // Should validate
-      field._validateOnChange;
+      if (action.type === 'MOUNT_FIELD' && action.config.name === field.name) {
+        return 'mount';
+      }
 
-    const validateUpdate =
-      // Set field value (change)
-      action.type === 'SET_FIELD_VALUE' &&
-      // Should validate (any change event)
-      field._validateOnChange;
+      if (action.type === 'BLUR_FIELD' && action.config.name === field.name) {
+        return 'blur';
+      }
 
-    const validateSetFieldState =
-      // Set field state
-      action.type === 'SET_FIELD_STATE' &&
-      // Matching field
-      action.config.name === field.name &&
-      // Validation requested (boolean)
-      (action.config.validate === true ||
-        // Validation requested (function)
-        (typeof action.config.validate === 'function' &&
-          action.config.validate(field)));
+      if (
+        action.type === 'SET_FIELD_VALUE' &&
+        action.config.name === field.name
+      ) {
+        return 'change';
+      }
+    })();
 
-    const validateField =
-      // Validate field
-      action.type === 'VALIDATE_FIELD' &&
-      // Matching field
-      action.config.name === field.name;
+    const validationFn = (() => {
+      if (validationEvent === undefined) {
+        return;
+      }
 
-    const validateFields =
-      // Validate all fields
-      action.type === 'VALIDATE_FIELDS';
+      if (typeof field._validate === 'function') {
+        return field._validate;
+      }
 
-    if (
-      !(
-        validateBlur ||
-        validateChange ||
-        validateUpdate ||
-        validateSetFieldState ||
-        validateField ||
-        validateFields
-      )
-    ) {
+      return field._validate[validationEvent];
+    })();
+
+    // Event doesn't affect this field
+    if (!validationFn) {
       return state;
     }
 
     try {
-      const validateResponse = field._validate(field.value, state) as any;
+      const validateResponse = validationFn({
+        event: validationEvent!,
+        value: field.value,
+        form: state,
+      });
 
       if (!(validateResponse instanceof Promise)) {
         return {
@@ -356,18 +342,12 @@ const applyValidationToState = (
 const doMountField = (fields: FieldsState) => ({
   name,
   validate,
-  validateOnChange = true,
-  validateOnBlur = false,
-  validateOnUpdate = false,
   initialValue = undefined,
-  initialError = undefined,
-  initialValid = false,
-  initialTouched = false,
 }: FieldConfig): FieldsState => {
   const p = fields[name as string] || ({} as FieldState);
 
   if (p && p._isActive) {
-    throw Error('Field is already mounted');
+    console.warn('Field is already mounted');
   }
 
   return {
@@ -376,15 +356,11 @@ const doMountField = (fields: FieldsState) => ({
       ...p,
       name: name as string,
       _isActive: true,
-      _validateOnBlur: validateOnBlur,
-      _validateOnChange: validateOnChange,
-      _validateOnUpdate: validateOnUpdate,
       _validate: validate,
-      isValid: initialValid,
+      isValid: true,
       isValidating: false,
       value: p.value !== undefined ? p.value : initialValue,
-      error: p.error || initialError,
-      touched: p.touched || initialTouched,
+      error: p.error,
       hasBlurred: false,
       hasChanged: false,
     },
@@ -482,7 +458,6 @@ const doBlurField = (fields: FieldsState) => <T = any>({
     ...fields,
     [name]: {
       ...p,
-      touched: true,
       hasBlurred: true,
     },
   };

@@ -30,7 +30,7 @@ export interface FormState<T extends Record<string, any> = any> {
   validateFields: () => void;
 
   /** Internal: Manually mount field. */
-  mountField: (k: FieldConfig<T>) => void;
+  mountField: (k: FieldConfig<T>) => FieldState<T>;
   /** Internal: Manually unmount field. */
   unmountField: (k: UnmountFieldArgs<T>) => void;
   /** Internal: Manually set field state. */
@@ -40,12 +40,6 @@ export interface FormState<T extends Record<string, any> = any> {
 export interface FieldState<T = string | boolean | number | string[]> {
   /** The field is currently mounted. */
   readonly _isActive: boolean;
-  /** Trigger validation on change. */
-  readonly _validateOnChange: boolean;
-  /** Trigger validation on blur. */
-  readonly _validateOnBlur: boolean;
-  /** Trigger validation on any form value change. */
-  readonly _validateOnUpdate: boolean;
   /** Validation function. */
   readonly _validate: FieldConfig['validate'];
 
@@ -66,8 +60,6 @@ export interface FieldState<T = string | boolean | number | string[]> {
   readonly hasBlurred: boolean;
   /** Field has been changed since mount. */
   readonly hasChanged: boolean;
-  /** @deprecated Field has been touched. */
-  readonly touched: boolean;
 }
 
 export interface FieldConfig<
@@ -75,27 +67,51 @@ export interface FieldConfig<
   K extends (keyof S & string) | string = S extends Record<string, any>
     ? keyof S & string
     : string,
-  V = S extends Record<string, any> ? S[K] : S,
-  F = S extends Record<string, any> ? S : unknown
+  V = S extends Record<string, any> ? S[K] : S
 > {
   /** Unique identifier for field. */
   readonly name: K;
   /** Validation function (throws errors). */
-  readonly validate?: (value: V, form: F) => void;
-  /** When the given field's value changes. */
-  readonly validateOnChange?: boolean;
-  /** When the given field loses focus. */
-  readonly validateOnBlur?: boolean;
-  /** When any change is made to the form state (global). */
-  readonly validateOnUpdate?: boolean;
+  readonly validate?: ObjectValidation | ValidationFn;
   /** Starting value. */
   readonly initialValue?: V;
-  /** Starting error. */
-  readonly initialError?: FormError;
-  /** Starting valid state. */
-  readonly initialValid?: boolean;
   /** Should destroy value when useField hook is unmounted. */
   readonly destroyOnUnmount?: boolean;
-  /** @deprecated Starting touched state. */
-  readonly initialTouched?: boolean;
 }
+
+/**
+ * Events which trigger validation
+ *
+ * `mount`: Field has been mounted.
+ *
+ * `blur`: Field has had 'onBlur' event.
+ *
+ * `change`: Field has had 'onChange' event.
+ *
+ * `formChange`: The value of another field in the form has changed.
+ *
+ * `submit`: Submission has begun.
+ */
+export type ValidationEvent =
+  | 'mount'
+  | 'blur'
+  | 'change'
+  | 'formChange'
+  | 'submit';
+
+/** Arguments passed to a validation function */
+export type ValidationArgs<V = any, F = any> = {
+  event: ValidationEvent;
+  value: V;
+  form: F;
+};
+
+/** Handler for validation event */
+export type ValidationFn<V = any, F = any> = (
+  args: ValidationArgs<V, F>
+) => void | Promise<void>;
+
+/** A map of validation events corresponding to a function. */
+export type ObjectValidation<V = any, F = any> = {
+  [k in ValidationEvent]?: ValidationFn<V, F>;
+};
