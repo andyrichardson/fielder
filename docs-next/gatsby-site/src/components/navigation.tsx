@@ -58,24 +58,44 @@ export const Navigation: FC = ({ ...props }) => {
 }
 
 const Nav = styled.nav`
+  box-sizing: border-box;
   position: sticky;
   height: min-content;
-  top: 60px;
+  top: 0;
   display: flex;
   flex-direction: column;
-  width: 200px;
+  padding: 0 ${scale(2)};
 
   @media (max-width: 600px) {
+    background: #fff;
+    z-index: 1;
+    height: 100%;
+    position: fixed;
+    width: 100vw;
+    min-width: 100vw;
+    margin-left: 0;
+    transition: margin-left 200ms ease;
+    width: 100vw;
+    min-width: 100vw;
+    margin-left: 0;
+    transition: margin-left 200ms ease;
+    overflow: auto;
+
     &[data-collapsed] {
-      margin-left: -200px;
+      margin-left: -100vw;
     }
+  }
+
+  @media (min-width: 601px) {
+    width: 200px;
   }
 `
 
 const Logo = styled(Icon)`
-  @media (max-width: 600px) {
-    visibility: none;
-  }
+  font-size: ${scale(3)};
+  margin-top: 60px;
+  margin-bottom: ${scale(2)};
+  overflow: visible;
 `
 
 const NavLink = styled(Link)`
