@@ -8,7 +8,6 @@ import {
 } from 'react';
 import { FielderContext } from './context';
 import { FormState, FieldState, FieldConfig } from './types';
-import { getValidationFn } from './util';
 
 export type UseFieldProps<T = any> = {
   /** Field name. */
@@ -50,7 +49,7 @@ export const useField = <T = any>({
     mountField,
     unmountField,
     setFieldValue,
-    setFieldState,
+    setFieldValidation,
   } = useContext<FormState>(FielderContext);
 
   const name = useMemo(() => initialName, []);
@@ -82,37 +81,15 @@ export const useField = <T = any>({
     []
   );
 
-  // /** Update field state on validation config change. */
-  // useLayoutEffect(() => {
-  //   if (initialMount.current) {
-  //     initialMount.current = false;
-  //     return;
-  //   }
+  /** Update field state on validation config change. */
+  useLayoutEffect(() => {
+    if (initialMount.current) {
+      initialMount.current = false;
+      return;
+    }
 
-  //   setFieldState({
-  //     name,
-  //     state: (s) => {
-  //       if (
-  //         s._validate === validate &&
-  //         s._validateOnBlur === validateOnBlur &&
-  //         s._validateOnChange === validateOnChange &&
-  //         s._validateOnUpdate === validateOnUpdate
-  //       ) {
-  //         return s;
-  //       }
-
-  //       return {
-  //         ...s,
-  //         _validate: validate,
-  //         _validateOnBlur: validateOnBlur,
-  //         _validateOnChange: validateOnChange,
-  //         _validateOnUpdate: validateOnUpdate,
-  //       };
-  //     },
-  //     validate: (s) =>
-  //       s._validate !== validate && validateOnChange && s.hasChanged,
-  //   });
-  // }, [validate, validateOnBlur, validateOnChange, validateOnUpdate, name]);
+    setFieldValidation({ name, validation: validate });
+  }, [validate, name]);
 
   const onBlur = useCallback(() => blurField({ name }), [blurField]);
 

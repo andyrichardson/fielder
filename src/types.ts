@@ -3,6 +3,7 @@ import {
   BlurFieldArgs,
   UnmountFieldArgs,
   SetFieldStateArgs,
+  SetFieldValidationArgs,
 } from './useForm';
 
 export type FormError = Error | string;
@@ -40,6 +41,8 @@ export interface FormState<T extends Record<string, any> = any> {
   unmountField: (k: UnmountFieldArgs<T>) => void;
   /** Internal: Manually set field state. */
   setFieldState: (a: SetFieldStateArgs<T>) => void;
+  /** Internal: Set new field validation function */
+  setFieldValidation: (a: SetFieldValidationArgs<T>) => void;
 }
 
 export interface FieldState<T = string | boolean | number | string[]> {

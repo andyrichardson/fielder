@@ -14,6 +14,8 @@ import {
   FieldConfig,
   FieldsState,
   ValidationTrigger,
+  ValidationFn,
+  ObjectValidation,
 } from './types';
 
 /** Mounts/remounts a field to the form. */
@@ -32,6 +34,12 @@ interface UnmountFieldAction<T = any> {
 interface SetFieldValueAction<T = any> {
   type: 'SET_FIELD_VALUE';
   config: SetFieldValueArgs<T>;
+}
+
+/** Sets the validation of a field. */
+interface SetFieldValidationAction<T = any> {
+  type: 'SET_FIELD_VALIDATION';
+  config: SetFieldValidationArgs<T>;
 }
 
 /** Sets a field to `hasBlurred`. */
@@ -60,8 +68,9 @@ interface SetFieldStateAction<T = any> {
 type FormAction<T = any> =
   | MountFieldAction<T>
   | UnmountFieldAction<T>
-  | SetFieldValueAction<T>
   | BlurFieldAction<T>
+  | SetFieldValueAction<T>
+  | SetFieldValidationAction<T>
   | ValidateFieldAction<T>
   | ValidateFieldsAction
   | SetFieldStateAction<T>;
@@ -120,6 +129,11 @@ export const useForm = <T = any>(): FormState<T> => {
     [dispatch]
   );
 
+  const setFieldValidation = useCallback<FormState<T>['setFieldValidation']>(
+    (config) => dispatch({ type: 'SET_FIELD_VALIDATION', config }),
+    [dispatch]
+  );
+
   const validateField = useCallback<FormState<T>['validateField']>(
     (config) => dispatch({ type: 'VALIDATE_FIELD', config }),
     [dispatch]
@@ -158,6 +172,7 @@ export const useForm = <T = any>(): FormState<T> => {
       mountField,
       unmountField,
       setFieldState,
+      setFieldValidation,
     }),
     [
       fields,
@@ -170,6 +185,7 @@ export const useForm = <T = any>(): FormState<T> => {
       mountField,
       unmountField,
       setFieldState,
+      setFieldValidation,
     ]
   );
 };
@@ -194,6 +210,10 @@ const applyActionToState = (s: FieldsState, a: FormAction) => {
 
   if (a.type === 'SET_FIELD_STATE') {
     return doSetFieldState(s)(a.config);
+  }
+
+  if (a.type === 'SET_FIELD_VALIDATION') {
+    return doSetFieldValidation(s)(a.config);
   }
 
   return s;
@@ -270,6 +290,24 @@ const applyValidationToState = (
       }
 
       if (
+        action.type === 'SET_FIELD_VALIDATION' &&
+        action.config.name == field.name
+      ) {
+        // Re-trigger blur event on validation change
+        if (field.hasBlurred) {
+          return 'blur';
+        }
+
+        // Re-trigger change event on validation change
+        if (field.hasChanged) {
+          return 'change';
+        }
+
+        // Re-trigger mount if not yet blurred/changed
+        return 'mount';
+      }
+
+      if (
         action.type === 'VALIDATE_FIELD' &&
         action.config.name === field.name
       ) {
@@ -280,15 +318,15 @@ const applyValidationToState = (
         return 'mount';
       }
 
-      if (action.type === 'BLUR_FIELD' && action.config.name === field.name) {
-        return 'blur';
-      }
-
       if (
         action.type === 'SET_FIELD_VALUE' &&
         action.config.name === field.name
       ) {
         return 'change';
+      }
+
+      if (action.type === 'BLUR_FIELD' && action.config.name === field.name) {
+        return 'blur';
       }
     })();
 
@@ -409,6 +447,38 @@ const doUnmountField = (fields: FieldsState) => ({
     [name]: {
       ...p,
       _isActive: false,
+    },
+  };
+};
+
+export interface SetFieldValidationArgs<
+  T = any,
+  K extends keyof T & string = keyof T & string
+> {
+  name: K;
+  validation: ValidationFn | ObjectValidation<T> | undefined;
+}
+
+/** Triggers a change to the given field. */
+const doSetFieldValidation = (fields: FieldsState) => <T>({
+  name,
+  validation,
+}: SetFieldValidationArgs<T>): FieldsState => {
+  const p = fields[name as string];
+
+  if (p === undefined) {
+    throw Error('Cannot set validation on non-mounted field');
+  }
+
+  if (!p._isActive) {
+    console.warn('Setting field validation for inactive field.');
+  }
+
+  return {
+    ...fields,
+    [name]: {
+      ...p,
+      _validate: validation,
     },
   };
 };
