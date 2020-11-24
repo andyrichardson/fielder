@@ -89,7 +89,7 @@ export const useField = <T = any>({
     }
 
     setFieldValidation({ name, validation: validate });
-  }, [validate, name]);
+  }, [validate, name, setFieldValidation]);
 
   const onBlur = useCallback(() => blurField({ name }), [blurField]);
 
