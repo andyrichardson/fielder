@@ -44,7 +44,7 @@ export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
     []
   );
 
-  const [fields, dispatch] = useSynchronousReducer<FieldsState, FormAction>(
+  const [fields, dispatch] = useSynchronousReducer<FieldsState<T>, FormAction>(
     (state, action) => {
       const newState = applyActionToState(state, action);
       const { state: validatedState, promises } = applyValidationToState(
@@ -68,8 +68,7 @@ export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
   const mountField = useCallback<FormState<T>['mountField']>(
-    (config) =>
-      dispatch({ type: 'MOUNT_FIELD', config: config as any })[config.name],
+    (config) => dispatch({ type: 'MOUNT_FIELD', config })[config.name] as any,
     [dispatch]
   );
 
@@ -89,7 +88,7 @@ export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
   );
 
   const blurField = useCallback<FormState<T>['blurField']>(
-    (config) => dispatch({ type: 'BLUR_FIELD', config: config as any }),
+    (config) => dispatch({ type: 'BLUR_FIELD', config: config }),
     [dispatch]
   );
 

@@ -29,7 +29,9 @@ export interface FormState<T extends FormSchemaType = any> {
   validateField: (a: ValidateFieldArgs<T>) => void;
 
   /** Internal: Manually mount field. */
-  mountField: <K extends keyof T>(a: MountFieldArgs<T, K>) => FieldState<T, K>;
+  mountField: <K extends keyof T & string>(
+    a: MountFieldArgs<T, K>
+  ) => FieldState<T, K>;
   /** Internal: Manually unmount field. */
   unmountField: (a: UnmountFieldArgs<T>) => void;
   /** Internal: Manually set field state. */

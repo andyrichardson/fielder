@@ -1,9 +1,4 @@
-import {
-  ValidationFn,
-  ObjectValidation,
-  FieldConfig,
-  FormSchemaType,
-} from '../types';
+import { FieldState, FormSchemaType } from '../types';
 import { ActionHandler } from './util';
 
 /** Sets the value of a field. */
@@ -17,7 +12,7 @@ export type SetFieldValidationArgs<
   K extends keyof T
 > = {
   name: K;
-  validation?: FieldConfig<T, K>['validate'];
+  validation?: FieldState<T, K>['_validate'];
 };
 
 /** Triggers a change to the given field. */
