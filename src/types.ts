@@ -32,8 +32,12 @@ export interface FormState<T extends Record<string, any> = any> {
     /** Trigger (default: `change`) */
     trigger?: ValidationTrigger;
   }) => void;
-  /** Force trigger validation  */
-  validateFields: () => void;
+  /** Trigger submission validation.
+   *
+   * Throws on synchronous validation errors.
+   * Returns promise if form contains async validation.
+   */
+  validateSubmission: () => void;
 
   /** Internal: Manually mount field. */
   mountField: (k: FieldConfig<T>) => FieldState<T>;
