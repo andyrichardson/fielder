@@ -57,31 +57,17 @@ describe('on mount field', () => {
     expect(field).toEqual(response.fields[name]);
   });
 
-  it('calls validation function', () => {
+  it.each([
+    ['function', validate],
+    ["object's function", { mount: validate }],
+  ])('calls validation %s', (_, validation) => {
     act(() => {
-      response.mountField({ name, validate, initialValue });
+      response.mountField({ name, validate: validation, initialValue });
     });
 
     expect(validate).toBeCalledWith(
       expect.objectContaining({
-        event: 'mount',
-        value: initialValue,
-      })
-    );
-  });
-
-  it('calls validation object "mount" function', () => {
-    act(() => {
-      response.mountField({
-        name,
-        validate: { mount: validate },
-        initialValue,
-      });
-    });
-
-    expect(validate).toBeCalledWith(
-      expect.objectContaining({
-        event: 'mount',
+        trigger: 'mount',
         value: initialValue,
       })
     );
@@ -172,6 +158,7 @@ describe('on unmount field (destroy)', () => {
 });
 
 describe('on remount field', () => {
+  const validate = jest.fn();
   const fieldName = 'TargetField';
   const value = 5678;
 
@@ -220,6 +207,26 @@ describe('on remount field', () => {
       }
     `);
   });
+
+  it.each([
+    ['function', validate],
+    ["object's function", { mount: validate }],
+  ])('calls validation %s', (_, validation) => {
+    act(() => {
+      response.mountField({
+        name: fieldName,
+        validate: validation,
+        initialValue: value,
+      });
+    });
+
+    expect(validate).toBeCalledWith(
+      expect.objectContaining({
+        trigger: 'mount',
+        value,
+      })
+    );
+  });
 });
 
 describe('on blur field', () => {
@@ -234,17 +241,17 @@ describe('on blur field', () => {
         name: 'test',
         initialValue: 1234,
       });
-      response.mountField({
-        name: fieldName,
-        initialValue: value,
-        validate,
-      });
     });
     validate.mockClear();
   });
 
   it('updates hasBlurred state', () => {
     act(() => {
+      response.mountField({
+        name: fieldName,
+        initialValue: value,
+        validate,
+      });
       response.blurField({
         name: fieldName,
       });
@@ -253,17 +260,25 @@ describe('on blur field', () => {
     expect(response.fields[fieldName]).toHaveProperty('hasBlurred', true);
   });
 
-  it('calls validation', () => {
+  it.each([
+    ['function', validate],
+    ["object's function", { blur: validate }],
+  ])('calls validation %s', (_, validation) => {
     act(() => {
+      response.mountField({
+        name: fieldName,
+        initialValue: value,
+        validate: validation,
+      });
       response.blurField({
         name: fieldName,
       });
     });
 
-    expect(validate).toBeCalledTimes(1);
     expect(validate).toBeCalledWith(
       expect.objectContaining({
-        event: 'blur',
+        trigger: 'blur',
+        value: value,
       })
     );
   });
@@ -281,17 +296,16 @@ describe('on change field', () => {
         name: 'test',
         initialValue: 1234,
       });
+    });
+  });
+
+  it('updates hasChanged state', () => {
+    act(() => {
       response.mountField({
         name: fieldName,
         initialValue: value,
         validate,
       });
-    });
-    validate.mockClear();
-  });
-
-  it('updates hasChanged state', () => {
-    act(() => {
       response.setFieldValue({
         name: fieldName,
         value,
@@ -301,96 +315,74 @@ describe('on change field', () => {
     expect(response.fields[fieldName]).toHaveProperty('hasChanged', true);
   });
 
-  it('calls validation', () => {
+  it.each([
+    ['function', validate],
+    ["object's function", { change: validate }],
+  ])('calls validation %s', (_, validation) => {
     act(() => {
+      response.mountField({
+        name: fieldName,
+        initialValue: value,
+        validate: validation,
+      });
       response.setFieldValue({
         name: fieldName,
         value,
       });
     });
 
-    expect(validate).toBeCalledTimes(1);
     expect(validate).toBeCalledWith(
       expect.objectContaining({
-        event: 'change',
-        value,
+        trigger: 'change',
+        value: value,
       })
     );
   });
 });
 
-// describe('on change field', () => {
-//   const fieldName = 'TargetField';
-//   const value = 'Hello';
-//   const validate = jest.fn();
+describe('on validate field', () => {
+  const name = 'TargetField';
+  const value = 5678;
+  const validate = jest.fn();
 
-//   beforeEach(() => {
-//     mount(<Fixture />);
-//   });
+  beforeEach(() => {
+    create(<Fixture />);
+    act(() => {
+      response.mountField({
+        name,
+        initialValue: value,
+        validate,
+      });
+    });
+    validate.mockClear();
+  });
 
-//   describe('field value', () => {
-//     beforeEach(() => {
-//       act(() => {
-//         response.mountField({ name: 'IgnoredField' });
-//         response.mountField({ name: fieldName });
-//         response.setFieldValue({ name: fieldName, value });
-//       });
-//     });
+  it('calls validation with default trigger (change)', () => {
+    act(() => {
+      response.validateField({ name });
+    });
+    expect(validate).toBeCalledTimes(1);
+    expect(validate).toBeCalledWith(
+      expect.objectContaining({
+        value,
+        trigger: 'change',
+      })
+    );
+  });
 
-//     it('matches snapshot', () => {
-//       expect(response.fields).toMatchSnapshot();
-//     });
-
-//     it('has new value', () => {
-//       expect(response.fields[fieldName]).toHaveProperty('value', value);
-//     });
-
-//     it('has changed state', () => {
-//       expect(response.fields[fieldName]).toHaveProperty('hasChanged', true);
-//     });
-//   });
-
-//   describe('with [validateOnChange = true]', () => {
-//     beforeEach(() => {
-//       act(() => {
-//         response.mountField({ name: 'IgnoredField' });
-//         response.mountField({
-//           name: fieldName,
-//           validate,
-//           validateOnChange: true,
-//           initialValid: true,
-//         });
-//         response.setFieldValue({ name: fieldName, value });
-//       });
-//     });
-//     describe('validate function', () => {
-//       it('is called', () => {
-//         expect(validate).toBeCalledTimes(1);
-//         expect(validate).toBeCalledWith(value, response.fields);
-//       });
-//     });
-//   });
-
-//   describe('with [validateOnChange = false]', () => {
-//     describe('validate function', () => {
-//       beforeEach(() => {
-//         act(() => {
-//           response.mountField({ name: 'IgnoredField' });
-//           response.mountField({
-//             name: fieldName,
-//             validate,
-//             validateOnChange: false,
-//           });
-//           response.blurField({ name: fieldName });
-//         });
-//       });
-
-//       it('is not called', () => {
-//         expect(validate).toBeCalledTimes(0);
-//       });
-//     });
-//   });
-// });
+  it('calls validation with default trigger (change)', () => {
+    act(() => {
+      response.validateField({ name, trigger: 'blur' });
+    });
+    expect(validate).toBeCalledTimes(1);
+    expect(validate).toBeCalledWith(
+      expect.objectContaining({
+        value,
+        trigger: 'blur',
+      })
+    );
+  });
+});
 
 // describe('on change field (callback)', () => {
 //   const fieldName = 'TargetField';

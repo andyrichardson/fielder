@@ -75,9 +75,12 @@ export const useField = <T = any>({
 
   useMemo(() => (destroyRef.current = destroyOnUnmount), [destroyOnUnmount]);
 
-  useLayoutEffect(() => () => {
-    unmountField({ name, destroy: destroyRef.current });
-  });
+  useLayoutEffect(
+    () => () => {
+      unmountField({ name, destroy: destroyRef.current });
+    },
+    []
+  );
 
   // /** Update field state on validation config change. */
   // useLayoutEffect(() => {

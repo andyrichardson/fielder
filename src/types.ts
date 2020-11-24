@@ -25,7 +25,12 @@ export interface FormState<T extends Record<string, any> = any> {
   /** Trigger blur event for a mounted field. */
   blurField: (a: BlurFieldArgs<T>) => void;
   /** Force trigger validation on a mounted field. */
-  validateField: (a: { name: keyof T & string }) => void;
+  validateField: (a: {
+    /** Field name */
+    name: keyof T & string;
+    /** Trigger (default: `change`) */
+    trigger?: ValidationTrigger;
+  }) => void;
   /** Force trigger validation  */
   validateFields: () => void;
 
@@ -92,7 +97,7 @@ export interface FieldConfig<
  *
  * `submit`: Submission has begun.
  */
-export type ValidationEvent =
+export type ValidationTrigger =
   | 'mount'
   | 'blur'
   | 'change'
@@ -101,7 +106,7 @@ export type ValidationEvent =
 
 /** Arguments passed to a validation function */
 export type ValidationArgs<V = any, F = any> = {
-  event: ValidationEvent;
+  trigger: ValidationTrigger;
   value: V;
   form: F;
 };
@@ -113,5 +118,5 @@ export type ValidationFn<V = any, F = any> = (
 
 /** A map of validation events corresponding to a function. */
 export type ObjectValidation<V = any, F = any> = {
-  [k in ValidationEvent]?: ValidationFn<V, F>;
+  [k in ValidationTrigger]?: ValidationFn<V, F>;
 };

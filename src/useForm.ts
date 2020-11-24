@@ -8,27 +8,33 @@ import {
   useRef,
   MutableRefObject,
 } from 'react';
-import { FormState, FieldState, FieldConfig, FieldsState } from './types';
+import {
+  FormState,
+  FieldState,
+  FieldConfig,
+  FieldsState,
+  ValidationTrigger,
+} from './types';
 
-/** Adds a field to the form. */
+/** Mounts/remounts a field to the form. */
 interface MountFieldAction<T = any> {
   type: 'MOUNT_FIELD';
   config: FieldConfig<T>;
 }
 
-/** Removes a field to the form or sets it as inactive. */
+/** Unmounts/removes a field to the form. */
 interface UnmountFieldAction<T = any> {
   type: 'UNMOUNT_FIELD';
   config: UnmountFieldArgs<T>;
 }
 
-/** Sets the value of a field (may trigger validation). */
+/** Sets the value of a field. */
 interface SetFieldValueAction<T = any> {
   type: 'SET_FIELD_VALUE';
   config: SetFieldValueArgs<T>;
 }
 
-/** Sets a field to having been touched. */
+/** Sets a field to `hasBlurred`. */
 interface BlurFieldAction<T = any> {
   type: 'BLUR_FIELD';
   config: BlurFieldArgs<T>;
@@ -255,12 +261,19 @@ const applyValidationToState = (
       return state;
     }
 
-    const validationEvent = (() => {
+    const validationTrigger = (() => {
       if (
         action.type === 'SET_FIELD_VALUE' &&
         action.config.name !== field.name
       ) {
         return 'formChange';
+      }
+
+      if (
+        action.type === 'VALIDATE_FIELD' &&
+        action.config.name === field.name
+      ) {
+        return action.config.trigger || 'change';
       }
 
       if (action.type === 'MOUNT_FIELD' && action.config.name === field.name) {
@@ -280,7 +293,7 @@ const applyValidationToState = (
     })();
 
     const validationFn = (() => {
-      if (validationEvent === undefined) {
+      if (validationTrigger === undefined) {
         return;
       }
 
@@ -288,7 +301,7 @@ const applyValidationToState = (
         return field._validate;
       }
 
-      return field._validate[validationEvent];
+      return field._validate[validationTrigger];
     })();
 
     // Event doesn't affect this field
@@ -298,7 +311,7 @@ const applyValidationToState = (
 
     try {
       const validateResponse = validationFn({
-        event: validationEvent!,
+        trigger: validationTrigger!,
         value: field.value,
         form: state,
       });
@@ -504,4 +517,5 @@ export interface ValidateFieldArgs<
   K extends keyof T & string = keyof T & string
 > {
   name: K;
+  trigger?: ValidationTrigger;
 }
