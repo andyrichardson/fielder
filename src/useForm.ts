@@ -106,10 +106,23 @@ export const useForm = <T = any>(): FormState<T> => {
   const validateSubmission = useCallback<
     FormState<T>['validateSubmission']
   >(() => {
-    return batchValidationErrors({
-      state: dispatch({ type: 'VALIDATE_SUBMISSION' }),
+    const newState = dispatch({ type: 'VALIDATE_SUBMISSION' });
+    const errors = batchValidationErrors({
+      state: newState,
       promises: promiseRef.current,
     });
+
+    if (errors instanceof Promise) {
+      return errors.then((errors) => ({
+        state: newState,
+        errors,
+      }));
+    }
+
+    return {
+      state: newState,
+      errors,
+    };
   }, []);
 
   const mountedFields = useMemo(

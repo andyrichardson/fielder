@@ -37,7 +37,10 @@ export interface FormState<T extends Record<string, any> = any> {
    * Throws on synchronous validation errors.
    * Returns promise if form contains async validation.
    */
-  validateSubmission: () => void;
+  validateSubmission: () => MaybePromise<{
+    state: FieldsState;
+    errors: Record<string, string>;
+  }>;
 
   /** Internal: Manually mount field. */
   mountField: (k: FieldConfig<T>) => FieldState<T>;
@@ -127,3 +130,5 @@ export type ValidationFn<V = any, F = any> = (
 export type ObjectValidation<V = any, F = any> = {
   [k in ValidationTrigger]?: ValidationFn<V, F>;
 };
+
+type MaybePromise<T> = T | Promise<T>;
