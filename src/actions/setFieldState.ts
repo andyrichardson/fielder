@@ -20,10 +20,6 @@ export const doSetFieldState: ActionHandler<SetFieldStateAction> = (
     throw Error('Cannot unmount non-mounted field');
   }
 
-  if (!p._isActive) {
-    console.warn('Setting field attribute on inactive field.');
-  }
-
   const newState = typeof state === 'function' ? state(p) : state;
 
   /** Same object reference was returned. */

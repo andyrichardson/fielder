@@ -8,9 +8,10 @@ Object {
   "isValidating": false,
   "mountField": [Function],
   "setFieldState": [Function],
+  "setFieldValidation": [Function],
   "setFieldValue": [Function],
   "unmountField": [Function],
   "validateField": [Function],
-  "validateFields": [Function],
+  "validateSubmission": [Function],
 }
 `;

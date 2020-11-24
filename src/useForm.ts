@@ -21,6 +21,7 @@ import { ValidateFieldAction } from './actions/validateField';
 import { ValidateSubmissionAction } from './actions/validateSubmission';
 import { applyValidationToState } from './validation/applyValidationToState';
 import { batchValidationErrors } from './validation/batchValidationErrors';
+import { useSynchronousReducer } from './useSynchronousReducer';
 
 export type FormAction =
   | BlurFieldAction
@@ -35,8 +36,6 @@ export type FormAction =
 export const useForm = <T = any>(): FormState<T> => {
   /** Async validation promise updated synchronously after every dispatch. */
   const promiseRef = useRef<Record<string, Promise<any>> | undefined>();
-  /** State updated synchronously after every dispatch. */
-  const stateRef = useRef<FieldsState<T>>({} as FieldsState<T>);
   /** Reference to dispatch for forwarding closure. */
   const dispatchRef = useRef<Dispatch<FormAction>>();
 
@@ -45,7 +44,7 @@ export const useForm = <T = any>(): FormState<T> => {
     []
   );
 
-  const [fields, dispatch] = useReducer<Reducer<FieldsState<T>, FormAction>>(
+  const [fields, dispatch] = useSynchronousReducer<FieldsState, FormAction>(
     (state, action) => {
       const newState = applyActionToState(state, action);
       const { state: validatedState, promises } = applyValidationToState(
@@ -60,7 +59,6 @@ export const useForm = <T = any>(): FormState<T> => {
         );
       }
 
-      stateRef.current = validatedState;
       promiseRef.current = promises;
       return validatedState;
     },
@@ -70,10 +68,8 @@ export const useForm = <T = any>(): FormState<T> => {
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
   const mountField = useCallback<FormState<T>['mountField']>(
-    (config) => {
-      dispatch({ type: 'MOUNT_FIELD', config: config as any });
-      return stateRef.current[config.name as keyof T] as any;
-    },
+    (config) =>
+      dispatch({ type: 'MOUNT_FIELD', config: config as any })[config.name],
     [dispatch]
   );
 
@@ -110,9 +106,8 @@ export const useForm = <T = any>(): FormState<T> => {
   const validateSubmission = useCallback<
     FormState<T>['validateSubmission']
   >(() => {
-    dispatch({ type: 'VALIDATE_SUBMISSION' });
     return batchValidationErrors({
-      state: stateRef.current,
+      state: dispatch({ type: 'VALIDATE_SUBMISSION' }),
       promises: promiseRef.current,
     });
   }, []);

@@ -4,6 +4,7 @@ import { useForm } from './useForm';
 import { FormState } from './types';
 
 let response: FormState;
+let wrapper: ReturnType<typeof create>;
 
 const Fixture = () => {
   response = useForm();
@@ -15,7 +16,7 @@ beforeEach(jest.clearAllMocks);
 
 describe('initial call', () => {
   it('matches snapshot', () => {
-    create(<Fixture />);
+    wrapper = create(<Fixture />);
     expect(response).toMatchSnapshot();
   });
 });
@@ -26,7 +27,7 @@ describe('on mount field', () => {
   const validate = jest.fn();
 
   beforeEach(() => {
-    create(<Fixture />);
+    wrapper = create(<Fixture />);
   });
 
   it('mounts field', () => {
@@ -79,7 +80,7 @@ describe('on unmount field', () => {
   const value = 5678;
 
   beforeEach(() => {
-    create(<Fixture />);
+    wrapper = create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -130,7 +131,7 @@ describe('on unmount field (destroy)', () => {
   const value = 5678;
 
   beforeEach(() => {
-    create(<Fixture />);
+    wrapper = create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -163,7 +164,7 @@ describe('on remount field', () => {
   const value = 5678;
 
   beforeEach(() => {
-    create(<Fixture />);
+    wrapper = create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -235,7 +236,7 @@ describe('on blur field', () => {
   const validate = jest.fn();
 
   beforeEach(() => {
-    create(<Fixture />);
+    wrapper = create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -290,7 +291,7 @@ describe('on change field', () => {
   const validate = jest.fn();
 
   beforeEach(() => {
-    create(<Fixture />);
+    wrapper = create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -346,7 +347,7 @@ describe('on validate field', () => {
   const validate = jest.fn();
 
   beforeEach(() => {
-    create(<Fixture />);
+    wrapper = wrapper = create(<Fixture />);
     act(() => {
       response.mountField({
         name,
@@ -384,629 +385,112 @@ describe('on validate field', () => {
   });
 });
 
-// describe('on change field (callback)', () => {
-//   const fieldName = 'TargetField';
-//   const initialValue = 'old value';
-//   const value = 'Hello';
-//   const callback = jest.fn(() => value);
-
-//   beforeEach(() => {
-//     mount(<Fixture />);
-//   });
-
-//   describe('field value', () => {
-//     beforeEach(() => {
-//       act(() => {
-//         response.mountField({ name: 'IgnoredField' });
-//         response.mountField({ name: fieldName, initialValue });
-//         response.setFieldValue({ name: fieldName, value: callback });
-//       });
-//     });
-
-//     it('matches snapshot', () => {
-//       expect(response.fields).toMatchSnapshot();
-//     });
-
-//     it('has new value', () => {
-//       expect(response.fields[fieldName]).toHaveProperty('value', value);
-//     });
-
-//     it('calls callback with old value', () => {
-//       expect(callback).toBeCalledTimes(1);
-//       expect(callback).toHaveBeenCalledWith(initialValue);
-//     });
-//   });
-// });
-
-// describe('on validate field', () => {
-//   const fieldName = 'TargetField';
-//   const validate = jest.fn();
-//   const value = 'Field Value';
-
-//   beforeEach(() => {
-//     mount(<Fixture />);
-//   });
-
-//   describe('validation function', () => {
-//     beforeEach(() => {
-//       act(() => {
-//         response.mountField({ name: 'IgnoredField' });
-//         response.mountField({
-//           name: fieldName,
-//           validate,
-//           initialValid: true,
-//           initialValue: value,
-//         });
-//         response.validateField({ name: fieldName });
-//       });
-//     });
-
-//     it('is called', () => {
-//       expect(validate).toBeCalledTimes(1);
-//       expect(validate).toBeCalledWith(value, {
-//         ...response.fields,
-//         [fieldName]: {
-//           ...response.fields[fieldName],
-//           isValid: true,
-//           error: undefined,
-//         },
-//       });
-//     });
-//   });
-
-//   describe('on failed validation', () => {
-//     const error = 'Name must be longer';
-
-//     beforeEach(() => {
-//       validate.mockImplementation(() => {
-//         throw error;
-//       });
-//       act(() => {
-//         response.mountField({ name: 'IgnoredField' });
-//         response.mountField({
-//           name: fieldName,
-//           validate,
-//           initialValid: true,
-//           initialValue: value,
-//         });
-//         response.validateField({ name: fieldName });
-//       });
-//     });
-
-//     describe('form state', () => {
-//       it('is not valid', () => {
-//         expect(response).toHaveProperty('isValid', false);
-//       });
-//     });
-
-//     describe('field state', () => {
-//       it('matches snapshot', () => {
-//         expect(
-//           Object.keys(response.fields).reduce(
-//             // Trim mock from snapshot
-//             (p, key) => ({
-//               ...p,
-//               [key]: { ...p[key], _validate: 'stub' as any },
-//             }),
-//             response.fields
-//           )
-//         ).toMatchInlineSnapshot(`
-//           Object {
-//             "IgnoredField": Object {
-//               "_isActive": true,
-//               "_validate": "stub",
-//               "_validateOnBlur": false,
-//               "_validateOnChange": true,
-//               "_validateOnUpdate": false,
-//               "error": undefined,
-//               "hasBlurred": false,
-//               "hasChanged": false,
-//               "isValid": false,
-//               "isValidating": false,
-//               "name": "IgnoredField",
-//               "touched": false,
-//               "value": undefined,
-//             },
-//             "TargetField": Object {
-//               "_isActive": true,
-//               "_validate": "stub",
-//               "_validateOnBlur": false,
-//               "_validateOnChange": true,
-//               "_validateOnUpdate": false,
-//               "error": "Name must be longer",
-//               "hasBlurred": false,
-//               "hasChanged": false,
-//               "isValid": false,
-//               "isValidating": false,
-//               "name": "TargetField",
-//               "touched": false,
-//               "value": "Field Value",
-//             },
-//           }
-//         `);
-//       });
-
-//       it('is not valid', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('isValid', false);
-//       });
-
-//       it('has error value', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('error', error);
-//       });
-//     });
-//   });
-
-//   describe('on successful validation', () => {
-//     beforeEach(() => {
-//       validate.mockReturnValue(undefined);
-//       act(() => {
-//         response.mountField({ name: 'IgnoredField', initialValid: true });
-//         response.mountField({
-//           name: fieldName,
-//           validate,
-//           initialValid: true,
-//           initialValue: value,
-//         });
-//         response.validateField({ name: fieldName });
-//       });
-//     });
-
-//     describe('form state', () => {
-//       it('is valid', () => {
-//         expect(response).toHaveProperty('isValid', true);
-//       });
-//     });
-
-//     describe('field state', () => {
-//       it('matches snapshot', () => {
-//         expect(
-//           Object.keys(response.fields).reduce(
-//             // Trim mock from snapshot
-//             (p, key) => ({
-//               ...p,
-//               [key]: { ...p[key], _validate: 'stub' as any },
-//             }),
-//             response.fields
-//           )
-//         ).toMatchInlineSnapshot(`
-//           Object {
-//             "IgnoredField": Object {
-//               "_isActive": true,
-//               "_validate": "stub",
-//               "_validateOnBlur": false,
-//               "_validateOnChange": true,
-//               "_validateOnUpdate": false,
-//               "error": undefined,
-//               "hasBlurred": false,
-//               "hasChanged": false,
-//               "isValid": true,
-//               "isValidating": false,
-//               "name": "IgnoredField",
-//               "touched": false,
-//               "value": undefined,
-//             },
-//             "TargetField": Object {
-//               "_isActive": true,
-//               "_validate": "stub",
-//               "_validateOnBlur": false,
-//               "_validateOnChange": true,
-//               "_validateOnUpdate": false,
-//               "error": undefined,
-//               "hasBlurred": false,
-//               "hasChanged": false,
-//               "isValid": true,
-//               "isValidating": false,
-//               "name": "TargetField",
-//               "touched": false,
-//               "value": "Field Value",
-//             },
-//           }
-//         `);
-//       });
-
-//       it('is valid', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('isValid', true);
-//       });
-
-//       it('has no error value', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('error', undefined);
-//       });
-//     });
-//   });
-// });
-
-// describe('on validate field (async)', () => {
-//   const fieldName = 'TargetField';
-//   let resolve: (a?: any) => void;
-//   let reject: (a?: any) => void;
-
-//   beforeEach(() => {
-//     mount(<Fixture />);
-//   });
-
-//   beforeEach(() => {
-//     act(() => {
-//       response.mountField({ name: 'IgnoredField' });
-//       response.mountField({
-//         name: fieldName,
-//         validate: () =>
-//           new Promise((res, rej) => {
-//             resolve = res;
-//             reject = rej;
-//           }),
-//       });
-//     });
-//   });
-
-//   describe('on call', () => {
-//     beforeEach(() => {
-//       act(() => {
-//         response.validateField({ name: fieldName });
-//       });
-//     });
-
-//     describe('field state', () => {
-//       it('is validating', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('isValidating', true);
-//       });
-//     });
-//   });
-
-//   describe('on resolve', () => {
-//     beforeEach(async () => {
-//       act(() => {
-//         response.validateField({ name: fieldName });
-//       });
-//       await act(async () => {
-//         resolve();
-//       });
-//     });
-
-//     describe('field state', () => {
-//       it('matches snapshot', () => {
-//         expect(response.fields[fieldName]).toMatchSnapshot();
-//       });
-
-//       it('is not validating', () => {
-//         expect(response.fields[fieldName]).toHaveProperty(
-//           'isValidating',
-//           false
-//         );
-//       });
-
-//       it('has no error', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('error', undefined);
-//       });
-
-//       it('is valid', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('isValid', true);
-//       });
-//     });
-//   });
-
-//   describe('on resolve (with value)', () => {
-//     const val = 'Some error';
-
-//     beforeEach(async () => {
-//       act(() => {
-//         response.validateField({ name: fieldName });
-//       });
-//       await act(async () => {
-//         resolve(val);
-//       });
-//     });
-
-//     describe('field state', () => {
-//       it('matches snapshot', () => {
-//         expect(response.fields[fieldName]).toMatchSnapshot();
-//       });
-
-//       it('is not validating', () => {
-//         expect(response.fields[fieldName]).toHaveProperty(
-//           'isValidating',
-//           false
-//         );
-//       });
-
-//       it('has error', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('error', val);
-//       });
-
-//       it('is not valid', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('isValid', false);
-//       });
-//     });
-//   });
-
-//   describe('on reject (with value)', () => {
-//     const val = 'Some error';
-
-//     beforeEach(async () => {
-//       act(() => {
-//         response.validateField({ name: fieldName });
-//       });
-//       await act(async () => {
-//         reject(val);
-//       });
-//     });
-
-//     describe('field state', () => {
-//       it('matches snapshot', () => {
-//         expect(response.fields[fieldName]).toMatchSnapshot();
-//       });
-
-//       it('is not validating', () => {
-//         expect(response.fields[fieldName]).toHaveProperty(
-//           'isValidating',
-//           false
-//         );
-//       });
-
-//       it('has error', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('error', val);
-//       });
-
-//       it('is not valid', () => {
-//         expect(response.fields[fieldName]).toHaveProperty('isValid', false);
-//       });
-//     });
-//   });
-
-//   describe('on multiple validation calls', () => {
-//     const val = 'Some error';
-
-//     beforeEach(() => {
-//       act(() => {
-//         response.validateField({ name: fieldName });
-//       });
-//     });
-
-//     describe('on old resolves -> new pending', () => {
-//       beforeEach(async () => {
-//         const initialResolve = resolve;
-//         act(() => {
-//           response.validateField({ name: fieldName });
-//         });
-
-//         await act(async () => {
-//           initialResolve(val);
-//         });
-//       });
-
-//       describe('field state', () => {
-//         it('is validating', () => {
-//           expect(response.fields[fieldName]).toHaveProperty(
-//             'isValidating',
-//             true
-//           );
-//         });
-//       });
-//     });
-
-//     describe('on new resolves -> old rejects', () => {
-//       beforeEach(async () => {
-//         const initialResolve = resolve;
-//         act(() => {
-//           response.validateField({ name: fieldName });
-//         });
-
-//         await act(async () => {
-//           resolve();
-//           initialResolve(val);
-//         });
-//       });
-
-//       describe('field state', () => {
-//         it('is not validating', () => {
-//           expect(response.fields[fieldName]).toHaveProperty(
-//             'isValidating',
-//             false
-//           );
-//         });
-
-//         it('has no error', () => {
-//           expect(response.fields[fieldName]).toHaveProperty('error', undefined);
-//         });
-
-//         it('is valid', () => {
-//           expect(response.fields[fieldName]).toHaveProperty('isValid', true);
-//         });
-//       });
-//     });
-//   });
-// });
-
-// describe('on validate fields', () => {
-//   const validate1 = jest.fn();
-//   const validate2 = jest.fn();
-
-//   beforeEach(() => {
-//     mount(<Fixture />);
-//     act(() => {
-//       response.mountField({ name: 'IgnoredField' });
-//       response.mountField({ name: 'field1', validate: validate1 });
-//       response.mountField({ name: 'field2', validate: validate2 });
-//       response.validateFields();
-//     });
-//   });
-
-//   describe('all validation functions', () => {
-//     it('are called', () => {
-//       expect(validate1).toBeCalledTimes(1);
-//       expect(validate2).toBeCalledTimes(1);
-//     });
-//   });
-// });
-
-// describe('on set field state', () => {
-//   const validateFn = jest.fn();
-
-//   beforeEach(() => {
-//     mount(<Fixture />);
-//     act(() => {
-//       response.mountField({
-//         name: 'myField',
-//         validate: validateFn,
-//         validateOnChange: true,
-//         validateOnBlur: false,
-//       });
-//       response.mountField({ name: 'otherField' });
-//     });
-//   });
-
-//   describe('on state object', () => {
-//     it('sets state', () => {
-//       const newState = {
-//         name: 'myField',
-//         _validateOnBlur: true,
-//         _validateOnChange: false,
-//         value: 'new value',
-//       } as any;
-
-//       act(() => {
-//         response.setFieldState({
-//           name: 'myField',
-//           state: newState,
-//         });
-//       });
-
-//       expect(response.fields.myField).toBe(newState);
-//     });
-//   });
-
-//   describe('on state function', () => {
-//     const stateFn = jest.fn((s) => ({
-//       ...s,
-//       _validateOnBlur: true,
-//       value: 'new value',
-//     }));
-
-//     beforeEach(() => {
-//       act(() => {
-//         response.setFieldState({
-//           name: 'myField',
-//           state: stateFn,
-//         });
-//       });
-//     });
-
-//     it('calls function with state value', () => {
-//       expect(stateFn).toBeCalledTimes(1);
-//       expect(stateFn).toBeCalledWith(
-//         expect.objectContaining({
-//           name: 'myField',
-//           _validate: validateFn,
-//           _validateOnChange: true,
-//           _validateOnBlur: false,
-//         })
-//       );
-//     });
-
-//     it('sets state', () => {
-//       expect(response.fields.myField).toEqual(
-//         expect.objectContaining({ _validateOnBlur: true, value: 'new value' })
-//       );
-//     });
-//   });
-
-//   describe('validation arg', () => {
-//     describe('on undefined', () => {
-//       beforeEach(() => {
-//         act(() => {
-//           response.setFieldState({
-//             name: 'myField',
-//             state: (s) => ({ ...s, value: 'new value' }),
-//           });
-//         });
-//       });
-
-//       it('does not validate field', () => {
-//         expect(validateFn).toBeCalledTimes(0);
-//       });
-//     });
-
-//     describe('on false', () => {
-//       beforeEach(() => {
-//         act(() => {
-//           response.setFieldState({
-//             name: 'myField',
-//             state: (s) => ({ ...s, value: 'new value' }),
-//             validate: false,
-//           });
-//         });
-//       });
-
-//       it('does not validate field', () => {
-//         expect(validateFn).toBeCalledTimes(0);
-//       });
-//     });
-
-//     describe('on true', () => {
-//       beforeEach(() => {
-//         act(() => {
-//           response.setFieldState({
-//             name: 'myField',
-//             state: (s) => ({ ...s, value: 'new value' }),
-//             validate: true,
-//           });
-//         });
-//       });
-
-//       it('validates field', () => {
-//         expect(validateFn).toBeCalledTimes(1);
-//       });
-//     });
-
-//     describe('on validation fn', () => {
-//       const fn = jest.fn();
-//       beforeEach(() => {
-//         act(() => {
-//           response.setFieldState({
-//             name: 'myField',
-//             state: (s) => ({ ...s, value: 'new value' }),
-//             validate: fn,
-//           });
-//         });
-//       });
-
-//       it('call function with state', () => {
-//         expect(fn).toBeCalledTimes(1);
-//         expect(fn).toBeCalledWith(expect.objectContaining({ name: 'myField' }));
-//       });
-//     });
-
-//     describe('on validation truthy', () => {
-//       const fn = jest.fn(() => true);
-//       beforeEach(() => {
-//         act(() => {
-//           response.setFieldState({
-//             name: 'myField',
-//             state: (s) => ({ ...s, value: 'new value' }),
-//             validate: fn,
-//           });
-//         });
-//       });
-
-//       it('validates field', () => {
-//         expect(validateFn).toBeCalledTimes(1);
-//       });
-//     });
-
-//     describe('on validation falsy', () => {
-//       const fn = jest.fn(() => false);
-//       beforeEach(() => {
-//         act(() => {
-//           response.setFieldState({
-//             name: 'myField',
-//             state: (s) => ({ ...s, value: 'new value' }),
-//             validate: fn,
-//           });
-//         });
-//       });
-
-//       it('does not validate field', () => {
-//         expect(validateFn).toBeCalledTimes(0);
-//       });
-//     });
-//   });
-// });
+describe('on validate submission', () => {
+  const validate1 = jest.fn();
+  const validate2 = jest.fn();
+  const validate3 = jest.fn();
+
+  beforeEach(async () => {
+    wrapper = create(<Fixture />);
+    act(() => {
+      response.mountField({
+        name: '1',
+        initialValue: '1',
+        validate: validate1,
+      });
+      response.mountField({
+        name: '2',
+        initialValue: '2',
+        validate: { submit: validate2 },
+      });
+      response.mountField({
+        name: '3',
+        initialValue: '3',
+        validate: validate2,
+      });
+      response.unmountField({
+        name: '3',
+      });
+    });
+
+    validate1.mockClear();
+    validate2.mockClear();
+    validate3.mockClear();
+  });
+
+  it('calls validation functions', () => {
+    act(() => {
+      response.validateSubmission();
+    });
+
+    expect(validate1).toBeCalledTimes(1);
+    expect(validate1).toBeCalledWith(
+      expect.objectContaining({
+        trigger: 'submit',
+        value: '1',
+      })
+    );
+    expect(validate2).toBeCalledTimes(1);
+    expect(validate2).toBeCalledWith(
+      expect.objectContaining({
+        trigger: 'submit',
+        value: '2',
+      })
+    );
+    expect(validate3).toBeCalledTimes(0);
+  });
+
+  it('returns synchronous errors', () => {
+    validate1.mockImplementation(() => {
+      throw Error('Something wrong with 1');
+    });
+
+    let errs;
+    act(() => {
+      errs = response.validateSubmission();
+    });
+
+    expect(errs).toMatchInlineSnapshot(`
+      Object {
+        "1": "Something wrong with 1",
+      }
+    `);
+  });
+
+  it('returns async errors', async () => {
+    let errs;
+
+    validate1.mockReturnValueOnce(Promise.reject(new Error('Async error')));
+    validate2.mockReturnValueOnce(Promise.resolve());
+
+    await act(async () => {
+      errs = await response.validateSubmission();
+    });
+
+    expect(errs).toMatchInlineSnapshot(`
+      Object {
+        "1": "Async error",
+      }
+    `);
+  });
+
+  it('returns async+sync errors', async () => {
+    let errs;
+
+    validate1.mockReturnValueOnce(Promise.reject(new Error('Async error')));
+    validate2.mockImplementation(() => {
+      throw Error('Sync error');
+    });
+
+    await act(async () => {
+      errs = await response.validateSubmission();
+    });
+
+    expect(errs).toMatchInlineSnapshot(`
+      Object {
+        "1": "Async error",
+        "2": "Sync error",
+      }
+    `);
+  });
+});

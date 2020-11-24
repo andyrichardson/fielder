@@ -15,7 +15,7 @@ export const applyValidationToState = (
       const validationTrigger = getValidationTriggerForField(action, field);
       const validationFn = getFieldValidationFn(validationTrigger, field);
 
-      if (!validationFn) {
+      if (!validationFn || !validationTrigger) {
         return { state, promises };
       }
 
