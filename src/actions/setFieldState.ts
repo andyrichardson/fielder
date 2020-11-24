@@ -1,14 +1,16 @@
 import { SetStateAction } from 'react';
-import { FieldState } from '../types';
+import { FieldState, FormSchemaType } from '../types';
 import { ActionHandler } from './util';
 
 /** Set state of a field (without triggering validation). */
 export type SetFieldStateAction = {
   type: 'SET_FIELD_STATE';
-  config: {
-    name: string;
-    state: SetStateAction<FieldState>;
-  };
+  config: SetFieldStateArgs<any, any>;
+};
+
+export type SetFieldStateArgs<T extends FormSchemaType, K extends keyof T> = {
+  name: K;
+  state: SetStateAction<FieldState<T, K>>;
 };
 
 export const doSetFieldState: ActionHandler<SetFieldStateAction> = (

@@ -1,14 +1,16 @@
-import { FieldConfig, FieldState } from '../types';
+import { FieldConfig, FieldState, FormSchemaType } from '../types';
 import { ActionHandler } from './util';
 
 /** Mounts/remounts a field to the form. */
 export type MountFieldAction = {
   type: 'MOUNT_FIELD';
-  config: {
-    name: FieldConfig['name'];
-    validate?: FieldConfig['validate'];
-    initialValue?: FieldConfig['initialValue'];
-  };
+  config: MountFieldArgs<any, any>;
+};
+
+export type MountFieldArgs<T extends FormSchemaType, K extends keyof T> = {
+  name: K;
+  validate?: FieldConfig<T, K>['validate'];
+  initialValue?: FieldConfig<T, K>['initialValue'];
 };
 
 /** Initial and remount of field. */

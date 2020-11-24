@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { create } from 'react-test-renderer';
 import { useField, UseFieldResponse } from './useField';
 import { FielderContext } from './context';
-import { FieldConfig } from './types';
 
 let context = {
   fields: {},
@@ -14,7 +13,7 @@ let context = {
   setFieldValidation: jest.fn(),
 };
 let response: UseFieldResponse;
-let args: FieldConfig<any>;
+let args: any;
 
 const F: FC = ({ children }) => {
   response = useField(args);

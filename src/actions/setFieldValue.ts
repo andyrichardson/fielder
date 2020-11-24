@@ -1,12 +1,15 @@
 import { ActionHandler } from './util';
 import { SetStateAction } from 'react';
+import { FormSchemaType } from '../types';
 
 export type SetFieldValueAction = {
   type: 'SET_FIELD_VALUE';
-  config: {
-    name: string;
-    value: SetStateAction<any>;
-  };
+  config: SetFieldValueArgs<any, any>;
+};
+
+export type SetFieldValueArgs<T extends FormSchemaType, K extends keyof T> = {
+  name: K;
+  value: SetStateAction<T[K]>;
 };
 
 /** Triggers a change to the given field. */

@@ -7,7 +7,7 @@ import {
   useRef,
   MutableRefObject,
 } from 'react';
-import { FormState, FieldState, FieldsState } from './types';
+import { FormState, FieldState, FieldsState, FormSchemaType } from './types';
 import { BlurFieldAction, doBlurField } from './actions/blurField';
 import { MountFieldAction, doMountField } from './actions/mountField';
 import { SetFieldStateAction, doSetFieldState } from './actions/setFieldState';
@@ -33,7 +33,7 @@ export type FormAction =
   | ValidateFieldAction
   | ValidateSubmissionAction;
 
-export const useForm = <T = any>(): FormState<T> => {
+export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
   /** Async validation promise updated synchronously after every dispatch. */
   const promiseRef = useRef<Record<string, Promise<any>> | undefined>();
   /** Reference to dispatch for forwarding closure. */

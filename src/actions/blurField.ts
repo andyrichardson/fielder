@@ -1,11 +1,14 @@
+import { FormSchemaType } from '../types';
 import { ActionHandler } from './util';
 
 /** Sets a field to `hasBlurred`. */
 export type BlurFieldAction = {
   type: 'BLUR_FIELD';
-  config: {
-    name: string;
-  };
+  config: BlurFieldArgs<any>;
+};
+
+export type BlurFieldArgs<T extends FormSchemaType> = {
+  name: keyof T;
 };
 
 /** Triggers a change to the given field. */

@@ -1,13 +1,23 @@
-import { ValidationFn, ObjectValidation } from '../types';
+import {
+  ValidationFn,
+  ObjectValidation,
+  FieldConfig,
+  FormSchemaType,
+} from '../types';
 import { ActionHandler } from './util';
 
 /** Sets the value of a field. */
 export type SetFieldValidationAction = {
   type: 'SET_FIELD_VALIDATION';
-  config: {
-    name: string;
-    validation: ValidationFn | ObjectValidation | undefined;
-  };
+  config: SetFieldValidationArgs<any, any>;
+};
+
+export type SetFieldValidationArgs<
+  T extends FormSchemaType,
+  K extends keyof T
+> = {
+  name: K;
+  validation?: FieldConfig<T, K>['validate'];
 };
 
 /** Triggers a change to the given field. */

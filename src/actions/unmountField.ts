@@ -1,12 +1,15 @@
+import { FormSchemaType } from '../types';
 import { ActionHandler } from './util';
 
 /** Unmounts/removes a field to the form. */
 export type UnmountFieldAction = {
   type: 'UNMOUNT_FIELD';
-  config: {
-    name: string;
-    destroy?: boolean;
-  };
+  config: UnmountFieldArgs<any>;
+};
+
+export type UnmountFieldArgs<T extends FormSchemaType> = {
+  name: keyof T;
+  destroy?: boolean;
 };
 
 /** Unmount of field. */

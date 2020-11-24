@@ -7,7 +7,13 @@ import {
   useRef,
 } from 'react';
 import { FielderContext } from './context';
-import { FormState, FieldState, FieldConfig } from './types';
+import {
+  FormState,
+  FieldState,
+  FormSchemaType,
+  ObjectValidation,
+  ValidationFn,
+} from './types';
 
 export type UseFieldProps<T = any> = {
   /** Field name. */
@@ -33,14 +39,28 @@ export type UseFieldMeta = {
   readonly hasChanged: FieldState['hasChanged'];
 };
 
-export type UseFieldResponse = [UseFieldProps, UseFieldMeta];
+export type UseFieldArgs<
+  T extends FormSchemaType = any,
+  K extends keyof T = keyof T
+> = {
+  /** Unique identifier for field. */
+  readonly name: K;
+  /** Validation function (throws errors). */
+  readonly validate?: ObjectValidation<T, K> | ValidationFn<T, K>;
+  /** Starting value. */
+  readonly initialValue?: T[K];
+  /** Should destroy value when useField hook is unmounted. */
+  readonly destroyOnUnmount?: boolean;
+};
 
-export const useField = <T = any>({
+export type UseFieldResponse = readonly [UseFieldProps, UseFieldMeta];
+
+export const useField = <T extends FormSchemaType = any>({
   name: initialName,
   validate,
   initialValue = undefined,
   destroyOnUnmount = false,
-}: FieldConfig<T>): UseFieldResponse => {
+}: UseFieldArgs<T>): UseFieldResponse => {
   const destroyRef = useRef(destroyOnUnmount);
   const initialMount = useRef(true);
   const {
@@ -50,7 +70,7 @@ export const useField = <T = any>({
     unmountField,
     setFieldValue,
     setFieldValidation,
-  } = useContext<FormState>(FielderContext);
+  } = useContext<FormState<T>>(FielderContext);
 
   const name = useMemo(() => initialName, []);
   const field = useMemo(() => {
