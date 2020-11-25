@@ -24,7 +24,7 @@ export const useSubmit = <T extends Record<string, any>>(
     }
   }, [validateSubmission, handler]);
 
-  return useMemo(() => [fetching, handleSubmit] as const, [
+  return useMemo(() => ({ fetching, handleSubmit } as const), [
     fetching,
     handleSubmit,
   ]);

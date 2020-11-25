@@ -5,6 +5,7 @@ import {
   useMemo,
   useLayoutEffect,
   useRef,
+  useEffect,
 } from 'react';
 import { FielderContext } from './context';
 import {
@@ -66,6 +67,7 @@ export const useField = <T extends FormSchemaType = any>({
   const {
     fields,
     blurField,
+    premountField,
     mountField,
     unmountField,
     setFieldValue,
@@ -75,7 +77,8 @@ export const useField = <T extends FormSchemaType = any>({
   const name = useMemo(() => initialName, []);
   const field = useMemo(() => {
     if (initialMount.current) {
-      return mountField({
+      // Simulate mounting without committing to state
+      return premountField({
         name,
         initialValue,
         validate,
@@ -83,7 +86,15 @@ export const useField = <T extends FormSchemaType = any>({
     }
 
     return fields[name];
-  }, [fields]);
+  }, [premountField, fields]);
+
+  useLayoutEffect(() => {
+    mountField({
+      name,
+      initialValue,
+      validate,
+    });
+  }, []);
 
   useLayoutEffect(
     () => () => {

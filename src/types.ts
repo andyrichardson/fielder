@@ -28,6 +28,10 @@ export interface FormState<T extends FormSchemaType = any> {
   /** Force trigger validation on a mounted field. */
   validateField: (a: ValidateFieldArgs<T>) => void;
 
+  /** Internal: Premount field during render */
+  premountField: <K extends keyof T & string>(
+    a: MountFieldArgs<T, K>
+  ) => FieldState<T, K>;
   /** Internal: Manually mount field. */
   mountField: <K extends keyof T & string>(
     a: MountFieldArgs<T, K>

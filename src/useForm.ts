@@ -67,6 +67,28 @@ export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
 
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
+  /** Retrieves field state for initial mount (before mounted field is added to state) */
+  const premountField = useCallback<FormState<T>['premountField']>(
+    (config) => {
+      const action = {
+        type: 'MOUNT_FIELD',
+        config,
+      } as const;
+
+      const newState = applyActionToState(fields, action);
+      const { state: validatedState } = applyValidationToState(
+        newState,
+        action
+      );
+
+      // Throw away async validation on mount and
+      // wait for mountField call during commit
+
+      return validatedState[config.name] as any;
+    },
+    [fields]
+  );
+
   const mountField = useCallback<FormState<T>['mountField']>(
     (config) => dispatch({ type: 'MOUNT_FIELD', config })[config.name] as any,
     [dispatch]
@@ -145,6 +167,7 @@ export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
       fields,
       isValid,
       isValidating,
+      premountField,
       setFieldValue,
       blurField,
       validateField,
@@ -158,6 +181,7 @@ export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
       fields,
       isValid,
       isValidating,
+      premountField,
       setFieldValue,
       blurField,
       validateField,
