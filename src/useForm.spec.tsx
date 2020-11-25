@@ -4,7 +4,6 @@ import { useForm } from './useForm';
 import { FormState } from './types';
 
 let response: FormState;
-let wrapper: ReturnType<typeof create>;
 
 const Fixture = () => {
   response = useForm();

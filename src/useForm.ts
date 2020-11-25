@@ -1,6 +1,4 @@
 import {
-  useReducer,
-  Reducer,
   useCallback,
   useMemo,
   Dispatch,
@@ -144,7 +142,7 @@ export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
       state: newState,
       errors,
     };
-  }, []);
+  }, [dispatch]);
 
   const mountedFields = useMemo(
     () =>

@@ -107,8 +107,8 @@ describe('on validation changed', () => {
   );
 
   it('calls setFieldValidation', () => {
-    const fn1 = () => {};
-    const fn2 = () => {};
+    const fn1 = () => true;
+    const fn2 = () => true;
 
     args = { name: 'someField', initialValue: 'abc', validate: fn1 };
     const wrapper = create(<Fixture />);
@@ -164,7 +164,7 @@ describe('on unmount', () => {
 describe('on blur', () => {
   beforeEach(() => {
     args = { name: 'someField' };
-    const wrapper = create(<Fixture />);
+    create(<Fixture />);
     response[0].onBlur();
   });
 

@@ -11,7 +11,7 @@ export const useSynchronousReducer = <S, A>(
     stateRef.current = reducer(stateRef.current, action);
     setState(stateRef.current);
     return stateRef.current;
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return [state, dispatch] as const;
 };

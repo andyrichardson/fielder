@@ -5,7 +5,6 @@ import {
   useMemo,
   useLayoutEffect,
   useRef,
-  useEffect,
 } from 'react';
 import { FielderContext } from './context';
 import {
@@ -57,7 +56,7 @@ export type UseFieldArgs<
 export type UseFieldResponse = readonly [UseFieldProps, UseFieldMeta];
 
 export const useField = <T extends FormSchemaType = any>({
-  name: initialName,
+  name,
   validate,
   initialValue = undefined,
   destroyOnUnmount = false,
@@ -74,27 +73,29 @@ export const useField = <T extends FormSchemaType = any>({
     setFieldValidation,
   } = useContext<FormState<T>>(FielderContext);
 
-  const name = useMemo(() => initialName, []);
+  // Set unchanging initial values
+  const initial = useMemo(() => ({ name, value: initialValue, validate }), []); // eslint-disable-line
+
   const field = useMemo(() => {
     if (initialMount.current) {
       // Simulate mounting without committing to state
       return premountField({
-        name,
-        initialValue,
-        validate,
+        name: initial.name,
+        initialValue: initial.value,
+        validate: initial.validate,
       });
     }
 
-    return fields[name];
-  }, [premountField, fields]);
+    return fields[initial.name];
+  }, [initial.name, initial.value, initial.validate, premountField, fields]);
 
   useLayoutEffect(() => {
     mountField({
-      name,
-      initialValue,
-      validate,
+      name: initial.name,
+      initialValue: initial.value,
+      validate: initial.validate,
     });
-  }, []);
+  }, [initial.name, initial.validate, initial.value, mountField]);
 
   useLayoutEffect(
     () => () => {
@@ -107,9 +108,9 @@ export const useField = <T extends FormSchemaType = any>({
 
   useLayoutEffect(
     () => () => {
-      unmountField({ name, destroy: destroyRef.current });
+      unmountField({ name: initial.name, destroy: destroyRef.current });
     },
-    []
+    [unmountField, initial.name]
   );
 
   /** Update field state on validation config change. */
@@ -119,10 +120,13 @@ export const useField = <T extends FormSchemaType = any>({
       return;
     }
 
-    setFieldValidation({ name, validation: validate });
-  }, [validate, name, setFieldValidation]);
+    setFieldValidation({ name: initial.name, validation: validate });
+  }, [validate, initial.name, setFieldValidation]);
 
-  const onBlur = useCallback(() => blurField({ name }), [blurField]);
+  const onBlur = useCallback(() => blurField({ name: initial.name }), [
+    initial.name,
+    blurField,
+  ]);
 
   const onChange = useCallback<UseFieldProps['onChange']>(
     (e) => {
@@ -132,7 +136,7 @@ export const useField = <T extends FormSchemaType = any>({
           : e;
 
       return setFieldValue({
-        name,
+        name: initial.name,
         value: (previousValue: any) => {
           if (!Array.isArray(previousValue)) {
             return value;
@@ -144,21 +148,21 @@ export const useField = <T extends FormSchemaType = any>({
         },
       });
     },
-    [setFieldValue]
+    [initial.name, setFieldValue]
   );
 
   const { value, error, isValid, isValidating, hasChanged, hasBlurred } = field;
 
   return useMemo(
     () => [
-      { name, value, onBlur, onChange },
+      { name: initial.name, value, onBlur, onChange },
       { error, isValid, isValidating, hasBlurred, hasChanged },
     ],
     [
+      initial.name,
       value,
       onBlur,
       onChange,
-      name,
       error,
       isValid,
       isValidating,
