@@ -15,7 +15,7 @@ beforeEach(jest.clearAllMocks);
 
 describe('initial call', () => {
   it('matches snapshot', () => {
-    wrapper = create(<Fixture />);
+    create(<Fixture />);
     expect(response).toMatchSnapshot();
   });
 });
@@ -26,7 +26,7 @@ describe('on mount field', () => {
   const validate = jest.fn();
 
   beforeEach(() => {
-    wrapper = create(<Fixture />);
+    create(<Fixture />);
   });
 
   it('mounts field', () => {
@@ -79,7 +79,7 @@ describe('on unmount field', () => {
   const value = 5678;
 
   beforeEach(() => {
-    wrapper = create(<Fixture />);
+    create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -130,7 +130,7 @@ describe('on unmount field (destroy)', () => {
   const value = 5678;
 
   beforeEach(() => {
-    wrapper = create(<Fixture />);
+    create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -163,7 +163,7 @@ describe('on remount field', () => {
   const value = 5678;
 
   beforeEach(() => {
-    wrapper = create(<Fixture />);
+    create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -235,7 +235,7 @@ describe('on blur field', () => {
   const validate = jest.fn();
 
   beforeEach(() => {
-    wrapper = create(<Fixture />);
+    create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -290,7 +290,7 @@ describe('on change field', () => {
   const validate = jest.fn();
 
   beforeEach(() => {
-    wrapper = create(<Fixture />);
+    create(<Fixture />);
     act(() => {
       response.mountField({
         name: 'test',
@@ -346,7 +346,7 @@ describe('on validate field', () => {
   const validate = jest.fn();
 
   beforeEach(() => {
-    wrapper = wrapper = create(<Fixture />);
+    create(<Fixture />);
     act(() => {
       response.mountField({
         name,
@@ -390,7 +390,7 @@ describe('on validate submission', () => {
   const validate3 = jest.fn();
 
   beforeEach(async () => {
-    wrapper = create(<Fixture />);
+    create(<Fixture />);
     act(() => {
       response.mountField({
         name: '1',

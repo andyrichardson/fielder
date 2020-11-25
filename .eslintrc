@@ -19,7 +19,7 @@
     "@typescript-eslint/array-type": ["error", { "default": "array-simple" }],
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "warn"
   },
   "settings": {
     "react": {
