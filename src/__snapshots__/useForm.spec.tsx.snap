@@ -7,6 +7,7 @@ Object {
   "isValid": true,
   "isValidating": false,
   "mountField": [Function],
+  "premountField": [Function],
   "setFieldState": [Function],
   "setFieldValidation": [Function],
   "setFieldValue": [Function],

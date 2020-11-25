@@ -450,32 +450,36 @@ describe('on validate submission', () => {
       errs = response.validateSubmission();
     });
 
-    expect(errs).toMatchInlineSnapshot(`
-      Object {
-        "1": "Something wrong with 1",
-      }
-    `);
+    expect(errs).toEqual(
+      expect.objectContaining({
+        errors: {
+          '1': 'Something wrong with 1',
+        },
+      })
+    );
   });
 
   it('returns async errors', async () => {
-    let errs;
+    let res;
 
     validate1.mockReturnValueOnce(Promise.reject(new Error('Async error')));
     validate2.mockReturnValueOnce(Promise.resolve());
 
     await act(async () => {
-      errs = await response.validateSubmission();
+      res = await response.validateSubmission();
     });
 
-    expect(errs).toMatchInlineSnapshot(`
-      Object {
-        "1": "Async error",
-      }
-    `);
+    expect(res).toEqual(
+      expect.objectContaining({
+        errors: {
+          '1': 'Async error',
+        },
+      })
+    );
   });
 
   it('returns async+sync errors', async () => {
-    let errs;
+    let res;
 
     validate1.mockReturnValueOnce(Promise.reject(new Error('Async error')));
     validate2.mockImplementation(() => {
@@ -483,14 +487,16 @@ describe('on validate submission', () => {
     });
 
     await act(async () => {
-      errs = await response.validateSubmission();
+      res = await response.validateSubmission();
     });
 
-    expect(errs).toMatchInlineSnapshot(`
-      Object {
-        "1": "Async error",
-        "2": "Sync error",
-      }
-    `);
+    expect(res).toEqual(
+      expect.objectContaining({
+        errors: {
+          '1': 'Async error',
+          '2': 'Sync error',
+        },
+      })
+    );
   });
 });

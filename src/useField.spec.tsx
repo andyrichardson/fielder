@@ -5,6 +5,7 @@ import { FielderContext } from './context';
 
 let context = {
   fields: {},
+  premountField: jest.fn(),
   mountField: jest.fn(),
   unmountField: jest.fn(),
   blurField: jest.fn(),
@@ -34,13 +35,14 @@ beforeEach(jest.clearAllMocks);
 beforeEach(() => {
   context = {
     fields: {},
-    mountField: jest.fn(() => ({
+    premountField: jest.fn(() => ({
       value: 'abc',
       isValid: true,
       isValidating: false,
       hasChanged: false,
       hasBlurred: false,
     })),
+    mountField: jest.fn(),
     unmountField: jest.fn(),
     blurField: jest.fn(),
     setFieldValue: jest.fn(),
@@ -51,9 +53,9 @@ beforeEach(() => {
 
 describe('on mount', () => {
   beforeEach(() =>
-    context.mountField.mockReturnValue({
+    context.premountField.mockReturnValue({
       value: 'abc',
-      isValid: true,
+      isValid: false,
       isValidating: false,
       hasChanged: false,
       hasBlurred: false,
@@ -64,6 +66,7 @@ describe('on mount', () => {
     args = { name: 'someField', initialValue: 'abc', validate: jest.fn() };
     create(<Fixture />);
 
+    expect(context.premountField).toBeCalledTimes(1);
     expect(context.mountField).toBeCalledTimes(1);
     expect(context.setFieldValidation).toBeCalledTimes(0);
   });
@@ -84,7 +87,7 @@ describe('on mount', () => {
           "error": undefined,
           "hasBlurred": false,
           "hasChanged": false,
-          "isValid": true,
+          "isValid": false,
           "isValidating": false,
         },
       ]
