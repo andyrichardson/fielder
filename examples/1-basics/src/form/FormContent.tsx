@@ -1,21 +1,25 @@
 import React, { FC, useCallback } from 'react';
-import { useField, useFormContext } from 'fielder';
+import { useField, useFormContext, useSubmit } from 'fielder';
 import { conditionalError } from '../util';
 
 export const FormContent: FC = () => {
   const { isValid } = useFormContext();
   const [usernameProps, usernameMeta] = useField({
     name: 'username',
+    initialValue: '',
     validate: usernameValidation,
   });
   const [passwordProps, passwordMeta] = useField({
     name: 'password',
+    initialValue: '',
     validate: passwordValidation,
   });
 
-  const handleSubmit = useCallback(() => {
-    alert('Submitted!');
-  }, []);
+  const { handleSubmit } = useSubmit(
+    useCallback(() => {
+      alert('Submitted!');
+    }, [])
+  );
 
   return (
     <form autoComplete="off">
@@ -38,7 +42,7 @@ export const FormContent: FC = () => {
   );
 };
 
-const usernameValidation = (value) => {
+const usernameValidation = ({ value }) => {
   if (!value) {
     throw Error('Username is required.');
   }
@@ -48,7 +52,7 @@ const usernameValidation = (value) => {
   }
 };
 
-const passwordValidation = (value) => {
+const passwordValidation = ({ value }) => {
   if (!value) {
     throw Error('Password is required.');
   }
