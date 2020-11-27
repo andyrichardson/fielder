@@ -177,7 +177,34 @@ describe('on blur', () => {
 });
 
 describe('on change', () => {
+  describe('on initial value is boolean', () => {
+    beforeEach(() => {
+      args = { name: 'someField', initialValue: true };
+    });
+
+    it('calls setFieldValue with toggle fn', () => {
+      const value = 'newval';
+      const target = document.createElement('input');
+      target.type = 'text';
+      target.value = value;
+
+      create(<Fixture />);
+      response[0].onChange({
+        currentTarget: target,
+      } as any);
+
+      const action = context.setFieldValue.mock.calls[0][0].value;
+      expect(context.setFieldValue).toBeCalledTimes(1);
+      expect(action(false)).toBe(true);
+      expect(action(true)).toBe(false);
+    });
+  });
+
   describe('on event arg', () => {
+    beforeEach(() => {
+      args = { name: 'someField' };
+    });
+
     it('calls setFieldValue with field name', () => {
       const value = 'newval';
       const target = document.createElement('input');
@@ -199,6 +226,10 @@ describe('on change', () => {
   });
 
   describe('on value arg', () => {
+    beforeEach(() => {
+      args = { name: 'someField' };
+    });
+
     it('calls setFieldValue with field name', () => {
       const value = 'newval';
 
@@ -215,6 +246,10 @@ describe('on change', () => {
   });
 
   describe('on value action dispatch', () => {
+    beforeEach(() => {
+      args = { name: 'someField' };
+    });
+
     describe('on no existing value', () => {
       it('returns change value', () => {
         const value = 'newval';

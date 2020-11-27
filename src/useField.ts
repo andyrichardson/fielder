@@ -130,6 +130,15 @@ export const useField = <T extends FormSchemaType = any>({
 
   const onChange = useCallback<UseFieldProps['onChange']>(
     (e) => {
+      // If initial value is boolean,
+      // toggle value on change (i.e. checkbox)
+      if (typeof initial.value === 'boolean') {
+        return setFieldValue({
+          name: initial.name,
+          value: (v) => !v as T[keyof T],
+        });
+      }
+
       const value =
         typeof e === 'object' && 'currentTarget' in e
           ? e.currentTarget.value
