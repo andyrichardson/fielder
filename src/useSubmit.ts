@@ -2,21 +2,41 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { FieldsState } from './types';
 import { FielderContext } from './context';
 
-/** Wrapper for submit handler */
+type UseSubmitResponse = {
+  /** Indicates when async fetching is in progress. */
+  fetching: boolean;
+  /**
+   * Is set to true immediately upon call of the handleSubmit function.
+   *
+   * _Does not imply the form is valid or that submit validation was successful_
+   **/
+  hasSubmitted: boolean;
+  /**
+   * Wrapper for provided submit function.
+   */
+  handleSubmit: () => void;
+};
+
+/**
+ * Wrapper utility for triggering submission validation.
+ *
+ * - Constructs values object to provided submission function
+ * - Guards submission function until sync/async validation has completed
+ * - Indicates state of submission
+ */
 export const useSubmit = <T extends Record<string, any>>(
+  /** A handler for  */
   handler: (values: T) => void
-) => {
-  const [fetching, setFetching] = useState(false);
+): UseSubmitResponse => {
+  const [state, setState] = useState({ fetching: false, hasSubmitted: false });
   const { validateSubmission } = useContext(FielderContext);
 
   const handleSubmit = useCallback(async () => {
     const possibleProm = validateSubmission();
-    if (possibleProm instanceof Promise) {
-      setFetching(true);
-    }
+    setState({ fetching: possibleProm instanceof Promise, hasSubmitted: true });
 
     const { state, errors } = await possibleProm;
-    setFetching(false);
+    setState((s) => ({ ...s, fetching: false }));
 
     // No errors - call submit handler
     if (Object.keys(errors).length === 0) {
@@ -24,8 +44,8 @@ export const useSubmit = <T extends Record<string, any>>(
     }
   }, [validateSubmission, handler]);
 
-  return useMemo(() => ({ fetching, handleSubmit } as const), [
-    fetching,
+  return useMemo(() => ({ ...state, handleSubmit } as const), [
+    state,
     handleSubmit,
   ]);
 };
