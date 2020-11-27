@@ -45,10 +45,10 @@ export type UseFieldArgs<
 > = {
   /** Unique identifier for field. */
   readonly name: K;
+  /** Starting value. */
+  readonly initialValue: T[K];
   /** Validation function (throws errors). */
   readonly validate?: ObjectValidation<T, K> | ValidationFn<T, K>;
-  /** Starting value. */
-  readonly initialValue?: T[K];
   /** Should destroy value when useField hook is unmounted. */
   readonly destroyOnUnmount?: boolean;
 };
@@ -58,7 +58,7 @@ export type UseFieldResponse = readonly [UseFieldProps, UseFieldMeta];
 export const useField = <T extends FormSchemaType = any>({
   name,
   validate,
-  initialValue = undefined,
+  initialValue,
   destroyOnUnmount = false,
 }: UseFieldArgs<T>): UseFieldResponse => {
   const destroyRef = useRef(destroyOnUnmount);
