@@ -1,17 +1,34 @@
 import React from "react"
 import styled, { createGlobalStyle } from "styled-components"
 import { scale } from "../../components/components"
+import parserTypeScript from "prettier/parser-typescript"
+import { format } from "prettier/standalone"
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live"
+
+const formatCode = code =>
+  format(code, {
+    parser: "typescript",
+    plugins: [parserTypeScript],
+  })
 
 export const Editor = ({ code, scope }: { code: string; scope: any }) => (
   <>
-    <LiveProvider theme={theme} code={code} scope={scope} noInline={true}>
+    <LiveProvider
+      transformCode={transformCode}
+      theme={theme}
+      code={formatCode(code)}
+      scope={scope}
+      noInline={true}
+      spellCheck={false}
+    >
       <Preview />
       <LiveError />
       <EditorArea />
     </LiveProvider>
   </>
 )
+
+const transformCode = code => code.replace(/import.*;/g, "")
 
 const theme = {
   plain: {
@@ -77,10 +94,16 @@ const theme = {
   ],
 }
 
-const EditorArea = styled(LiveEditor)`
-  font-family: Roboto Mono, monospace;
-  font-size: ${scale(0)};
+// Cast to any because of incorrect type defs on lib
+// (missing spellcheck attr)
+const EditorArea: any = styled(LiveEditor)`
+  margin-top: ${scale(1)};
+  padding: 0;
   background: #fafafa;
+
+  & > * {
+    padding: 28px !important;
+  }
 `
 
 const Preview = styled(LivePreview)`
@@ -89,12 +112,17 @@ const Preview = styled(LivePreview)`
   padding: ${scale(1)} 0;
 
   form {
-    padding: ${scale(1)};
+    padding: ${scale(2)};
     border: solid 2px;
   }
 
   .field {
     margin: ${scale(1)} 0;
+
+    &.column {
+      flex-direction: column;
+      align-items: unset;
+    }
   }
 
   .field:first-child {
@@ -107,7 +135,11 @@ const Preview = styled(LivePreview)`
     width: ${scale(7)};
   }
 
-  .field input {
+  .field input[type="text"],
+  .field input[type="password"],
+  .field input[type="number"],
+  .field select {
+    width: 200px;
     font-family: Inter, sans-serif;
     font-weight: 600;
     font-size: ${scale(0)};
@@ -117,6 +149,22 @@ const Preview = styled(LivePreview)`
     &:focus {
       outline: none;
     }
+  }
+
+  .field input[type="checkbox"] {
+    margin: 0;
+    margin-left: ${scale(1)};
+    margin-right: ${scale(0)};
+    width: ${scale(1)};
+    height: ${scale(1)};
+    appearance: none;
+    outline: solid 2px;
+    outline-offset: 0;
+    border: solid 2px #fff;
+  }
+
+  .field input:checked {
+    background: #000;
   }
 
   button.primary {

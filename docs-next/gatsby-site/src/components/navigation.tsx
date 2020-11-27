@@ -23,7 +23,7 @@ export const Navigation: FC = ({ ...props }) => {
       },
       {
         title: "Api",
-        url: "/guides/getting-started",
+        url: "/api/useField",
         children: [
           { title: "useField", url: "/api/useField" },
           { title: "useForm", url: "/api/useForm" },
@@ -31,7 +31,14 @@ export const Navigation: FC = ({ ...props }) => {
           { title: "FielderProvider", url: "/api/FielderProvider" },
         ],
       },
-      { title: "Examples", url: "/examples" },
+      {
+        title: "Examples",
+        url: "/examples/static-forms",
+        children: [
+          { title: "Static forms", url: "/examples/static-forms" },
+          { title: "Dynamic forms", url: "/examples/dynamic-forms" },
+        ],
+      },
       { title: "GitHub", url: "https://google.com/examples" },
     ],
     []

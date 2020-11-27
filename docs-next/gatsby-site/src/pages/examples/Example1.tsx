@@ -2,7 +2,15 @@ import React from "react"
 import { Editor } from "./Editor"
 import * as fielderImports from "fielder"
 
-const code = `
+const code = `\
+import { useForm, useField, useSubmit, FielderProvider } from 'fielder';
+
+// ============================
+// Form
+// ============================
+//
+// Root level component creates form state and exposes via context.
+
 const Form = () => {
   const form = useForm();
 
@@ -13,18 +21,29 @@ const Form = () => {
   );
 }
 
+// ============================
+// Form Content
+// ============================
+//
+// Content components create/mount fields and optionally 
+// handle submit logic.
+
 const FormContent = () => {
   const [usernameProps, usernameMeta] = useField({
     name: 'username',
+    initialValue: '',
     validate: usernameValidation,
   });
   const [passwordProps, passwordMeta] = useField({
     name: 'password',
+    initialValue: '',
     validate: passwordValidation,
   });
   
-  const { handleSubmit } = useSubmit(() => alert('Submitted!'));
-
+  const { handleSubmit } = useSubmit(
+    (values) => alert(\`Submitted: \${JSON.stringify(values, null, 2)}\`)
+  );
+  
   return (
     <form autoComplete="off">
       <div className="field">
@@ -45,6 +64,14 @@ const FormContent = () => {
     </form>
   );
 }
+
+// ============================
+// Validation functions
+// ============================
+//
+// Exactly what they sound like!
+// Can also be created inside form content but 
+// need to be memoized to prevent infinite renders. 
 
 const usernameValidation = ({ value }) => {
   if (!value) {
@@ -68,6 +95,7 @@ const passwordValidation = ({ value }) => {
 
 const conditionalError = (meta) => meta.hasBlurred && meta.error && <p>{meta.error}</p>;
 
+// Render this live example
 render(<Form />)
 `
 
