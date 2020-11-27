@@ -12,40 +12,28 @@ All you need to know to start using `Fielder`.
 
 ## Creating a form
 
-So you know you want to make a form but don't know where to start? Look no further!
-
-### Install fielder
-
-Add fielder to your dependencies using you package manager of choice.
-
-```sh
-npm i fielder
-```
-
-### Create your form component
-
-Every form starts in the same way, you want to make your form component which is going to:
+Every form starts in the same way - a root "form" component which is going to:
 
 - Create an instance of `Fielder`
-- Expose that instance to any children
+- Expose that instance to any child components
 
 ```tsx
-import React, { useEffect } from 'react';
-import { useForm, FielderProvider } from 'fielder';
+import React, { useEffect } from "react"
+import { useForm, FielderProvider } from "fielder"
 
 const LoginForm = ({ children }) => {
-  const formState = useForm();
+  const formState = useForm()
 
   // Example of reacting to form changes
   useEffect(() => {
-    console.log('Form state has changed!', formState);
-  }, [formState]);
+    console.log("Form state has changed!", formState)
+  }, [formState])
 
-  return <FielderProvider value={formState}>{children}</FielderProvider>;
-};
+  return <FielderProvider value={formState}>{children}</FielderProvider>
+}
 ```
 
-The use of `FielderProvider` ensures that `useField` can later access the form state.
+The use of `FielderProvider` ensures that the hooks we use later can access the form state.
 
 > Forms can be a small section on a page, or can span across multiple pages (i.e. steppers/wizards/multi-step).
 
@@ -58,19 +46,21 @@ Next we want to add some fields to our form.
 ```tsx
 const MyFormContent = () => {
   const [usernameProps] = useField({
-    name: 'username',
-  });
+    name: "username",
+    initialValue: "",
+  })
   const [passwordProps] = useField({
-    name: 'password',
-  });
+    name: "password",
+    initialValue: "",
+  })
 
   return (
     <form>
       <input type="text" {...usernameProps} />
-      <input type="text" {...passwordProps} />
+      <input type="password" {...passwordProps} />
     </form>
-  );
-};
+  )
+}
 ```
 
 ## Checkbox and Radio inputs
@@ -78,77 +68,93 @@ const MyFormContent = () => {
 Checkbox and radio inputs are different to all other field types as their state is declared by the `checked`
 attribute rather than `value` ([more info here](https://github.com/andyrichardson/fielder/issues/23#issuecomment-576352847)).
 
-To prevent hacking around with refs, you'll need to manually set the value and checked attributes.
+### Radio buttons
+
+Using radio button groups is almost identical to using text fields, with two exceptions:
+
+- The `value` attribute is static
+- The `checked` attribute needs to be added (see below)
+
+```tsx
+const [hobbiesProps] = useField({
+  name: 'hobbies',
+  initialValue: 'sports',
+});
+
+const radioButtons = useMemo(() => [
+  { label: "Sports", value: "sports" },
+  { label: "Coding", value: "coding" },
+  { label: "Other", value: "other" },
+], []);
+
+return (
+  <>
+    <p>What are your hobbies</p>
+    {radioButtons.map(({ label, value }) => (
+      <input
+        key={value}
+        type="radio"
+        {...hobbiesProps}
+        value={value}
+        checked={hobbiesProps.value === value}
+      />
+      {label}
+    ))}
+  </>
+)
+```
+
+### Checkbox groups
+
+Checkbox groups are a means for storing multiple checkbox selections in a single field.
+
+These are almost identical to radio buttons - the only difference being their value is an array corresponding to the selected values.
 
 ```tsx
 const [hobbiesProps] = useField({
   name: 'hobbies',
   initialValue: ['sports'],
 });
-const [termsProps] = useField({
-  name: 'terms'
-});
 
-const hobbiesOptions = useMemo(() => [
+const checkboxOptions = useMemo(() => [
   { label: "Sports", value: "sports" },
   { label: "Coding", value: "coding" },
   { label: "Other", value: "other" },
 ], []);
 
-const termsOptions = useMemo(() => [
-  { label: "Yes", value: "yes" },
-  { label: "No", value: "no" },
-], [])
+return (
+  <>
+    <p>What are your hobbies</p>
+    {checkboxOptions.map(({ label, value }) => (
+      <input
+        key={value}
+        type="checkbox"
+        {...hobbiesProps}
+        value={value}
+        checked={hobbiesProps.value.includes(value)}
+      />
+      {label}
+    ))}
+  </>
+)
+```
+
+### Checkboxes (individual)
+
+If you prefer to have a field for each checkbox, that's also an option.
+
+Be sure to set the initial value of the field to boolean.
+
+```tsx
+const [acceptProps] = useField({
+  name: "accept",
+  initialValue: false,
+})
 
 return (
   <>
-    <fieldset>
-      <p>What are your hobbies</p>
-      {hobbiesOptions.map(({ label, value }) => (
-        <input
-          key={value}
-          type="checkbox"
-          {...hobbiesProps}
-          value={value}
-          checked={hobbiesProps.value.includes(value)}
-        />
-        {label}
-      ))}
-    </fieldset>
-    <fieldset>
-      <p>Do you accept the terms & conditions</p>
-      {termsOptions.map(({ label, value }) => (
-        <input
-          key={value}
-          type="radio"
-          {...termsProps}
-          value={value}
-          checked={termsProps.value === value}
-        />
-        {label}
-      ))}
-    </fieldset>
+    <p>Do you accept these terms?</p>
+    <input type="checkbox" {...acceptProps} checked={acceptProps.value} />
   </>
-);
-```
-
-### Things to note
-
-The value attribute should be specified after spreading in your field props
-
-```tsx
-// This will not work
-<input type="radio" value="accept" {...radioProps} />
-
-// This will work
-<input type="radio" {...radioProps} value="accept" />
-```
-
-Set the initial value of your checkbox state to an array
-
-```tsx
-const [hobbiesProps] = useField({
-  name: 'hobbies',
-  initialValue: ['sports', 'coding'], // checkboxes with these values will be checked
-});
+)
 ```
