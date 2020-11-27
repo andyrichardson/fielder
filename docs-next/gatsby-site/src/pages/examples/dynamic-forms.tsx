@@ -181,4 +181,4 @@ const scope = {
   useCallback,
 }
 
-export const Example2 = () => <Editor code={code} scope={scope} />
+export const Example = () => <Editor code={code} scope={scope} />

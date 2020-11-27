@@ -103,4 +103,4 @@ const scope = {
   ...fielderImports,
 }
 
-export const Example1 = () => <Editor code={code} scope={scope} />
+export const Example = () => <Editor code={code} scope={scope} />
