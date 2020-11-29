@@ -21,7 +21,10 @@ const Layout: FC = ({ children, pageContext }) => {
     <>
       <Helmet>
         <title>Fielder: {pageContext.frontmatter.title}</title>
-        <meta name="description">{pageContext.frontmatter.description}</meta>
+        <meta
+          name="description"
+          content={pageContext.frontmatter.description}
+        />
       </Helmet>
       <GlobalStyle />
       <PageContent>
@@ -49,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
 const PageContent = styled.div`
   display: flex;
   margin: 0 auto;
+  width: max-content;
   max-width: 1200px;
   padding-left: -200px;
 `;
@@ -62,7 +66,7 @@ const Content = styled.main`
   @media (min-width: 601px) {
     padding: 20px 40px;
     max-width: 800px;
-    width: calc(100% - 200px);
+    min-width: calc(100% - 200px);
   }
 `;
 

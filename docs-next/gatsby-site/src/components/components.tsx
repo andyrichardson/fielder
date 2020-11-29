@@ -53,13 +53,14 @@ export const h1 = withLink(styled.h1`
 
 export const h2 = withLink(styled.h2`
   font-size: ${scale(2)};
-  margin-top: ${scale(2)};
+  margin-top: ${scale(4)};
   margin-bottom: ${scale(1)};
 `);
 
 export const h3 = withLink(styled.h3`
   font-size: ${scale(1)};
-  margin: ${scale(0)} 0;
+  margin-top: ${scale(1)};
+  margin-bottom: ${scale(0)};
 `);
 
 export const inlineCode = styled.code`
