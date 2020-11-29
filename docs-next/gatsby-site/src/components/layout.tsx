@@ -1,24 +1,28 @@
-import "typeface-inter"
-import "typeface-source-code-pro"
-import "prism-themes/themes/prism-material-light.css"
+import 'typeface-inter';
+import 'typeface-source-code-pro';
+import 'prism-themes/themes/prism-material-light.css';
+import { Helmet } from 'react-helmet';
+import React, { useState, useCallback } from 'react';
+import { MDXProvider } from '@mdx-js/react';
+import * as components from './components';
+import styled, { createGlobalStyle } from 'styled-components';
+import { Navigation } from './navigation';
+import NavButtonIcon from '../images/nav-button.svg';
 
-import React, { useState, useCallback } from "react"
-import { MDXProvider } from "@mdx-js/react"
-import * as components from "./components"
-import styled, { createGlobalStyle } from "styled-components"
-import { Navigation } from "./navigation"
-import { Header } from "./header"
-import NavButtonIcon from "../images/nav-button.svg"
+const Layout: FC = ({ children, pageContext }) => {
+  console.log(pageContext);
+  const [collapsed, setCollapsed] = useState(true);
 
-const Layout: FC = ({ children }) => {
-  const [collapsed, setCollapsed] = useState(true)
+  const handleNavToggle = useCallback(() => setCollapsed((c) => !c), []);
 
-  const handleNavToggle = useCallback(() => setCollapsed(c => !c), [])
-
-  const handleContentClick = useCallback(() => setCollapsed(false), [])
+  const handleContentClick = useCallback(() => setCollapsed(false), []);
 
   return (
     <>
+      <Helmet>
+        <title>Fielder: {pageContext.frontmatter.title}</title>
+        <meta name="description">{pageContext.frontmatter.description}</meta>
+      </Helmet>
       <GlobalStyle />
       <PageContent>
         <Navigation onClick={handleContentClick} data-collapsed={collapsed} />
@@ -28,8 +32,8 @@ const Layout: FC = ({ children }) => {
       </PageContent>
       <NavButton onClick={handleNavToggle} />
     </>
-  )
-}
+  );
+};
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -40,14 +44,14 @@ const GlobalStyle = createGlobalStyle`
   pre > code, code {
     font-family: "Source Code Pro", monospace;
   }
-`
+`;
 
 const PageContent = styled.div`
   display: flex;
   margin: 0 auto;
   max-width: 1200px;
   padding-left: -200px;
-`
+`;
 
 const Content = styled.main`
   box-sizing: border-box;
@@ -60,7 +64,7 @@ const Content = styled.main`
     max-width: 800px;
     width: calc(100% - 200px);
   }
-`
+`;
 
 const NavButton = styled(NavButtonIcon)`
   font-size: ${components.scale(4)};
@@ -76,6 +80,6 @@ const NavButton = styled(NavButtonIcon)`
   @media (min-width: 600px) {
     display: none;
   }
-`
+`;
 
-export default Layout
+export default Layout;

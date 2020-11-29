@@ -5,6 +5,10 @@ module.exports = {
     author: `Andy Richardson`,
   },
   plugins: [
+    'gatsby-plugin-webpack-bundle-analyser-v2',
+    `gatsby-plugin-typescript`,
+    `gatsby-plugin-preact`,
+    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -12,32 +16,37 @@ module.exports = {
         path: `${__dirname}/src/pages/`,
       },
     },
-    `gatsby-plugin-typescript`,
-    `gatsby-plugin-preact`,
     {
-      resolve: "gatsby-plugin-react-svg",
+      resolve: 'gatsby-plugin-react-svg',
     },
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
         remarkPlugins: [
-          require("remark-slug"),
-          require("remark-autolink-headings"),
-          require("remark-prism"),
+          require('remark-frontmatter'),
+          require('remark-slug'),
+          require('remark-autolink-headings'),
+          require('remark-prism'),
         ],
         defaultLayouts: {
-          default: require.resolve("./src/components/layout.tsx"),
+          default: require.resolve('./src/components/layout.tsx'),
         },
       },
     },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        icon: "src/images/favicon.svg",
+        icon: 'src/images/favicon.svg',
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-offline',
+      options: {
+        appendScript: require.resolve(`./src/sw.js`),
       },
     },
   ],
-}
+};
 
 // {
 //   resolve: `gatsby-source-filesystem`,

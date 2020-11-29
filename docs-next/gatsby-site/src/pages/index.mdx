@@ -1,7 +1,6 @@
 ---
-name: About
 title: About
-route: /
+description: About Fielder
 ---
 
 # About
@@ -32,9 +31,9 @@ npm i fielder
 Use the `useForm` to create a form.
 
 ```tsx
-const myForm = useForm()
+const myForm = useForm();
 
-return <FielderProvider value={myForm}>{children}</FielderProvider>
+return <FielderProvider value={myForm}>{children}</FielderProvider>;
 ```
 
 ### Create some fields
@@ -43,21 +42,21 @@ Use the `useField` hook to create a field.
 
 ```tsx
 const [usernameProps, usernameMeta] = useField({
-  name: "username",
-  initialValue: "",
+  name: 'username',
+  initialValue: '',
   validate: useCallback(({ value }) => {
     if (!value) {
-      throw Error("Username is required!")
+      throw Error('Username is required!');
     }
   }, []),
-})
+});
 
 return (
   <>
     <input type="text" {...usernameProps} />
     <span>{usernameMeta.error}</span>
   </>
-)
+);
 ```
 
 ### Additional info

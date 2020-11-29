@@ -1,22 +1,14 @@
-import React from "react"
-import styled, { createGlobalStyle } from "styled-components"
-import { scale } from "../../components/components"
-import parserTypeScript from "prettier/parser-typescript"
-import { format } from "prettier/standalone"
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live"
-
-const formatCode = code =>
-  format(code, {
-    parser: "typescript",
-    plugins: [parserTypeScript],
-  })
+import React from 'react';
+import styled from 'styled-components';
+import { scale } from './components';
+import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 
 export const Editor = ({ code, scope }: { code: string; scope: any }) => (
   <>
     <LiveProvider
       transformCode={transformCode}
       theme={theme}
-      code={formatCode(code)}
+      code={code}
       scope={scope}
       noInline={true}
       spellCheck={false}
@@ -26,73 +18,73 @@ export const Editor = ({ code, scope }: { code: string; scope: any }) => (
       <EditorArea />
     </LiveProvider>
   </>
-)
+);
 
-const transformCode = code => code.replace(/import.*;/g, "")
+const transformCode = (code) => code.replace(/import.*;/g, '');
 
 const theme = {
   plain: {
     fontFamily: '"Source Code Pro", monospace',
-    color: "#90a4ae",
+    color: '#90a4ae',
   },
   styles: [
     {
-      types: ["keyword"],
+      types: ['keyword'],
       style: {
-        color: "#bd93f9",
+        color: '#bd93f9',
       },
     },
     {
       types: [
-        "atrule",
-        "boolean",
-        "constant",
-        "function",
-        "id",
-        "important",
-        "keyword",
-        "symbol",
+        'atrule',
+        'boolean',
+        'constant',
+        'function',
+        'id',
+        'important',
+        'keyword',
+        'symbol',
       ],
       style: {
-        color: "#7c4dff",
+        color: '#7c4dff',
       },
     },
     {
       types: [
-        "operator",
-        "property",
-        "punctuation",
-        "attr-name",
-        "builtin",
-        "cdata",
-        "char",
-        "class",
-        "inserted",
+        'operator',
+        'property',
+        'punctuation',
+        'attr-name',
+        'builtin',
+        'cdata',
+        'char',
+        'class',
+        'inserted',
       ],
       style: {
-        color: "#39adb5",
+        color: '#39adb5',
       },
     },
     {
-      types: ["tag", "url", "variable", "deleted", "entity", "selector"],
+      types: ['tag', 'url', 'variable', 'deleted', 'entity', 'selector'],
       style: {
-        color: "#e53935",
+        color: '#e53935',
       },
     },
     {
       types: [
-        "attr-value",
-        "attribute",
-        "psuedo-element",
-        "psuedo-class",
-        "string",
+        'attr-value',
+        'attribute',
+        'psuedo-element',
+        'psuedo-class',
+        'string',
       ],
       style: {
-        color: "#f6a434",
+        color: '#f6a434',
       },
     },
   ],
-}
+};
 
 // Cast to any because of incorrect type defs on lib
 // (missing spellcheck attr)
@@ -104,7 +96,7 @@ const EditorArea: any = styled(LiveEditor)`
   & > * {
     padding: 28px !important;
   }
-`
+`;
 
 const Preview = styled(LivePreview)`
   display: flex;
@@ -135,9 +127,9 @@ const Preview = styled(LivePreview)`
     width: ${scale(7)};
   }
 
-  .field input[type="text"],
-  .field input[type="password"],
-  .field input[type="number"],
+  .field input[type='text'],
+  .field input[type='password'],
+  .field input[type='number'],
   .field select {
     width: 200px;
     font-family: Inter, sans-serif;
@@ -151,7 +143,7 @@ const Preview = styled(LivePreview)`
     }
   }
 
-  .field input[type="checkbox"] {
+  .field input[type='checkbox'] {
     margin: 0;
     margin-left: ${scale(1)};
     margin-right: ${scale(0)};
@@ -180,4 +172,5 @@ const Preview = styled(LivePreview)`
       outline: none;
     }
   }
-`
+`;
+export default Editor;

@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useCallback } from "react"
-import { Editor } from "./Editor"
-import * as fielderImports from "fielder"
+import React, { useState, useMemo, useCallback } from 'react';
+import { Editor } from '../Editor';
+import * as fielderImports from 'fielder';
 
 const code = `\
 import { useForm, useField, useSubmit, FielderProvider } from "fielder";
@@ -18,24 +18,20 @@ const Form = () => {
 
   const content = useMemo(() => {
     if (step === 0) {
-      return <RegionSelect onComplete={() => setStep(1)} />
+      return <RegionSelect onComplete={() => setStep(1)} />;
     }
 
     console.log(form.fields);
 
     if (form.fields.region.value === "UK") {
-      return <UKSubForm />
+      return <UKSubForm />;
     }
 
-    return <USSubForm />
+    return <USSubForm />;
   }, [form.fields, step]);
 
-  return (
-    <FielderProvider value={form}>
-      {content}
-    </FielderProvider>
-  );
-}
+  return <FielderProvider value={form}>{content}</FielderProvider>;
+};
 
 // ============================
 // Form step 1
@@ -45,8 +41,8 @@ const Form = () => {
 
 const RegionSelect = ({ onComplete }) => {
   const [regionProps, regionMeta] = useField({
-    name: 'region',
-    initialValue: 'UK',
+    name: "region",
+    initialValue: "UK",
   });
 
   return (
@@ -59,13 +55,13 @@ const RegionSelect = ({ onComplete }) => {
         </select>
         {conditionalError(regionMeta)}
       </div>
-      
+
       <button type="button" onClick={onComplete} className="primary">
         Next
       </button>
     </form>
   );
-}
+};
 
 // ==============================
 // Form step 2 (conditional - US)
@@ -76,8 +72,8 @@ const RegionSelect = ({ onComplete }) => {
 
 const USSubForm = () => {
   const [ageProps, ageMeta] = useField({
-    name: 'age',
-    initialValue: '18',
+    name: "age",
+    initialValue: "18",
     validate: useCallback(({ value }) => {
       if (value < 18) {
         throw Error("Age must be over 18");
@@ -85,8 +81,8 @@ const USSubForm = () => {
     }, []),
   });
 
-  const { handleSubmit } = useSubmit(
-    (values) => alert(\`Submitted: \${JSON.stringify(values, null, 2)}\`)
+  const { handleSubmit } = useSubmit((values) =>
+    alert(\`Submitted: \${JSON.stringify(values, null, 2)}\`)
   );
 
   return (
@@ -96,13 +92,13 @@ const USSubForm = () => {
         <input type="number" {...ageProps} />
         {conditionalError(ageMeta)}
       </div>
-      
+
       <button type="button" onClick={handleSubmit} className="primary">
         Next
       </button>
     </form>
   );
-}
+};
 
 // ==============================
 // Form step 2 (conditional - UK)
@@ -113,11 +109,11 @@ const USSubForm = () => {
 
 const UKSubForm = () => {
   const [nameProps, nameMeta] = useField({
-    name: 'name',
-    initialValue: 'UK Citizen',
+    name: "name",
+    initialValue: "UK Citizen",
   });
   const [termsProps, termsMeta] = useField({
-    name: 'ukTerms',
+    name: "ukTerms",
     initialValue: [],
     validate: useCallback(({ value }) => {
       if (!value.includes("legal")) {
@@ -128,14 +124,14 @@ const UKSubForm = () => {
 
   const checkboxes = useMemo(
     () => [
-      { label: 'Send me marketing mail', value: 'marketing' },
-      { label: 'I accept terms and conditions', value: 'legal' },
+      { label: "Send me marketing mail", value: "marketing" },
+      { label: "I accept terms", value: "legal" },
     ],
     []
   );
 
-  const { handleSubmit } = useSubmit(
-    (values) => alert(\`Submitted: \${JSON.stringify(values, null, 2)}\`)
+  const { handleSubmit } = useSubmit((values) =>
+    alert(\`Submitted: \${JSON.stringify(values, null, 2)}\`)
   );
 
   return (
@@ -160,25 +156,25 @@ const UKSubForm = () => {
         ))}
         {conditionalError(termsMeta)}
       </div>
-      
+
       <button type="button" className="primary" onClick={handleSubmit}>
         Submit
       </button>
     </form>
   );
-}
+};
 
 const conditionalError = (meta) => meta.error && <p>{meta.error}</p>;
 
 // Render this live example
-render(<Form />)
-`
+render(<Form />);
+`;
 
 const scope = {
   ...fielderImports,
   useState,
   useMemo,
   useCallback,
-}
+};
 
-export const Example = () => <Editor code={code} scope={scope} />
+export const Example = () => <Editor code={code} scope={scope} />;
