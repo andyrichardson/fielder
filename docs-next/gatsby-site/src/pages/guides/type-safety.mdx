@@ -7,28 +7,28 @@ route: /guides/type-safety
 
 # Type safety
 
-_Fielder is written in TypeScript and supports type safety out of the box_.
+_Typing fields and forms with `Fielder`._
 
-## Why to use types
+## Why use types
 
 By using types with Fielder, you can:
 
-- Enforce field types (setters and return values)
+- Enforce field value types (setters and return values)
 - Enforce field names (prevent typos)
 
 ## Basic typing
 
-In order to begin, you'll need to create an interface/type which demonstrates all the fields which could be mounted in your form.
+A _form definition_ type declares all the possible field names and their values.
 
 ```ts
-interface MyFormState {
+type MyFormState = {
   username: string;
   password: string;
   saveCredentials: boolean;
-}
+};
 ```
 
-Now, when calling `useField`, `useForm`, or `useFormContext`, pass your form state as a generic.
+Passing the _form defintion_ to `useField`, `useForm`, `useFormContext`, or `useSubmit` will ensure the correct types.
 
 ```tsx
 const [fieldProps] = useField<MyFormState>({ name: 'password' });

@@ -39,13 +39,21 @@ _The name/key of the field to be added to the form state._
 
 Type: `string`
 
-Example: `password`
+Example: `'password'`
+
+### initialValue **(required)**
+
+_The starting value of the field on first mount._
+
+Type: `string | number | boolean | string[]`
+
+Example: `'small'`
 
 ### validate
 
 _A validation function which throws an error when validation has failed._
 
-Type: `(value: string, formState: FormState) => (void | Promise<void>)`
+Type: `(arg: { value: T, form: F, trigger: ValidationTrigger }) => (void | Promise<void>)`
 
 Default: `undefined`
 
@@ -58,64 +66,6 @@ Example:
   }
 }`
 ```
-
-### initialValid
-
-_Whether the initial value should be considered valid._
-
-Type: `boolean`
-
-Default: `false` (see comment below)
-
-> When no `validate` argument is passed to `useField`, the default value is `true`
-
-### initialError
-
-_The initial error of the field._
-
-Type: `string | Error`
-
-Default: `undefined`
-
-### initialValue
-
-_The value of the field on first mount (first mount after being destroyed)._
-
-Type: `string | boolean`
-
-Default: `""`
-
-### initialTouched **(deprecated)**
-
-_Whether the initial state of the field is 'touched'._
-
-Type: `boolean`
-
-Default: `false`
-
-### validateOnBlur
-
-_Whether the provided validate function should be called on blur._
-
-Type: `boolean`
-
-Default: `true`
-
-### validateOnChange
-
-_Whether the provided validate function should be called on change._
-
-Type: `boolean`
-
-Default: `true`
-
-### validateOnUpdate
-
-_Whether the provided validate function should be called on **any** form change._
-
-Type: `boolean`
-
-Default: `false`
 
 ### destroyOnUnmount
 
@@ -157,4 +107,22 @@ type UseFieldMeta = {
   /** onChange has been called since mount/remount. */
   readonly hasChanged: boolean;
 };
+```
+
+### ValidationTrigger
+
+An event type which has triggered validation.
+
+```ts
+type ValidationTrigger =
+  /* Field has been mounted */
+  | 'mount'
+  /* `onBlur` event called on field */
+  | 'blur'
+  /* `onChange` event called on field */
+  | 'change'
+  /* The value of another field in the form has changed */
+  | 'update'
+  /* Submission has begun */
+  | 'submit';
 ```

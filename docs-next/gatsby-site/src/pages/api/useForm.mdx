@@ -41,12 +41,15 @@ export interface FormState<T extends Record<string, any> = any> {
   fields: Record<string, FieldState>;
   isValid: boolean;
   isValidating: boolean;
-  mountField: (k: FieldConfig<T>) => void;
-  unmountField: (k: UnmountFieldArgs<T>) => void;
-  setFieldValue: (a: SetFieldValueArgs<T>) => void;
-  blurField: (a: BlurFieldArgs<T>) => void;
-  validateField: (a: { name: keyof T & string }) => void;
-  validateFields: () => void;
+  setFieldValue: (a: SetFieldValueArgs) => void;
+  blurField: (a: BlurFieldArgs) => void;
+  validateField: (a: { name: string }) => void;
+
+  // Internals
+  premountField: (a: MountFieldArgs) => void;
+  mountField: (a: MountFieldArgs) => void;
+  unmountField: (a: UnmountFieldArgs) => void;
+  setFieldState: (a: SetFieldStateArgs)
 }
 ```
 
@@ -58,9 +61,6 @@ The state of an individual field (including meta information).
 export interface FieldState<T = string | boolean | number> {
   // Internals
   readonly _isActive: boolean;
-  readonly _validateOnChange: boolean;
-  readonly _validateOnBlur: boolean;
-  readonly _validateOnUpdate: boolean;
   readonly _validate: FieldConfig['validate'];
 
   // Props
