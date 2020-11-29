@@ -10,7 +10,6 @@ import { Navigation } from './navigation';
 import NavButtonIcon from '../images/nav-button.svg';
 
 const Layout: FC = ({ children, pageContext }) => {
-  console.log(pageContext);
   const [collapsed, setCollapsed] = useState(true);
 
   const handleNavToggle = useCallback(() => setCollapsed((c) => !c), []);
@@ -25,6 +24,7 @@ const Layout: FC = ({ children, pageContext }) => {
           name="description"
           content={pageContext.frontmatter.description}
         />
+        <html lang="en" />
       </Helmet>
       <GlobalStyle />
       <PageContent>

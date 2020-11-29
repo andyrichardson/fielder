@@ -38,6 +38,7 @@
     "@types/styled-components": "^5.1.2",
     "gatsby-plugin-preact": "^4.2.0",
     "gatsby-plugin-react-helmet": "^3.5.0",
+    "gatsby-plugin-styled-components": "^3.5.0",
     "gatsby-plugin-typescript": "^2.7.0",
     "gatsby-plugin-webpack-bundle-analyser-v2": "^1.1.17",
     "gatsby-transformer-remark": "^2.11.1",

@@ -8,6 +8,7 @@ module.exports = {
     'gatsby-plugin-webpack-bundle-analyser-v2',
     `gatsby-plugin-typescript`,
     `gatsby-plugin-preact`,
+    `gatsby-plugin-styled-components`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -36,7 +37,12 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
+        name: 'Fielder',
+        start_url: `/`,
         icon: 'src/images/favicon.svg',
+        display: `standalone`,
+        background_color: `#fff`,
+        theme_color: `#000`,
       },
     },
     {
