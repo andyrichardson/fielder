@@ -1,0 +1,17 @@
+.heading > a {
+  position: relative;
+  color: initial;
+  text-decoration: initial;
+
+  &:hover:before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(100% + var(--scale_-1));
+    font-size: 0.5em;
+    display: flex;
+    align-items: center;
+    filter: brightness(0);
+    content: '🔗';
+  }
+}

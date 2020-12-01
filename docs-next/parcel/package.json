@@ -1,0 +1,38 @@
+{
+  "name": "parcel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "preact": "^10.5.7",
+    "sass": "^1.29.0",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "@linaria/react": "^3.0.0-beta.0",
+    "@mdx-js/parcel-plugin-mdx": "^1.6.21",
+    "@mdx-js/react": "^1.6.21",
+    "fielder": "^1.3.1",
+    "prism": "^4.1.2",
+    "prism-themes": "^1.5.0",
+    "react": ">= 16.8.0",
+    "react-helmet": "^6.1.0",
+    "remark-prism": "^1.3.3",
+    "remark-slug": "^6.0.0",
+    "typeface-inter": "^1.1.13",
+    "typeface-source-code-pro": "^1.1.13",
+    "wouter": "^2.6.0"
+  },
+  "alias": {
+    "react": "preact/compat",
+    "react-dom": "preact/compat"
+  },
+  "contentHash": false
+}
