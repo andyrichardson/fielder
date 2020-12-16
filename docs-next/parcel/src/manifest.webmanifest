@@ -1,0 +1,14 @@
+{
+  "name": "Fielder",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "72x72"
+    }
+  ]
+}

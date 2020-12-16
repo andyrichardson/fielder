@@ -50,7 +50,7 @@
   padding: var(--scale_-4) 0;
   padding-left: var(--scale_-2);
 
-  &.active {
+  &[data-active='true'] {
     color: #e36975;
   }
 }

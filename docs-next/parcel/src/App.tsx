@@ -1,10 +1,10 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { MDXProvider } from '@mdx-js/react';
 import { Navigation } from './components/Navigation';
 import * as headings from './components/HeadingLink';
 import navButton from './assets/nav-button.svg';
-import { Route } from 'wouter';
+import { Switch, Route, useLocation } from 'wouter';
 import { routes, RouteDef, LiteralRoute } from './routes';
 
 const getRoutes = (routeList: RouteDef[]): LiteralRoute[] =>
@@ -22,23 +22,41 @@ const getRoutes = (routeList: RouteDef[]): LiteralRoute[] =>
 
 const literalRoutes = getRoutes(routes);
 
-export const App = () => (
-  <>
-    <Navigation />
-    <main className={'content'}>
-      <MDXProvider components={headings}>
-        <Suspense fallback={null}>
-          {literalRoutes.map(({ url, title, component: Component }) => (
-            <Route key={url} path={url}>
-              <Helmet>
-                <title>{title} | Fielder</title>
-              </Helmet>
-              <Component />
-            </Route>
-          ))}
-        </Suspense>
-      </MDXProvider>
-    </main>
-    <img className={'navbutton'} src={navButton} />
-  </>
-);
+export const App = () => {
+  const [location] = useLocation();
+  const [collapsed, setCollapsed] = useState(true);
+  const handleNavToggle = useCallback(() => setCollapsed((c) => !c), []);
+
+  useEffect(() => {
+    setCollapsed(true);
+  }, [location]);
+
+  return (
+    <>
+      <Navigation data-collapsed={collapsed} />
+      <main className={'content'}>
+        <MDXProvider components={headings}>
+          <Switch>
+            {literalRoutes.map(
+              ({ url, title, component: Component, metadata }) => (
+                <Route key={url} path={url}>
+                  <Helmet>
+                    <title>{title} | Fielder</title>
+                    {metadata &&
+                      metadata.map((props, index) => (
+                        <meta key={index} {...props} />
+                      ))}
+                  </Helmet>
+                  <Suspense fallback={null}>
+                    <Component />
+                  </Suspense>
+                </Route>
+              )
+            )}
+          </Switch>
+        </MDXProvider>
+      </main>
+      <img className={'navbutton'} src={navButton} onClick={handleNavToggle} alt={'Toggle nav'} role={'button'} />
+    </>
+  );
+}

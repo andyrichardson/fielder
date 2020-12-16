@@ -68,6 +68,12 @@ main.content li {
   }
 }
 
+main.content blockquote {
+  border-left: solid 3px;
+  margin-left: var(--scale_0);
+  padding-left: var(--scale_0);
+}
+
 main.content *:not(pre) > code {
   color: #e36975;
 }
