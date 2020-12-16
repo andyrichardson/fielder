@@ -1,0 +1,85 @@
+.live-editor {
+  margin-top: var(--scale_1);
+  padding: 0;
+  background: #fafafa;
+
+  & > * {
+    padding: 28px !important;
+  }
+}
+
+.live-preview {
+  display: flex;
+  justify-content: center;
+  padding: var(--scale_1) 0;
+
+  form {
+    padding: var(--scale_2);
+    border: solid 2px;
+  }
+
+  .field {
+    margin: var(--scale_1) 0;
+
+    &.column {
+      flex-direction: column;
+      align-items: unset;
+    }
+  }
+
+  .field:first-child {
+    margin-top: 0;
+  }
+
+  .field label {
+    font-weight: bold;
+    display: inline-block;
+    width: var(--scale_7);
+  }
+
+  .field input[type='text'],
+  .field input[type='password'],
+  .field input[type='number'],
+  .field select {
+    width: 200px;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: var(--scale_0);
+    border: solid 2px;
+    padding: var(--scale_-6) var(--scale_-4);
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .field input[type='checkbox'] {
+    margin: 0;
+    margin-left: var(--scale_1);
+    margin-right: var(--scale_0);
+    width: var(--scale_1);
+    height: var(--scale_1);
+    appearance: none;
+    outline: solid 2px;
+    outline-offset: 0;
+    border: solid 2px #fff;
+  }
+
+  .field input:checked {
+    background: #000;
+  }
+
+  button.primary {
+    margin: 0 auto;
+    font-size: var(--scale_0);
+    font-weight: bold;
+    padding: var(--scale_-4);
+    background: transparent;
+    border: solid 2px;
+    float: right;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

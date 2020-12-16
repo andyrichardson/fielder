@@ -1,0 +1,59 @@
+# About
+
+_Fielder_ is a form library for React and React Native that has been built from the ground up with a [field-first approach to validation](https://dev.to/andyrichardsonn/why-we-need-another-form-library-fielder-4eah).
+
+## Features
+
+Here are some of the features that stand us out from the crowd
+
+- Synchronous validation - change events and validation occur in the same render
+- Hooks that work - hooks react to validation changes
+- Event-driven validation - handle validation differently depending on the event (change, blur, submit, etc.)
+- Dynamic validation - just like your UI, validation evolves over time
+
+## Basic usage
+
+### Install Fielder
+
+Add Fielder to your project.
+
+```sh
+npm i fielder
+```
+
+### Set up a form
+
+Use the `useForm` to create a form.
+
+```tsx
+const myForm = useForm();
+
+return <FielderProvider value={myForm}>{children}</FielderProvider>;
+```
+
+### Create some fields
+
+Use the `useField` hook to create a field.
+
+```tsx
+const [usernameProps, usernameMeta] = useField({
+  name: 'username',
+  initialValue: '',
+  validate: useCallback(({ value }) => {
+    if (!value) {
+      throw Error('Username is required!');
+    }
+  }, []),
+});
+
+return (
+  <>
+    <input type="text" {...usernameProps} />
+    <span>{usernameMeta.error}</span>
+  </>
+);
+```
+
+### Additional info
+
+Once you're all set up, be sure to check out [the guides](http://fielder.andyrichardson.dev/guides/getting-started) for a deeper dive!

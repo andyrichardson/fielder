@@ -1,0 +1,56 @@
+.sidenav {
+  box-sizing: border-box;
+  position: sticky;
+  height: min-content;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--scale_2);
+
+  @media (max-width: 600px) {
+    background: #fff;
+    z-index: 1;
+    height: 100%;
+    position: fixed;
+    width: 100vw;
+    min-width: 100vw;
+    margin-left: 0;
+    transition: margin-left 200ms ease;
+    overflow: auto;
+
+    &[data-collapsed] {
+      margin-left: -100vw;
+    }
+  }
+
+  @media (min-width: 601px) {
+    width: 200px;
+  }
+}
+
+.sidenav .logo {
+  height: var(--scale_3);
+  margin-top: 60px;
+  margin-bottom: var(--scale_2);
+  overflow: visible;
+}
+
+.sidenav .parent-link {
+  padding: var(--scale_-1) 0;
+  text-decoration: none;
+  font-size: var(--scale_1);
+  color: #000;
+  font-weight: bold;
+}
+
+.sidenav .child-link {
+  text-decoration: none;
+  font-size: var(--scale_0);
+  color: #000;
+  padding: var(--scale_-4) 0;
+  padding-left: var(--scale_-2);
+
+  &[data-active='true'] {
+    color: #e36975;
+  }
+}
