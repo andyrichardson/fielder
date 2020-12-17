@@ -106,7 +106,7 @@ const getValidationTriggerForField = (
 
   // Global change - applies to all
   if (action.type === 'SET_FIELD_VALUE' && action.config.name !== field.name) {
-    return 'formChange';
+    return 'update';
   }
 
   // All other actions are field specific

@@ -93,7 +93,7 @@ export interface FieldState<
  *
  * `change`: Field has had 'onChange' event.
  *
- * `formChange`: The value of another field in the form has changed.
+ * `update`: The value of another field in the form has changed.
  *
  * `submit`: Submission has begun.
  */
@@ -101,7 +101,7 @@ export type ValidationTrigger =
   | 'mount'
   | 'blur'
   | 'change'
-  | 'formChange'
+  | 'update'
   | 'submit';
 
 /** Arguments passed to a validation function */
