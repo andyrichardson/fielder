@@ -1,3 +1,3 @@
 import { modularScale } from 'polished';
 
-export const scale = (steps: number) => modularScale(steps, '16px', 1.3);
+export const scale = (steps: number) => modularScale(steps, '14px', 1.3);

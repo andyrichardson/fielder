@@ -2,6 +2,7 @@ import { css } from '@linaria/core';
 import React from 'react';
 import { render } from 'react-dom';
 import { App } from './App';
+import { scale } from './scale';
 
 render(<App />, document.querySelector('#root'));
 
@@ -35,13 +36,19 @@ export const globals = css`
     body {
       margin: 0;
       font-family: 'Inter', system, sans-serif;
+      font-size: ${scale(0)};
     }
 
     #root {
       display: flex;
       margin: 0 auto;
-      width: max-content;
-      max-width: 1000px;
+      width: 100%;
+      max-width: 100%;
+
+      @media (min-width: 1000px) {
+        width: 1000px;
+        max-width: 1000px;
+      }
     }
 
     pre > code,

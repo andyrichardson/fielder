@@ -85,7 +85,7 @@ const Logo = styled.img`
 const ParentLink = styled.a`
   padding: ${scale(-1)} 0;
   text-decoration: none;
-  font-size: ${scale(0.5)};
+  font-size: ${scale(1)};
   color: #000;
   font-weight: bold;
 `;
@@ -94,7 +94,7 @@ const ChildLink = styled.a`
   text-decoration: none;
   font-size: ${scale(0)};
   color: #000;
-  padding: ${scale(-4)} 0;
+  padding: ${scale(-2)} 0;
   padding-left: ${scale(-2)};
 
   &[data-active='true'] {

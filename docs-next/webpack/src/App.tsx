@@ -58,11 +58,12 @@ export const App = () => {
 };
 
 const Content = styled.main`
+  overflow: auto;
+  flex: 1 1 auto;
+  flex-direction: column;
   box-sizing: border-box;
-  width: 100vw;
   padding: 0 ${scale(0)};
   padding-bottom: ${scale(6)} !important;
-  flex-grow: 1;
 
   @media (min-width: 400px) {
     padding: 0 ${scale(1)};
@@ -115,10 +116,18 @@ const Content = styled.main`
     color: #e36975;
   }
 
+  pre[class*='language-'] {
+    padding: 0;
+  }
+
   pre > code {
     display: block;
     overflow: auto;
-    padding: ${scale(0)};
+    padding: ${scale(1)};
+
+    @media (min-width: 600px) {
+      padding: ${scale(2)};
+    }
   }
 
   *:not(h1):not(h2):not(h3):not(h4):not(h5) > a {
@@ -127,11 +136,11 @@ const Content = styled.main`
 `;
 
 const NavButton = styled.img`
-  height: ${scale(4)};
+  height: ${scale(5)};
   position: fixed;
   bottom: 30px;
   right: 30px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.25);
   border-radius: 50%;
   background: #000;
   cursor: pointer;
