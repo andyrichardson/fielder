@@ -7,6 +7,7 @@ import * as headings from './components/HeadingLink';
 import navButton from './assets/nav-button.svg';
 import { Switch, Route, useLocation } from 'wouter';
 import { routes, RouteDef, LiteralRoute } from './routes';
+import { scale } from './scale';
 
 const getRoutes = (routeList: RouteDef[]): LiteralRoute[] =>
   routeList.reduce((acc, current) => {
@@ -67,6 +68,59 @@ const Content = styled.main`
     padding: 20px 40px;
     max-width: 800px;
     min-width: calc(100% - 200px);
+  }
+
+  h1 {
+    font-size: ${scale(3)};
+    margin-top: ${scale(3)};
+    margin-bottom: ${scale(2)};
+  }
+
+  h2 {
+    font-size: ${scale(2)};
+    margin-top: ${scale(4)};
+    margin-bottom: ${scale(1)};
+  }
+
+  h3 {
+    font-size: ${scale(1)};
+    margin-top: ${scale(1)};
+    margin-bottom: ${scale(0)};
+  }
+
+  p {
+    font-size: ${scale(0)};
+    margin: ${scale(1)} 0;
+    line-height: 2em;
+    color: #222;
+  }
+
+  li {
+    line-height: 2em;
+
+    & + & {
+      margin-top: ${scale(0)};
+    }
+  }
+
+  blockquote {
+    border-left: solid 3px;
+    margin-left: ${scale(0)};
+    padding-left: ${scale(0)};
+  }
+
+  *:not(pre) > code {
+    color: #e36975;
+  }
+
+  pre > code {
+    display: block;
+    overflow: auto;
+    padding: ${scale(0)};
+  }
+
+  *:not(h1):not(h2):not(h3):not(h4):not(h5) > a {
+    color: #8b61ff;
   }
 `;
 

@@ -25,6 +25,13 @@ registerRoute(({ request, url }) => {
 registerRoute(
   /.*\/manifest\/.*/,
   new StaleWhileRevalidate({
-    cacheName: 'manifest',
+    cacheName: 'manifest-v1',
+  })
+);
+
+registerRoute(
+  /.*\/fonts\/.*/,
+  new StaleWhileRevalidate({
+    cacheName: 'fonts-v1',
   })
 );

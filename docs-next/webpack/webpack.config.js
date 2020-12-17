@@ -1,12 +1,10 @@
 const path = require('path');
-const SitemapPlugin = require('sitemap-webpack-plugin').default;
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -16,6 +14,7 @@ module.exports = {
     app: './src/index.tsx',
   },
   output: {
+    publicPath: '/',
     path: path.resolve(__dirname, './dist'),
   },
   optimization: {
@@ -26,7 +25,7 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', '.mdx'],
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.mdx', '.woff2'],
     alias: {
       react: 'preact/compat',
       'react-dom': 'preact/compat',
@@ -58,8 +57,25 @@ module.exports = {
         use: ['file-loader'],
       },
       {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
+          },
+        ],
+      },
+      {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'resolve-url-loader',
+          // 'sass-loader',
+        ],
       },
     ],
   },
@@ -98,7 +114,7 @@ module.exports = {
     }),
     new InjectManifest({
       swSrc: path.resolve(__dirname, './src/service-worker.tsx'),
-      exclude: [/manifest\//],
+      exclude: [/manifest\//, /fonts\//],
     }),
   ],
 };

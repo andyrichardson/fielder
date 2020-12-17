@@ -1,25 +1,6 @@
 @import 'typeface-inter';
 @import 'typeface-source-code-pro';
 @import 'prism-themes/themes/prism-material-light.css';
-@import './components/Navigation.scss';
-@import './components/HeadingLink.scss';
-@import './components/Editor.scss';
-@import './App.scss';
-
-:root {
-  --scale_-4: calc(var(--scale_-3) * 1 / 1.3);
-  --scale_-3: calc(var(--scale_-2) * 1 / 1.3);
-  --scale_-2: calc(var(--scale_-1) * 1 / 1.3);
-  --scale_-1: calc(var(--scale_0) * 1 / 1.3);
-  --scale_0: 16px;
-  --scale_1: calc(var(--scale_0) * 1.3);
-  --scale_2: calc(var(--scale_1) * 1.3);
-  --scale_3: calc(var(--scale_2) * 1.3);
-  --scale_4: calc(var(--scale_3) * 1.3);
-  --scale_5: calc(var(--scale_4) * 1.3);
-  --scale_6: calc(var(--scale_5) * 1.3);
-  --scale_7: calc(var(--scale_6) * 1.3);
-}
 
 html,
 body {
