@@ -4,7 +4,7 @@ variables:
   - &module-cache node-cache-v1-{{ checksum "package-lock.json" }}
   - &build-cache build-cache-v1-{{ .Revision }}
   - &package-cache package-cache-v1-{{ .Revision }}
-  - &docs-module-cache docs-module-cache-v1-{{ checksum "docs/yarn.lock" }}
+  - &docs-module-cache docs-module-cache-v1-{{ checksum "docs/package-lock.json" }}
 
 executors:
   node:
@@ -146,7 +146,7 @@ jobs:
           keys:
             - *docs-module-cache
       - run:
-          command: yarn
+          command: npm ci
           working_directory: docs
       - save_cache:
           key: *docs-module-cache
