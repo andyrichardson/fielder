@@ -140,6 +140,7 @@ jobs:
 
   build docs:
     executor: node
+    resource_class: medium+
     steps:
       - checkout
       - restore_cache:
