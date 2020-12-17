@@ -28,12 +28,18 @@ export const useSubmit = <T extends Record<string, any>>(
   /** A handler for  */
   handler: (values: T) => void
 ): UseSubmitResponse => {
-  const [state, setState] = useState({ isFetching: false, hasSubmitted: false });
+  const [state, setState] = useState({
+    isFetching: false,
+    hasSubmitted: false,
+  });
   const { validateSubmission } = useContext(FielderContext);
 
   const handleSubmit = useCallback(async () => {
     const possibleProm = validateSubmission();
-    setState({ isFetching: possibleProm instanceof Promise, hasSubmitted: true });
+    setState({
+      isFetching: possibleProm instanceof Promise,
+      hasSubmitted: true,
+    });
 
     const { state, errors } = await possibleProm;
     setState((s) => ({ ...s, isFetching: false }));
