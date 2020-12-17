@@ -10,7 +10,7 @@ executors:
   node:
     working_directory: /mnt/ramdisk
     docker:
-      - image: node:15
+      - image: node:15-alpine
   cypress:
     working_directory: /mnt/ramdisk
     docker:
@@ -140,7 +140,6 @@ jobs:
 
   build docs:
     executor: node
-    resource_class: medium+
     steps:
       - checkout
       - restore_cache:
