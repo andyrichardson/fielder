@@ -153,10 +153,10 @@ jobs:
           paths:
             - 'docs/node_modules'
       - run:
-          command: yarn run build
+          command: npm run build
           working_directory: docs
       - store_artifacts:
-          path: docs/.docz/dist
+          path: docs/dist
           destination: static-docs
 
   deploy:
