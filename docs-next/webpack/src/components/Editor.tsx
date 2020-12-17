@@ -1,6 +1,7 @@
 import React from 'react';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
-import { styled } from '@linaria/react';
+import { css } from '@linaria/core';
+import { scale } from '../scale';
 
 export const Editor = ({ code, scope }: { code: string; scope: any }) => (
   <>
@@ -12,11 +13,10 @@ export const Editor = ({ code, scope }: { code: string; scope: any }) => (
       noInline={true}
       spellCheck={false}
     >
-      <LivePreview className="live-preview" />
+      <LivePreview className={previewStyle} />
       <LiveError />
-      <LiveEditor className="live-editor" />
+      <LiveEditor className={editorStyle} />
     </LiveProvider>
-    <Content />
   </>
 );
 
@@ -86,95 +86,92 @@ const theme = {
   ],
 };
 
-const Content = styled.main`
-  background-color: red;
+// Cast to any because of incorrect type defs on lib
+// (missing spellcheck attr)
+const editorStyle = css`
+  margin-top: ${scale(1)};
+  padding: 0;
+  background: #fafafa;
+
+  & > * {
+    padding: 28px !important;
+  }
 `;
 
-// // Cast to any because of incorrect type defs on lib
-// // (missing spellcheck attr)
-// const EditorArea: any = styled(LiveEditor)`
-//   margin-top: ${scale(1)};
-//   padding: 0;
-//   background: #fafafa;
+const previewStyle = css`
+  display: flex;
+  justify-content: center;
+  padding: ${scale(1)} 0;
 
-//   & > * {
-//     padding: 28px !important;
-//   }
-// `;
+  form {
+    padding: ${scale(2)};
+    border: solid 2px;
+  }
 
-// const Preview = styled(LivePreview)`
-//   display: flex;
-//   justify-content: center;
-//   padding: ${scale(1)} 0;
+  .field {
+    margin: ${scale(1)} 0;
 
-//   form {
-//     padding: ${scale(2)};
-//     border: solid 2px;
-//   }
+    &.column {
+      flex-direction: column;
+      align-items: unset;
+    }
+  }
 
-//   .field {
-//     margin: ${scale(1)} 0;
+  .field:first-child {
+    margin-top: 0;
+  }
 
-//     &.column {
-//       flex-direction: column;
-//       align-items: unset;
-//     }
-//   }
+  .field label {
+    font-weight: bold;
+    display: inline-block;
+    width: ${scale(7)};
+  }
 
-//   .field:first-child {
-//     margin-top: 0;
-//   }
+  .field input[type='text'],
+  .field input[type='password'],
+  .field input[type='number'],
+  .field select {
+    width: 200px;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: ${scale(0)};
+    border: solid 2px;
+    padding: ${scale(-6)} ${scale(-4)};
 
-//   .field label {
-//     font-weight: bold;
-//     display: inline-block;
-//     width: ${scale(7)};
-//   }
+    &:focus {
+      outline: none;
+    }
+  }
 
-//   .field input[type='text'],
-//   .field input[type='password'],
-//   .field input[type='number'],
-//   .field select {
-//     width: 200px;
-//     font-family: Inter, sans-serif;
-//     font-weight: 600;
-//     font-size: ${scale(0)};
-//     border: solid 2px;
-//     padding: ${scale(-6)} ${scale(-4)};
+  .field input[type='checkbox'] {
+    margin: 0;
+    margin-left: ${scale(1)};
+    margin-right: ${scale(0)};
+    width: ${scale(1)};
+    height: ${scale(1)};
+    appearance: none;
+    outline: solid 2px;
+    outline-offset: 0;
+    border: solid 2px #fff;
+  }
 
-//     &:focus {
-//       outline: none;
-//     }
-//   }
+  .field input:checked {
+    background: #000;
+  }
 
-//   .field input[type='checkbox'] {
-//     margin: 0;
-//     margin-left: ${scale(1)};
-//     margin-right: ${scale(0)};
-//     width: ${scale(1)};
-//     height: ${scale(1)};
-//     appearance: none;
-//     outline: solid 2px;
-//     outline-offset: 0;
-//     border: solid 2px #fff;
-//   }
+  button.primary {
+    margin: 0 auto;
+    font-size: ${scale(0)};
+    font-weight: bold;
+    padding: ${scale(-4)};
+    background: transparent;
+    border: solid 2px;
+    float: right;
 
-//   .field input:checked {
-//     background: #000;
-//   }
+    &:focus {
+      outline: none;
+    }
+  }
+`;
 
-//   button.primary {
-//     margin: 0 auto;
-//     font-size: ${scale(0)};
-//     font-weight: bold;
-//     padding: ${scale(-4)};
-//     background: transparent;
-//     border: solid 2px;
-//     float: right;
-
-//     &:focus {
-//       outline: none;
-//     }
-//   }
-// `;
-// export default Editor;
+export default Editor;

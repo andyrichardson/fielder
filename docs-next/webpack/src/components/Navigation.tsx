@@ -99,23 +99,3 @@ const ChildLink = styled.a`
     color: #e36975;
   }
 `;
-
-// const ParentLink = styled(Link)`
-//   padding: ${scale(-1)} 0;
-//   text-decoration: none;
-//   font-size: ${scale(1)};
-//   color: #000;
-//   font-weight: bold;
-// `;
-
-// const ChildLink = styled(Link)`
-//   text-decoration: none;
-//   font-size: ${scale(0)};
-//   color: #000;
-//   padding: ${scale(-4)} 0;
-//   padding-left: ${scale(-2)};
-
-//   &[data-active='true'] {
-//     color: #e36975;
-//   }
-// `;
