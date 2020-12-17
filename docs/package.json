@@ -1,11 +1,11 @@
 {
-  "name": "docs",
+  "name": "fielder-docs",
   "version": "1.0.0",
-  "description": "",
+  "description": "Fielder Docs Site",
   "main": "dist/index.html",
   "scripts": {
-    "start": "parcel start src/index.html --no-cache",
-    "build": "parcel build src/index.html --no-content-hash --no-cache"
+    "start": "webpack serve",
+    "build": "NODE_ENV=production webpack"
   },
   "keywords": [],
   "author": "",
