@@ -45,6 +45,7 @@ const Nav = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 ${scale(2)};
+  padding-bottom: ${scale(2)};
 
   @media (max-width: 999px) {
     background: #fff;
@@ -70,11 +71,12 @@ const Nav = styled.div`
 const NavContent = styled.nav`
   display: flex;
   flex-direction: column;
+  height: max-content;
   width: 300px;
 `;
 
 const Logo = styled.img`
-  height: ${scale(3)};
+  min-height: ${scale(3)};
   margin-top: 60px;
   margin-bottom: ${scale(2)};
   overflow: visible;

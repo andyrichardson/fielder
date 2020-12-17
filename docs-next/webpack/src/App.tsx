@@ -148,7 +148,7 @@ const AppRoute: FC<LiteralRoute> = ({
   metadata,
 }) => {
   useHead({
-    title,
+    title: `${title} | Fielder Docs`,
     metas: metadata,
   });
 

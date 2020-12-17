@@ -95,7 +95,7 @@ module.exports = {
       inject: true,
       favicons: {
         // Manifest file
-        appName: 'Fielder',
+        appName: 'Fielder Docs',
         appDescription: 'Fielder docs',
         start_url: '/',
         display: 'standalone',
