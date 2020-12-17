@@ -7,7 +7,7 @@
   flex-direction: column;
   padding: 0 var(--scale_2);
 
-  @media (max-width: 600px) {
+  @media (max-width: 999px) {
     background: #fff;
     z-index: 1;
     height: 100%;
@@ -23,7 +23,7 @@
     }
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 1000px) {
     width: 200px;
   }
 }

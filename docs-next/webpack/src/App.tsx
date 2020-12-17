@@ -47,8 +47,7 @@ export const App = () => {
           </Switch>
         </MDXProvider>
       </Content>
-      <img
-        className={'navbutton'}
+      <NavButton
         src={navButton}
         onClick={handleNavToggle}
         alt={'Toggle nav'}
@@ -61,18 +60,21 @@ export const App = () => {
 const Content = styled.main`
   box-sizing: border-box;
   width: 100vw;
-  padding: 10px 10px;
+  padding: 0 ${scale(0)};
+  padding-bottom: ${scale(6)} !important;
   flex-grow: 1;
 
-  @media (min-width: 601px) {
-    padding: 20px 40px;
-    max-width: 800px;
-    min-width: calc(100% - 200px);
+  @media (min-width: 400px) {
+    padding: 0 ${scale(1)};
+  }
+
+  @media (min-width: 600px) {
+    padding: 0 ${scale(2)};
   }
 
   h1 {
     font-size: ${scale(3)};
-    margin-top: ${scale(3)};
+    margin-top: ${scale(5)};
     margin-bottom: ${scale(2)};
   }
 
@@ -121,6 +123,22 @@ const Content = styled.main`
 
   *:not(h1):not(h2):not(h3):not(h4):not(h5) > a {
     color: #8b61ff;
+  }
+`;
+
+const NavButton = styled.img`
+  height: ${scale(4)};
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  background: #000;
+  cursor: pointer;
+  z-index: 5;
+
+  @media (min-width: 1000px) {
+    display: none;
   }
 `;
 

@@ -41,8 +41,7 @@ export const globals = css`
       display: flex;
       margin: 0 auto;
       width: max-content;
-      max-width: 1200px;
-      padding-left: -200px;
+      max-width: 1000px;
     }
 
     pre > code,

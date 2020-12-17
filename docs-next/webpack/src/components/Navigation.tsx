@@ -10,39 +10,43 @@ export const Navigation: FC<ComponentProps<'nav'>> = (props) => {
 
   return (
     <Nav {...props}>
-      <Logo src={Icon} alt={'Logo'} />
-      {routes.map((r) => (
-        <>
-          <Link
-            key={r.url}
-            to={r.url}
-            target={'external' in r && r.external ? '_blank' : ''}
-          >
-            <ParentLink>{r.title}</ParentLink>
-          </Link>
-          {'children' in r &&
-            r.children &&
-            r.children.map((c) => (
-              <Link data-active={location === c.url} key={c.url} href={c.url}>
-                <ChildLink>{c.title}</ChildLink>
-              </Link>
-            ))}
-        </>
-      ))}
+      <NavContent>
+        <Logo src={Icon} alt={'Logo'} />
+        {routes.map((r) => (
+          <>
+            <Link
+              key={r.url}
+              to={r.url}
+              target={'external' in r && r.external ? '_blank' : ''}
+            >
+              <ParentLink>{r.title}</ParentLink>
+            </Link>
+            {'children' in r &&
+              r.children &&
+              r.children.map((c) => (
+                <Link key={c.url} href={c.url}>
+                  <ChildLink data-active={location === c.url}>
+                    {c.title}
+                  </ChildLink>
+                </Link>
+              ))}
+          </>
+        ))}
+      </NavContent>
     </Nav>
   );
 };
 
-const Nav = styled.nav`
+const Nav = styled.div`
   box-sizing: border-box;
   position: sticky;
   height: min-content;
   top: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   padding: 0 ${scale(2)};
 
-  @media (max-width: 600px) {
+  @media (max-width: 999px) {
     background: #fff;
     z-index: 1;
     height: 100%;
@@ -58,9 +62,15 @@ const Nav = styled.nav`
     }
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 1000px) {
     width: 200px;
   }
+`;
+
+const NavContent = styled.nav`
+  display: flex;
+  flex-direction: column;
+  width: 300px;
 `;
 
 const Logo = styled.img`

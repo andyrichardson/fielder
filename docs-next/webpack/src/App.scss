@@ -12,7 +12,7 @@ main.content {
   padding: 10px 10px;
   flex-grow: 1;
 
-  @media (min-width: 601px) {
+  @media (min-width: 1000px) {
     padding: 20px 40px;
     max-width: 800px;
     min-width: calc(100% - 200px);
