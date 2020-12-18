@@ -5,7 +5,7 @@ import { MDXProvider } from '@mdx-js/react';
 import { Navigation } from './components/Navigation';
 import * as headings from './components/HeadingLink';
 import navButton from './assets/nav-button.svg';
-import ogImage from './assets/open-graph-square.png';
+import ogImage from './assets/OpenGraph.png';
 import { Switch, Route, useLocation, Router, Redirect } from 'wouter';
 import { LiteralRoute, literalRoutes } from './routes';
 import { scale } from './scale';
