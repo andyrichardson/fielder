@@ -1,16 +1,15 @@
 version: 2.1
 
 variables:
-  - &module-cache node-cache-v1-{{ checksum "package-lock.json" }}
-  - &build-cache build-cache-v1-{{ .Revision }}
-  - &package-cache package-cache-v1-{{ .Revision }}
-  - &docs-module-cache docs-module-cache-v1-{{ checksum "docs/package-lock.json" }}
+  - &module-cache node-cache-v1-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
+  - &build-cache build-cache-v1-{{ .Revision }}-{{ checksum ".circleci/config.yml" }}
+  - &package-cache package-cache-v1-{{ .Revision }}-{{ checksum ".circleci/config.yml" }}
 
 executors:
   node:
     working_directory: /mnt/ramdisk
     docker:
-      - image: node:15-alpine
+      - image: node:15
   cypress:
     working_directory: /mnt/ramdisk
     docker:
@@ -138,27 +137,6 @@ jobs:
           command: npm run serve & sleep 10 && npm run test
           working_directory: examples/3-branching
 
-  build docs:
-    executor: node
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - *docs-module-cache
-      - run:
-          command: npm ci
-          working_directory: docs
-      - save_cache:
-          key: *docs-module-cache
-          paths:
-            - 'docs/node_modules'
-      - run:
-          command: npm run build
-          working_directory: docs
-      - store_artifacts:
-          path: docs/dist
-          destination: static-docs
-
   deploy:
     executor: node
     steps:
@@ -217,12 +195,6 @@ workflows:
             tags:
               only: /.*/
       - lint:
-          requires:
-            - install
-          filters:
-            tags:
-              only: /.*/
-      - build docs:
           requires:
             - install
           filters:
