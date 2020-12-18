@@ -5,24 +5,10 @@ import { MDXProvider } from '@mdx-js/react';
 import { Navigation } from './components/Navigation';
 import * as headings from './components/HeadingLink';
 import navButton from './assets/nav-button.svg';
-import { Switch, Route, useLocation } from 'wouter';
-import { routes, RouteDef, LiteralRoute } from './routes';
+import ogImage from './assets/open-graph-square.png';
+import { Switch, Route, useLocation, Router, Redirect } from 'wouter';
+import { LiteralRoute, literalRoutes } from './routes';
 import { scale } from './scale';
-
-const getRoutes = (routeList: RouteDef[]): LiteralRoute[] =>
-  routeList.reduce((acc, current) => {
-    if ('children' in current && current.children) {
-      return [...acc, ...getRoutes(current.children)];
-    }
-
-    if ('component' in current) {
-      return [...acc, current];
-    }
-
-    return acc;
-  }, [] as LiteralRoute[]);
-
-const literalRoutes = getRoutes(routes);
 
 export const App = () => {
   const [location] = useLocation();
@@ -35,24 +21,31 @@ export const App = () => {
 
   return (
     <>
-      <Navigation data-collapsed={collapsed} />
-      <Content>
-        <MDXProvider components={headings}>
-          <Switch>
-            {literalRoutes.map((route) => (
-              <Route key={route.url} path={route.url}>
-                <AppRoute {...route} />
-              </Route>
-            ))}
-          </Switch>
-        </MDXProvider>
-      </Content>
-      <NavButton
-        src={navButton}
-        onClick={handleNavToggle}
-        alt={'Toggle nav'}
-        role={'button'}
-      />
+      <Router>
+        <Navigation data-collapsed={collapsed} />
+        <Content>
+          <MDXProvider components={headings}>
+            <Switch>
+              {[
+                ...literalRoutes.map((route) => (
+                  <Route key={route.url} path={route.url}>
+                    <AppRoute {...route} />
+                  </Route>
+                )),
+                <Route key={'fallback'}>
+                  <Redirect to={'/'} />
+                </Route>,
+              ]}
+            </Switch>
+          </MDXProvider>
+        </Content>
+        <NavButton
+          src={navButton}
+          onClick={handleNavToggle}
+          alt={'Toggle nav'}
+          role={'button'}
+        />
+      </Router>
     </>
   );
 };
@@ -158,8 +151,32 @@ const AppRoute: FC<LiteralRoute> = ({
 }) => {
   useHead({
     title: `${title} | Fielder Docs`,
-    metas: metadata,
+    metas: [
+      ...(metadata || []),
+      { name: 'og:type', content: 'website' },
+      {
+        name: 'og:image',
+        content: `https://fielder.andyrichardson.dev/${ogImage}`,
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary',
+      },
+      {
+        name: 'twitter:site',
+        content: '@andyrichardsonn',
+      },
+      {
+        name: 'twitter:creator',
+        content: '@andyrichardsonn',
+      },
+    ],
   });
+
+  // Use SSR for meta tags only (no hydration)
+  if (navigator.userAgent === 'ReactSnap') {
+    return null;
+  }
 
   return (
     <Suspense fallback={null}>

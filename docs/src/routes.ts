@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { Route } from 'workbox-routing';
 
 /** Route containing component */
 export type LiteralRoute = {
@@ -40,7 +41,7 @@ export const routes: RouteDef[] = [
         url: '/guides/getting-started',
         component: lazy(() => import('./pages/guides/getting-started.mdx')),
         metadata: [
-          { name: 'description', content: 'How to get started using Fielder' },
+          { name: 'description', content: 'Get started using Fielder' },
         ],
       },
       {
@@ -50,7 +51,7 @@ export const routes: RouteDef[] = [
         metadata: [
           {
             name: 'description',
-            content: 'How to use form validation in React with Fielder',
+            content: 'Validating forms and fields with Fielder',
           },
         ],
       },
@@ -61,7 +62,7 @@ export const routes: RouteDef[] = [
         metadata: [
           {
             name: 'description',
-            content: 'How to handle submission in Fielder',
+            content: 'Handling submission logic in Fielder',
           },
         ],
       },
@@ -72,7 +73,7 @@ export const routes: RouteDef[] = [
         metadata: [
           {
             name: 'description',
-            content: 'How to configure types in Fielder',
+            content: 'Using Fielder with Typescript',
           },
         ],
       },
@@ -83,7 +84,7 @@ export const routes: RouteDef[] = [
         metadata: [
           {
             name: 'description',
-            content: 'How to get started using Fielder in React Native',
+            content: 'Using Fielder with React Native',
           },
         ],
       },
@@ -187,3 +188,38 @@ export const routes: RouteDef[] = [
     external: true,
   },
 ];
+
+const getRoutes = (routeList: RouteDef[], parent?: RouteDef): LiteralRoute[] =>
+  routeList.reduce((acc, current) => {
+    if ('children' in current && current.children) {
+      return [...acc, ...getRoutes(current.children, current)];
+    }
+
+    if (!('component' in current)) {
+      return acc;
+    }
+
+    return [
+      ...acc,
+      {
+        ...current,
+        metadata: [
+          ...(current.metadata || []),
+          {
+            name: 'og:title',
+            content: parent
+              ? `${current.title} | ${parent.title}`
+              : current.title,
+          },
+          {
+            name: 'og:description',
+            content:
+              current.metadata?.find((a) => a.name === 'description')
+                ?.content || 'Fielder docs',
+          },
+        ],
+      },
+    ];
+  }, [] as LiteralRoute[]);
+
+export const literalRoutes = getRoutes(routes);

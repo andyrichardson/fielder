@@ -1,10 +1,12 @@
+import 'preact/debug';
 import { css } from '@linaria/core';
 import React from 'react';
 import { render } from 'react-dom';
 import { App } from './App';
 import { scale } from './scale';
 
-render(<App />, document.querySelector('#root'));
+const rootElement = document.getElementById('root');
+render(<App />, rootElement);
 
 export function register() {
   if (!('serviceWorker' in navigator)) {
@@ -54,6 +56,13 @@ export const globals = css`
     pre > code,
     code {
       font-family: 'Source Code Pro', monospace;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-weight: 600;
     }
   }
 `;

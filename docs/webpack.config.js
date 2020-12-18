@@ -29,6 +29,7 @@ module.exports = {
       react: 'preact/compat',
       'react-dom': 'preact/compat',
       buble: '@philpl/buble',
+      wouter: 'wouter-preact',
     },
   },
   module: {
@@ -52,7 +53,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.svg$/,
+        test: /\.(svg|png)$/,
         use: ['file-loader'],
       },
       {
@@ -116,4 +117,7 @@ module.exports = {
       exclude: [/manifest\//, /fonts\//],
     }),
   ],
+  devServer: {
+    historyApiFallback: true,
+  },
 };
