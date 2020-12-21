@@ -1,5 +1,84 @@
 # Changelog
 
+## [v2.0.0](https://github.com/andyrichardson/fielder/tree/v2.0.0)
+
+### A new major release!
+
+That's right, a new major release jam packed full of new features and with a side helping of breaking changes.
+
+### New docs site
+
+Technically not part of this release but definitely worth a visit to check out the new guides!
+
+[Visit the docs!](https://fielder.andyrichardson.dev)
+
+### Event driven validation
+
+Validation is now tailored to specific events (`mount`, `blur`, `submit`, etc).
+
+This provides extra flexibility to tweak validation for specific scenarios - such as triggering async validation only on submit (see example below).
+
+```tsx
+useField({
+  validate: useCallback(({ trigger, value  }) {
+    // Validation for all events
+    if (!value) {
+      throw Error("Value is required.");
+    }
+
+    // Validation for blur only events
+    if (trigger == "blur" && value.length < 4) {
+      throw Error("Value must be at least 4 characters.");
+    }
+
+    // Async validation only on submit
+    if (trigger == "submit") {
+      return serverSideValidation(value).then((isValid) => {
+        if (!isValid) {
+          throw Error("Server side validation failed");
+        }
+      });
+    }
+  }, [])
+})
+```
+
+More info on event driven validation can be [found here](https://fielder.andyrichardson.dev/guides/validation#validation-events).
+
+### useSubmit hook
+
+There's a new `useSubmit` hook which:
+
+- triggers the new `submit` validation event
+- aggregates field values into a single object
+- tracks state of async submission validation
+- guards submission logic until validation succeeds
+
+```tsx
+const { isValidating, hasSubmitted, handleSubmit } = useSubmit(() => {
+  console.log('This is only called if submission validation succeeds!');
+});
+
+handleSubmit(); // Trigger submission
+```
+
+More info on submission can be [found here](https://fielder.andyrichardson.dev/guides/submission).
+
+### Breaking changes
+
+- `initialValue` argument on the `useField` hook is now required [(more info)](https://fielder.andyrichardson.dev/api/useField#initialvalue-required)
+- `validate` argument on the `useField` hook now receives only a single argument [(more info)](https://fielder.andyrichardson.dev/guides/validation#basic-validation)
+- removed deprecated properties `touched` and `initalTouched` on the `useField` hook [(more info)](https://fielder.andyrichardson.dev/api/useField#arguments)
+- removed `initialValid` and `initialError` arguments on the `useField` hook in favor of validation events [(more info)](https://fielder.andyrichardson.dev/guides/validation#validation-events)
+- removed `validateOnBlur`, `validateOnChange`, and `validateOnUpdate` arguments on the `useField` hook in favor of validation events [(more info)](https://fielder.andyrichardson.dev/guides/validation#validation-events)
+- removed support for returning validation errors as strings without throwing [(more info)](https://fielder.andyrichardson.dev/api/useField#validate)
+
+### Breaking changes
+
+####
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.3.1...v2.0.0)
+
 ## [v1.3.1](https://github.com/andyrichardson/fielder/tree/v1.3.1) (2020-07-30)
 
 [Full Changelog](https://github.com/andyrichardson/fielder/compare/v1.3.0...v1.3.1)
