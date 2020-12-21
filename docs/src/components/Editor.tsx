@@ -12,10 +12,11 @@ export const Editor = ({ code, scope }: { code: string; scope: any }) => (
       scope={scope}
       noInline={true}
       spellCheck={false}
+      spellcheck={false}
     >
       <LivePreview className={previewStyle} />
       <LiveError />
-      <LiveEditor className={editorStyle} />
+      <LiveEditor spellcheck={false} className={editorStyle} />
     </LiveProvider>
   </>
 );
