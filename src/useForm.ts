@@ -31,7 +31,9 @@ export type FormAction =
   | ValidateFieldAction
   | ValidateSubmissionAction;
 
-export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
+export const useForm = <
+  T extends FormSchemaType = FormSchemaType
+>(): FormState<T> => {
   /** Async validation promise updated synchronously after every dispatch. */
   const promiseRef = useRef<Record<string, Promise<any>> | undefined>();
   /** Reference to dispatch for forwarding closure. */
@@ -42,26 +44,26 @@ export const useForm = <T extends FormSchemaType = any>(): FormState<T> => {
     []
   );
 
-  const [fields, dispatch] = useSynchronousReducer<FieldsState<T>, FormAction>(
-    (state, action) => {
-      const newState = applyActionToState(state, action);
-      const { state: validatedState, promises } = applyValidationToState(
-        newState,
-        action
+  const [fields, dispatch] = useSynchronousReducer<
+    FieldsState<any>,
+    FormAction
+  >((state, action) => {
+    const newState = applyActionToState(state, action);
+    const { state: validatedState, promises } = applyValidationToState(
+      newState,
+      action
+    );
+
+    if (Object.keys(promises).length > 0) {
+      // Maybe we should batch async updates caused by a single action
+      Object.entries(promises).map(([name, promise]) =>
+        handleAsyncValidation(name, promise)
       );
+    }
 
-      if (Object.keys(promises).length > 0) {
-        // Maybe we should batch async updates caused by a single action
-        Object.entries(promises).map(([name, promise]) =>
-          handleAsyncValidation(name, promise)
-        );
-      }
-
-      promiseRef.current = promises;
-      return validatedState;
-    },
-    {} as FieldsState<T>
-  );
+    promiseRef.current = promises;
+    return validatedState;
+  }, {});
 
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 

@@ -13,6 +13,7 @@ import {
   FormSchemaType,
   ObjectValidation,
   ValidationFn,
+  FormValue,
 } from './types';
 
 export type UseFieldProps<T = any> = {
@@ -40,22 +41,23 @@ export type UseFieldMeta = {
 };
 
 export type UseFieldArgs<
-  T extends FormSchemaType = any,
-  K extends keyof T = keyof T
+  S extends FormSchemaType = FormSchemaType,
+  K extends keyof S = keyof S,
+  V extends FormValue = S[K]
 > = {
   /** Unique identifier for field. */
   readonly name: K;
   /** Starting value. */
-  readonly initialValue: T[K];
+  readonly initialValue: V;
   /** Validation function (throws errors). */
-  readonly validate?: ObjectValidation<T, K> | ValidationFn<T, K>;
+  readonly validate?: ObjectValidation<V, S> | ValidationFn<V, S>;
   /** Should destroy value when useField hook is unmounted. */
   readonly destroyOnUnmount?: boolean;
 };
 
 export type UseFieldResponse = readonly [UseFieldProps, UseFieldMeta];
 
-export const useField = <T extends FormSchemaType = any>({
+export const useField = <T extends FormSchemaType = FormSchemaType>({
   name,
   validate,
   initialValue,
@@ -71,7 +73,7 @@ export const useField = <T extends FormSchemaType = any>({
     unmountField,
     setFieldValue,
     setFieldValidation,
-  } = useContext<FormState<T>>(FielderContext);
+  } = useContext<FormState<any>>(FielderContext);
 
   // Set unchanging initial values
   const initial = useMemo(() => ({ name, value: initialValue, validate }), []); // eslint-disable-line
@@ -135,7 +137,7 @@ export const useField = <T extends FormSchemaType = any>({
       if (typeof initial.value === 'boolean') {
         return setFieldValue({
           name: initial.name,
-          value: (v) => !v as T[keyof T],
+          value: (v: boolean) => !v,
         });
       }
 
@@ -157,7 +159,7 @@ export const useField = <T extends FormSchemaType = any>({
         },
       });
     },
-    [initial.name, setFieldValue]
+    [initial.name, initial.value, setFieldValue]
   );
 
   const { value, error, isValid, isValidating, hasChanged, hasBlurred } = field;

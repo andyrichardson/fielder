@@ -10,12 +10,11 @@ export type FormValue = string | boolean | number | string[];
 
 export type FormSchemaType = Record<string, FormValue>;
 
-export type FieldsState<T extends FormSchemaType = any> = Record<
-  keyof T,
-  FieldState<T, keyof T>
->;
+export type FieldsState<T extends FormSchemaType = FormSchemaType> = {
+  [K in keyof T]: FieldState<T, K>;
+};
 
-export interface FormState<T extends FormSchemaType = any> {
+export interface FormState<T extends FormSchemaType = FormSchemaType> {
   fields: FieldsState<T>;
   /** All mounted fields are valid. */
   isValid: boolean;
@@ -57,19 +56,22 @@ export interface FormState<T extends FormSchemaType = any> {
 }
 
 export interface FieldState<
-  T extends FormSchemaType = any,
-  K extends keyof T = any
+  T extends FormSchemaType | FormValue = FormValue,
+  K extends keyof T = any,
+  // Resolve value and schema form generics
+  V extends FormValue = T extends FormSchemaType ? T[K] : T,
+  S extends FormSchemaType = T extends FormSchemaType ? T : FormSchemaType
 > {
   /** The field is currently mounted. */
   readonly _isActive: boolean;
   /** Validation function. */
-  readonly _validate?: ValidationFn<T, K> | ObjectValidation<T, K>;
+  readonly _validate?: ValidationFn<V, S> | ObjectValidation<V, S>;
 
   // Props
   /** Field name */
   readonly name: K;
   /** Field value */
-  readonly value?: T[K];
+  readonly value: V;
 
   // Meta
   /** Field error */
@@ -106,26 +108,26 @@ export type ValidationTrigger =
 
 /** Arguments passed to a validation function */
 export type ValidationArgs<
-  T extends FormSchemaType = any,
-  K extends keyof T = any
+  T extends FormValue = FormValue,
+  S extends FormSchemaType = FormSchemaType
 > = {
   trigger: ValidationTrigger;
-  value: T[K];
-  form: FieldsState<T>;
+  value: T;
+  form: FieldsState<S>;
 };
 
 /** Handler for validation event */
 export type ValidationFn<
-  T extends FormSchemaType = any,
-  K extends keyof T = any
-> = (args: ValidationArgs<T, K>) => void | Promise<void>;
+  T extends FormValue = FormValue,
+  S extends FormSchemaType = FormSchemaType
+> = (args: ValidationArgs<T, S>) => void | Promise<void>;
 
 /** A map of validation events corresponding to a function. */
 export type ObjectValidation<
-  T extends FormSchemaType = any,
-  K extends keyof T = any
+  T extends FormValue = FormValue,
+  S extends FormSchemaType = FormSchemaType
 > = {
-  [k in ValidationTrigger]?: ValidationFn<T, K>;
+  [k in ValidationTrigger]?: ValidationFn<T, S>;
 };
 
 type MaybePromise<T> = T | Promise<T>;
