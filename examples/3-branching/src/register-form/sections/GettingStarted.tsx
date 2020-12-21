@@ -18,7 +18,7 @@ export const GettingStarted: FC<{ onNext: () => void }> = ({ onNext }) => {
           <label>Email</label>
           <input type="text" placeholder={placeholder} {...emailProps} />
           <span style={{ color: 'red' }}>
-            {emailMeta.touched && emailMeta.error}
+            {emailMeta.hasBlurred && emailMeta.error}
           </span>
         </div>
         <button className={'primary'} disabled={!isValid} onClick={onNext}>
