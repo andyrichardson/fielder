@@ -45,7 +45,7 @@
     "@linaria/shaker": "^3.0.0-beta.1",
     "@mdx-js/react": "^1.6.22",
     "@philpl/buble": "^0.19.7",
-    "fielder": "^2.0.0-beta.0",
+    "fielder": "^2.0.0-beta.1",
     "hoofd": "^1.0.2",
     "polished": "^4.0.5",
     "preact": "^10.5.7",
@@ -59,8 +59,8 @@
     "workbox-precaching": "^6.0.2",
     "workbox-routing": "^6.0.2",
     "workbox-strategies": "^6.0.2",
-    "wouter": "^2.6.0",
-    "wouter-preact": "^2.6.0"
+    "wouter": "^2.7.0",
+    "wouter-preact": "^2.7.0"
   },
   "reactSnap": {
     "source": "dist",
