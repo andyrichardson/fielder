@@ -9,14 +9,17 @@ export const CredentialsSection: FC<{ onComplete: () => void }> = ({
   const [usernameProps, usernameMeta] = useField({
     name: 'username',
     validate: usernameValidation,
+    initialValue: '',
   });
   const [passwordProps, passwordMeta] = useField({
     name: 'password',
     validate: passwordValidation,
+    initialValue: '',
   });
   const [passwordConfProps, passwordConfMeta] = useField({
     name: 'passwordConfirmation',
     validate: passwordConfValidation,
+    initialValue: '',
     destroyOnUnmount: true,
   });
 
