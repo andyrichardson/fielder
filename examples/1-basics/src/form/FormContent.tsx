@@ -15,7 +15,7 @@ export const FormContent: FC = () => {
     validate: passwordValidation,
   });
 
-  const { handleSubmit } = useSubmit(
+  const { handleSubmit, isFetching } = useSubmit(
     useCallback(() => {
       alert('Submitted!');
     }, [])
@@ -34,21 +34,35 @@ export const FormContent: FC = () => {
         {conditionalError(passwordMeta)}
       </div>
       <div className="field">
-        <button onClick={handleSubmit} disabled={!isValid} className="primary">
-          Next
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!isValid}
+          className="primary"
+        >
+          {isFetching ? '...' : 'Next'}
         </button>
       </div>
     </form>
   );
 };
 
-const usernameValidation = ({ value }) => {
+const usernameValidation = ({ value, trigger }) => {
   if (!value) {
     throw Error('Username is required.');
   }
 
   if (value.length < 4) {
     throw Error('Username must be at least 4 characters.');
+  }
+
+  if (trigger === 'submit') {
+    return isUsernameTaken(value).then((isTaken) => {
+      console.log({ isTaken });
+      if (isTaken) {
+        throw Error('Username is already taken');
+      }
+    });
   }
 };
 
@@ -61,3 +75,10 @@ const passwordValidation = ({ value }) => {
     throw Error('Password must be at least 4 characters.');
   }
 };
+
+const isUsernameTaken = (username: string) =>
+  new Promise<boolean>((resolve, reject) => {
+    const taken = username === 'taken';
+
+    setTimeout(() => resolve(taken), 1000);
+  });
