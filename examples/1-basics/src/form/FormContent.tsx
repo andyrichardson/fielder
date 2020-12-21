@@ -20,7 +20,7 @@ export const FormContent: FC = () => {
     validate: passwordValidation,
   });
 
-  const { handleSubmit, isFetching } = useSubmit(
+  const { handleSubmit, isValidating } = useSubmit(
     useCallback(() => {
       alert('Submitted!');
     }, [])
@@ -45,7 +45,7 @@ export const FormContent: FC = () => {
           disabled={!isValid}
           className="primary"
         >
-          {isFetching ? '...' : 'Next'}
+          {isValidating ? '...' : 'Next'}
         </button>
       </div>
     </form>

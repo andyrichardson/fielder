@@ -23,9 +23,9 @@ return <button onClick={handleSubmit}>Submit</button>;
 
 _An object containing the following properties:_
 
-### isFetching
+### isValidating
 
-_Indicator of whether async fetching of `submit` validation event is in progress._
+_Indicator of whether async `submit` validation event is in progress._
 
 Type: `boolean`
 
@@ -64,7 +64,7 @@ type UseSubmitResponse = {
   /** Guarded submit function which triggers `submit` validation on call. */
   handleSubmit: () => void;
   /** Indicates if async fetching is in progress. */
-  isFetching: boolean;
+  isValidating: boolean;
   /** Indicates if `handleSubmit` has been called. */
   hasSubmitted: boolean;
 };

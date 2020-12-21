@@ -25,13 +25,13 @@ The `useSubmit` hook also provides state indicating whether async submit logic i
 
 ```tsx
 const [fieldProps, fieldMeta] = useField(/* ... */);
-const { isFetching, hasSubmitted } = useSubmit(/* ... */);
+const { isValidating, hasSubmitted } = useSubmit(/* ... */);
 
 return (
   <div>
     <input type="text" {...fieldProps} />
     {hasSubmitted && fieldMeta.error}
-    <button>{isFetching ? <Spinner /> : 'Submit'}</button>;
+    <button>{isValidating ? <Spinner /> : 'Submit'}</button>;
   </div>
 );
 ```

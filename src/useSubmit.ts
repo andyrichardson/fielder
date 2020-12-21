@@ -3,8 +3,8 @@ import { FieldsState } from './types';
 import { FielderContext } from './context';
 
 type UseSubmitResponse = {
-  /** Indicates when async fetching is in progress. */
-  isFetching: boolean;
+  /** Indicates when async `submit` validation is in progress. */
+  isValidating: boolean;
   /**
    * Is set to true immediately upon call of the handleSubmit function.
    *
@@ -29,7 +29,7 @@ export const useSubmit = <T extends Record<string, any>>(
   handler: (values: T) => void
 ): UseSubmitResponse => {
   const [state, setState] = useState({
-    isFetching: false,
+    isValidating: false,
     hasSubmitted: false,
   });
   const { validateSubmission } = useContext(FielderContext);
@@ -37,12 +37,12 @@ export const useSubmit = <T extends Record<string, any>>(
   const handleSubmit = useCallback(async () => {
     const possibleProm = validateSubmission();
     setState({
-      isFetching: possibleProm instanceof Promise,
+      isValidating: possibleProm instanceof Promise,
       hasSubmitted: true,
     });
 
     const { state, errors } = await possibleProm;
-    setState((s) => ({ ...s, isFetching: false }));
+    setState((s) => ({ ...s, isValidating: false }));
 
     // No errors - call submit handler
     if (Object.keys(errors).length === 0) {
