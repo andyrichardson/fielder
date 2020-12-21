@@ -257,7 +257,7 @@ const createHandleAsyncValidation = (
             ...s,
             isValidating: false,
             isValid,
-            error: response.message,
+            error: isValid ? undefined : response.message,
           }),
         },
       });
