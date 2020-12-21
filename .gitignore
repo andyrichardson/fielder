@@ -7,6 +7,7 @@ dist
 node_modules
 # Only use lockfile at project root (not example repos)
 /examples/**/package-lock.json
+/examples/**/cypress/videoos
 yarn.lock
 # docz requires use of yarn
 !/docs/yarn.lock

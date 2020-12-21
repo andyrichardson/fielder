@@ -24,7 +24,7 @@ describe('auth info', () => {
         .blur()
         .type('hello there')
         .next()
-        .should('not.contain.text', 'Username must be at least 4 characters.');
+        .should('not.exist');
     });
   });
 
@@ -48,7 +48,7 @@ describe('auth info', () => {
         .blur()
         .type('hello there')
         .next()
-        .should('not.contain.text', 'Password must be at least 4 characters.');
+        .should('not.exist');
     });
   });
 
@@ -81,7 +81,7 @@ describe('auth info', () => {
         .clear()
         .type(value)
         .next()
-        .should('not.contain.text', 'Password does not match.');
+        .should('not.exist');
     });
 
     it('updates validation (cross form) on form-wide change', () => {
@@ -93,9 +93,7 @@ describe('auth info', () => {
 
       cy.get('input[name="password"]').clear().type(value);
 
-      cy.get('input[name="passwordConfirmation"]')
-        .next()
-        .should('not.contain.text', 'Password does not match.');
+      cy.get('input[name="passwordConfirmation"]').next().should('not.exist');
     });
   });
 
