@@ -117,6 +117,9 @@ jobs:
           command: npm install ../../fielder.tgz
           working_directory: examples/2-multi-step
       - run:
+          command: $(npm bin)/tsc --noEmit
+          working_directory: examples/1-basics
+      - run:
           command: npm run serve & sleep 10 && npm run test
           working_directory: examples/2-multi-step
 
@@ -136,6 +139,9 @@ jobs:
       - run:
           command: npm install ../../fielder.tgz
           working_directory: examples/3-branching
+      - run:
+          command: $(npm bin)/tsc --noEmit
+          working_directory: examples/1-basics
       - run:
           command: npm run serve & sleep 10 && npm run test
           working_directory: examples/3-branching
