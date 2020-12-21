@@ -19,7 +19,7 @@ return <input type={'password'} {...passwordProps} />;
 
 ## Return type
 
-_An array containing props for the target component [(UseFieldProps)](#usefieldprops) and metadata [(UseFieldMeta)](#usefieldmeta)._
+An array containing props for the target component [(UseFieldProps)](#usefieldprops) and metadata [(UseFieldMeta)](#usefieldmeta).
 
 Type: `[UseFieldProps, UseFieldMeta]`
 
@@ -29,7 +29,7 @@ _useField_ takes a single object with the following properties:
 
 ### name **(required)**
 
-_The name/key of the field to be added to the form state._
+The name/key of the field to be added to the form state.
 
 Type: `string`
 
@@ -37,7 +37,7 @@ Example: `'password'`
 
 ### initialValue **(required)**
 
-_The starting value of the field on first mount._
+The starting value of the field on first mount.
 
 Type: `string | number | boolean | string[]`
 
@@ -45,7 +45,7 @@ Example: `'small'`
 
 ### validate
 
-_A validation function which throws an error when validation has failed._
+A validation function which throws an error when validation has failed.
 
 Type: `(arg: { value: T, form: F, trigger: ValidationTrigger }) => (void | Promise<void>)`
 
@@ -63,7 +63,7 @@ Example:
 
 ### destroyOnUnmount
 
-_Whether the field should be completely removed from the form state on unmount._
+Whether the field should be completely removed from the form state on unmount.
 
 Type: `boolean`
 

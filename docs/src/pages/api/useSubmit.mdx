@@ -21,23 +21,23 @@ return <button onClick={handleSubmit}>Submit</button>;
 
 ## Return type
 
-_An object containing the following properties:_
+An object containing the following properties:
 
 ### isValidating
 
-_Indicator of whether async `submit` validation event is in progress._
+Indicator of whether async `submit` validation event is in progress.
 
 Type: `boolean`
 
 ### hasSubmitted
 
-_Indicator of whether `handleSubmit` function has been called._
+Indicator of whether `handleSubmit` function has been called.
 
 Type: `boolean`
 
 ### handleSubmit
 
-_Guarded submit function which triggers `submit` validation on call._
+Guarded submit function which triggers `submit` validation on call.
 
 Type: `() => void`
 
@@ -47,7 +47,7 @@ _useSubmit_ takes a single function as an argument.
 
 ### fn **(required)**
 
-_The function to be called on submission validation success._
+The function to be called on submission validation success.
 
 Type: `(f: Record<K, V>) => void`
 
