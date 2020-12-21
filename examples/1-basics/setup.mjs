@@ -23,7 +23,7 @@ const updateTsconfig = () => {
     compilerOptions: {
       ...json.compilerOptions,
       paths: {
-        fielder: '../../',
+        fielder: ['../../'],
       },
     },
   };

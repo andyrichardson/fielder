@@ -1,15 +1,20 @@
 import React, { FC, useCallback } from 'react';
-import { useField, useFormContext, useSubmit } from 'fielder';
+import { useField, useFormContext, useSubmit, ValidationFn } from 'fielder';
 import { conditionalError } from '../util';
+
+type FormSchema = {
+  username: string;
+  password: string;
+};
 
 export const FormContent: FC = () => {
   const { isValid } = useFormContext();
-  const [usernameProps, usernameMeta] = useField({
+  const [usernameProps, usernameMeta] = useField<FormSchema>({
     name: 'username',
     initialValue: '',
     validate: usernameValidation,
   });
-  const [passwordProps, passwordMeta] = useField({
+  const [passwordProps, passwordMeta] = useField<FormSchema>({
     name: 'password',
     initialValue: '',
     validate: passwordValidation,
@@ -47,7 +52,7 @@ export const FormContent: FC = () => {
   );
 };
 
-const usernameValidation = ({ value, trigger }) => {
+const usernameValidation: ValidationFn<string> = ({ value, trigger }) => {
   if (!value) {
     throw Error('Username is required.');
   }
@@ -66,7 +71,7 @@ const usernameValidation = ({ value, trigger }) => {
   }
 };
 
-const passwordValidation = ({ value }) => {
+const passwordValidation: ValidationFn<string> = ({ value }) => {
   if (!value) {
     throw Error('Password is required.');
   }
