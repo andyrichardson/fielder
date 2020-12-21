@@ -22,7 +22,7 @@ describe('username', () => {
       .blur()
       .type('hello there')
       .next()
-      .should('not.contain.text', 'Username must be at least 4 characters.');
+      .should('not.exist');
   });
 });
 
@@ -47,7 +47,7 @@ describe('password', () => {
       .blur()
       .type('hello there')
       .next()
-      .should('not.contain.text', 'Password must be at least 4 characters.');
+      .should('not.exist');
   });
 });
 
@@ -67,5 +67,47 @@ describe('next button', () => {
     cy.get('input[name="password"]').type('hello there');
     cy.get('input[name="password"]').clear().type('hi');
     cy.get('button').should('have.attr', 'disabled');
+  });
+});
+
+describe('submit validation', () => {
+  it('shows loading state', () => {
+    cy.get('input[name="username"]').type('hello there');
+    cy.get('input[name="password"]').type('hello there');
+    cy.get('button').click();
+    cy.get('button').should('have.text', '...');
+  });
+
+  it('shows alert on completion', () => {
+    let alerts = 0;
+    cy.on('window:alert', () => {
+      alerts += 1;
+    });
+
+    cy.get('input[name="username"]').type('hello there');
+    cy.get('input[name="password"]').type('hello there');
+    cy.get('button').click();
+
+    cy.log('Checking for button to return from fetching state');
+    cy.get('button')
+      .should('have.text', 'Next')
+      .then(() => expect(alerts).to.eq(1));
+
+    cy.log('Checking for no validation errors');
+    cy.get('input[name="username"]').next().should('not.exist');
+  });
+
+  it('shows error on fail', () => {
+    cy.get('input[name="username"]').type('taken');
+    cy.get('input[name="password"]').type('hello there');
+    cy.get('button').click();
+
+    cy.log('Checking for button to return from fetching state');
+    cy.get('button').should('have.text', 'Next');
+
+    cy.log('Checking for no validation errors');
+    cy.get('input[name="username"]')
+      .next()
+      .should('contain.text', 'Username is already taken');
   });
 });
