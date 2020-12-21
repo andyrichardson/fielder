@@ -20,6 +20,57 @@ describe('initial call', () => {
   });
 });
 
+describe('on premount field', () => {
+  const name = 'test';
+  const initialValue = '1234';
+  const validate = jest.fn();
+
+  beforeEach(() => {
+    create(<Fixture />);
+  });
+
+  it("doesn't mount field", () => {
+    act(() => {
+      response.premountField({ name });
+    });
+    expect(response.fields[name]).toBe(undefined);
+  });
+
+  it('returns psuedo-mounted field', () => {
+    let field;
+    act(() => {
+      field = response.premountField({ name });
+    });
+
+    expect(field).toMatchInlineSnapshot(`
+      Object {
+        "_isActive": true,
+        "_validate": undefined,
+        "error": undefined,
+        "hasBlurred": false,
+        "hasChanged": false,
+        "isValid": true,
+        "isValidating": false,
+        "name": "test",
+        "value": undefined,
+      }
+    `);
+  });
+
+  it('calls "mount" event on validation', () => {
+    act(() => {
+      response.premountField({ name, validate, initialValue });
+    });
+
+    expect(validate).toBeCalledWith(
+      expect.objectContaining({
+        trigger: 'mount',
+        value: initialValue,
+      })
+    );
+  });
+});
+
 describe('on mount field', () => {
   const name = 'test';
   const initialValue = '1234';
