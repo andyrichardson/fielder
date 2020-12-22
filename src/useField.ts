@@ -7,7 +7,14 @@ import {
   useRef,
 } from 'react';
 import { FielderContext } from './context';
-import { FormState, FieldState, FieldConfig } from './types';
+import {
+  FormState,
+  FieldState,
+  FormSchemaType,
+  ObjectValidation,
+  ValidationFn,
+  FormValue,
+} from './types';
 
 export type UseFieldProps<T = any> = {
   /** Field name. */
@@ -31,80 +38,82 @@ export type UseFieldMeta = {
   readonly hasBlurred: FieldState['hasBlurred'];
   /** Field has been changed since mount. */
   readonly hasChanged: FieldState['hasChanged'];
-  /** @deprecated Field has been touched. */
-  readonly touched: FieldState['touched'];
 };
 
-type SupportedElements =
-  | HTMLInputElement
-  | HTMLSelectElement
-  | HTMLTextAreaElement
-  | HTMLTextAreaElement;
+export type UseFieldArgs<
+  S extends FormSchemaType = FormSchemaType,
+  K extends keyof S = keyof S,
+  V extends FormValue = S[K]
+> = {
+  /** Unique identifier for field. */
+  readonly name: K;
+  /** Starting value. */
+  readonly initialValue: V;
+  /** Validation function (throws errors). */
+  readonly validate?: ObjectValidation<V, S> | ValidationFn<V, S>;
+  /** Should destroy value when useField hook is unmounted. */
+  readonly destroyOnUnmount?: boolean;
+};
 
-export type UseFieldResponse = [UseFieldProps, UseFieldMeta];
+export type UseFieldResponse = readonly [UseFieldProps, UseFieldMeta];
 
-export const useField = <T = any>({
-  name: initialName,
+export const useField = <T extends FormSchemaType = FormSchemaType>({
+  name,
   validate,
-  initialValid = !validate,
-  initialError = undefined,
-  initialValue = undefined,
-  initialTouched = false,
-  validateOnBlur = true,
-  validateOnChange = true,
-  validateOnUpdate = false,
+  initialValue,
   destroyOnUnmount = false,
-}: FieldConfig<T>): UseFieldResponse => {
+}: UseFieldArgs<T>): UseFieldResponse => {
   const destroyRef = useRef(destroyOnUnmount);
   const initialMount = useRef(true);
   const {
     fields,
     blurField,
+    premountField,
     mountField,
     unmountField,
     setFieldValue,
-    setFieldState,
-  } = useContext<FormState>(FielderContext);
+    setFieldValidation,
+  } = useContext<FormState<any>>(FielderContext);
 
-  const name = useMemo(() => initialName, []);
-  const field = useMemo(
-    () =>
-      fields[name] || {
-        name,
-        error: initialError,
-        valid: initialValid,
-        value: initialValue,
-        touched: initialTouched,
-        hasBlurred: false,
-        hasChanged: false,
-      },
-    [fields, name]
+  // Set unchanging initial values
+  const initial = useMemo(() => ({ name, value: initialValue, validate }), []); // eslint-disable-line
+
+  const field = useMemo(() => {
+    if (initialMount.current) {
+      // Simulate mounting without committing to state
+      return premountField({
+        name: initial.name,
+        initialValue: initial.value,
+        validate: initial.validate,
+      });
+    }
+
+    return fields[initial.name];
+  }, [initial.name, initial.value, initial.validate, premountField, fields]);
+
+  useLayoutEffect(() => {
+    mountField({
+      name: initial.name,
+      initialValue: initial.value,
+      validate: initial.validate,
+    });
+  }, [initial.name, initial.validate, initial.value, mountField]);
+
+  useLayoutEffect(
+    () => () => {
+      initialMount.current = false;
+    },
+    []
   );
 
   useMemo(() => (destroyRef.current = destroyOnUnmount), [destroyOnUnmount]);
 
-  /** (re)mount field on first render */
-  useLayoutEffect(() => {
-    if (fields[name] && fields[name]._isActive) {
-      console.warn(
-        'Fielder warning: Duplicate field mounted.\nSee this issue for more info https://github.com/andyrichardson/fielder/issues/44'
-      );
-    }
-
-    mountField({
-      name,
-      initialError,
-      initialValid,
-      initialValue,
-      initialTouched,
-      validate,
-      validateOnBlur,
-      validateOnChange,
-      validateOnUpdate,
-    });
-
-    return () => unmountField({ name, destroy: destroyRef.current });
-  }, [mountField, name]);
+  useLayoutEffect(
+    () => () => {
+      unmountField({ name: initial.name, destroy: destroyRef.current });
+    },
+    [unmountField, initial.name]
+  );
 
   /** Update field state on validation config change. */
   useLayoutEffect(() => {
@@ -113,42 +122,32 @@ export const useField = <T = any>({
       return;
     }
 
-    setFieldState({
-      name,
-      state: (s) => {
-        if (
-          s._validate === validate &&
-          s._validateOnBlur === validateOnBlur &&
-          s._validateOnChange === validateOnChange &&
-          s._validateOnUpdate === validateOnUpdate
-        ) {
-          return s;
-        }
+    setFieldValidation({ name: initial.name, validation: validate });
+  }, [validate, initial.name, setFieldValidation]);
 
-        return {
-          ...s,
-          _validate: validate,
-          _validateOnBlur: validateOnBlur,
-          _validateOnChange: validateOnChange,
-          _validateOnUpdate: validateOnUpdate,
-        };
-      },
-      validate: (s) =>
-        s._validate !== validate && validateOnChange && s.hasChanged,
-    });
-  }, [validate, validateOnBlur, validateOnChange, validateOnUpdate, name]);
-
-  const onBlur = useCallback(() => blurField({ name }), [blurField]);
+  const onBlur = useCallback(() => blurField({ name: initial.name }), [
+    initial.name,
+    blurField,
+  ]);
 
   const onChange = useCallback<UseFieldProps['onChange']>(
     (e) => {
+      // If initial value is boolean,
+      // toggle value on change (i.e. checkbox)
+      if (typeof initial.value === 'boolean') {
+        return setFieldValue({
+          name: initial.name,
+          value: (v: boolean) => !v,
+        });
+      }
+
       const value =
         typeof e === 'object' && 'currentTarget' in e
           ? e.currentTarget.value
           : e;
 
       return setFieldValue({
-        name,
+        name: initial.name,
         value: (previousValue: any) => {
           if (!Array.isArray(previousValue)) {
             return value;
@@ -160,30 +159,21 @@ export const useField = <T = any>({
         },
       });
     },
-    [setFieldValue]
+    [initial.name, initial.value, setFieldValue]
   );
 
-  const {
-    value,
-    touched,
-    error,
-    isValid,
-    isValidating,
-    hasChanged,
-    hasBlurred,
-  } = field;
+  const { value, error, isValid, isValidating, hasChanged, hasBlurred } = field;
 
   return useMemo(
     () => [
-      { name, value, onBlur, onChange },
-      { touched, error, isValid, isValidating, hasBlurred, hasChanged },
+      { name: initial.name, value, onBlur, onChange },
+      { error, isValid, isValidating, hasBlurred, hasChanged },
     ],
     [
+      initial.name,
       value,
       onBlur,
       onChange,
-      name,
-      touched,
       error,
       isValid,
       isValidating,

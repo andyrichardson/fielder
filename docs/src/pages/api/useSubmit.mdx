@@ -1,0 +1,71 @@
+# useSubmit
+
+_Hook to guard submission logic and trigger a submission [validation event](/guides/validation#validation-events)._
+
+```tsx
+import { useSubmit } from 'fielder';
+```
+
+## Example usage
+
+```tsx
+const { handleSubmit } = useSubmit((values) => {
+  fetch('/submit-form', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  });
+});
+
+return <button onClick={handleSubmit}>Submit</button>;
+```
+
+## Return type
+
+An object containing the following properties:
+
+### isValidating
+
+Indicator of whether async `submit` validation event is in progress.
+
+Type: `boolean`
+
+### hasSubmitted
+
+Indicator of whether `handleSubmit` function has been called.
+
+Type: `boolean`
+
+### handleSubmit
+
+Guarded submit function which triggers `submit` validation on call.
+
+Type: `() => void`
+
+## Arguments
+
+_useSubmit_ takes a single function as an argument.
+
+### fn **(required)**
+
+The function to be called on submission validation success.
+
+Type: `(f: Record<K, V>) => void`
+
+Example: `(values) => console.log(values)`
+
+## Types
+
+### UseSubmitResponse
+
+Return type of a `useSubmit` call.
+
+```ts
+type UseSubmitResponse = {
+  /** Guarded submit function which triggers `submit` validation on call. */
+  handleSubmit: () => void;
+  /** Indicates if async fetching is in progress. */
+  isValidating: boolean;
+  /** Indicates if `handleSubmit` has been called. */
+  hasSubmitted: boolean;
+};
+```

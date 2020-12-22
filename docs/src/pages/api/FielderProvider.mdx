@@ -1,0 +1,23 @@
+# FielderProvider
+
+_Exposes a form instance [(FormState)](/api/useform#formstate) via React context._
+
+```tsx
+import { FielderProvider } from 'fielder';
+```
+
+## Example Usage
+
+```tsx
+const formState = useForm();
+
+return <FielderProvider value={formState}>{children}</FielderProvider>;
+```
+
+## Props
+
+### value **(required)**
+
+The [(FormState)](/api/useform#formstate) to be shared.
+
+Type: `FormState`

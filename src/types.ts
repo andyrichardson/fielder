@@ -1,63 +1,81 @@
-import {
-  SetFieldValueArgs,
-  BlurFieldArgs,
-  UnmountFieldArgs,
-  SetFieldStateArgs,
-} from './useForm';
-
-export type FormError = Error | string;
+import { SetFieldValueArgs } from './actions/setFieldValue';
+import { ValidateFieldArgs } from './actions/validateField';
+import { MountFieldArgs } from './actions/mountField';
+import { BlurFieldArgs } from './actions/blurField';
+import { UnmountFieldArgs } from './actions/unmountField';
+import { SetFieldStateArgs } from './actions/setFieldState';
+import { SetFieldValidationArgs } from './actions/setFieldValidation';
 
 export type FormValue = string | boolean | number | string[];
 
-export type FieldsState<T = any> = Record<
-  keyof T & string,
-  FieldState<T[keyof T & string]>
->;
+export type FormSchemaType = Record<string, FormValue>;
 
-export interface FormState<T extends Record<string, any> = any> {
+export type FieldsState<T extends FormSchemaType = FormSchemaType> = {
+  [K in keyof T]: FieldState<T, K>;
+};
+
+export interface FormState<T extends FormSchemaType = FormSchemaType> {
   fields: FieldsState<T>;
   /** All mounted fields are valid. */
   isValid: boolean;
   /** Async validation currently active on a mounted fields. */
   isValidating: boolean;
   /** Set value for a field. */
-  setFieldValue: (a: SetFieldValueArgs<T>) => void;
+  setFieldValue: <K extends keyof T>(a: SetFieldValueArgs<T, K>) => void;
   /** Trigger blur event for a mounted field. */
   blurField: (a: BlurFieldArgs<T>) => void;
   /** Force trigger validation on a mounted field. */
-  validateField: (a: { name: keyof T & string }) => void;
-  /** Force trigger validation  */
-  validateFields: () => void;
+  validateField: (a: ValidateFieldArgs<T>) => void;
 
+  /** Internal: Premount field during render */
+  premountField: <K extends keyof T & string>(
+    a: MountFieldArgs<T, K>
+  ) => FieldState<T, K>;
   /** Internal: Manually mount field. */
-  mountField: (k: FieldConfig<T>) => void;
+  mountField: <K extends keyof T & string>(
+    a: MountFieldArgs<T, K>
+  ) => FieldState<T, K>;
   /** Internal: Manually unmount field. */
-  unmountField: (k: UnmountFieldArgs<T>) => void;
+  unmountField: (a: UnmountFieldArgs<T>) => void;
   /** Internal: Manually set field state. */
-  setFieldState: (a: SetFieldStateArgs<T>) => void;
+  setFieldState: <K extends keyof T>(a: SetFieldStateArgs<T, K>) => void;
+  /** Internal: Set new field validation function */
+  setFieldValidation: <K extends keyof T>(
+    a: SetFieldValidationArgs<T, K>
+  ) => void;
+
+  /** Trigger submission validation.
+   *
+   * Throws on synchronous validation errors.
+   * Returns promise if form contains async validation.
+   */
+  validateSubmission: () => MaybePromise<{
+    state: FieldsState;
+    errors: Record<string, string>;
+  }>;
 }
 
-export interface FieldState<T = string | boolean | number | string[]> {
+export interface FieldState<
+  T extends FormSchemaType | FormValue = FormValue,
+  K extends keyof T = any,
+  // Resolve value and schema form generics
+  V extends FormValue = T extends FormSchemaType ? T[K] : T,
+  S extends FormSchemaType = T extends FormSchemaType ? T : FormSchemaType
+> {
   /** The field is currently mounted. */
   readonly _isActive: boolean;
-  /** Trigger validation on change. */
-  readonly _validateOnChange: boolean;
-  /** Trigger validation on blur. */
-  readonly _validateOnBlur: boolean;
-  /** Trigger validation on any form value change. */
-  readonly _validateOnUpdate: boolean;
   /** Validation function. */
-  readonly _validate: FieldConfig['validate'];
+  readonly _validate?: ValidationFn<V, S> | ObjectValidation<V, S>;
 
   // Props
   /** Field name */
-  readonly name: string;
+  readonly name: K;
   /** Field value */
-  readonly value?: T;
+  readonly value: V;
 
   // Meta
   /** Field error */
-  readonly error?: FormError;
+  readonly error?: string;
   /** Field is currently valid. */
   readonly isValid: boolean;
   /** Field is currently being validated (async). */
@@ -66,36 +84,50 @@ export interface FieldState<T = string | boolean | number | string[]> {
   readonly hasBlurred: boolean;
   /** Field has been changed since mount. */
   readonly hasChanged: boolean;
-  /** @deprecated Field has been touched. */
-  readonly touched: boolean;
 }
 
-export interface FieldConfig<
-  S = any,
-  K extends (keyof S & string) | string = S extends Record<string, any>
-    ? keyof S & string
-    : string,
-  V = S extends Record<string, any> ? S[K] : S,
-  F = S extends Record<string, any> ? S : unknown
-> {
-  /** Unique identifier for field. */
-  readonly name: K;
-  /** Validation function (throws errors). */
-  readonly validate?: (value: V, form: F) => void;
-  /** When the given field's value changes. */
-  readonly validateOnChange?: boolean;
-  /** When the given field loses focus. */
-  readonly validateOnBlur?: boolean;
-  /** When any change is made to the form state (global). */
-  readonly validateOnUpdate?: boolean;
-  /** Starting value. */
-  readonly initialValue?: V;
-  /** Starting error. */
-  readonly initialError?: FormError;
-  /** Starting valid state. */
-  readonly initialValid?: boolean;
-  /** Should destroy value when useField hook is unmounted. */
-  readonly destroyOnUnmount?: boolean;
-  /** @deprecated Starting touched state. */
-  readonly initialTouched?: boolean;
-}
+/**
+ * Events which trigger validation
+ *
+ * `mount`: Field has been mounted.
+ *
+ * `blur`: Field has had 'onBlur' event.
+ *
+ * `change`: Field has had 'onChange' event.
+ *
+ * `update`: The value of another field in the form has changed.
+ *
+ * `submit`: Submission has begun.
+ */
+export type ValidationTrigger =
+  | 'mount'
+  | 'blur'
+  | 'change'
+  | 'update'
+  | 'submit';
+
+/** Arguments passed to a validation function */
+export type ValidationArgs<
+  T extends FormValue = FormValue,
+  S extends FormSchemaType = FormSchemaType
+> = {
+  trigger: ValidationTrigger;
+  value: T;
+  form: FieldsState<S>;
+};
+
+/** Handler for validation event */
+export type ValidationFn<
+  T extends FormValue = FormValue,
+  S extends FormSchemaType = FormSchemaType
+> = (args: ValidationArgs<T, S>) => void | Promise<void>;
+
+/** A map of validation events corresponding to a function. */
+export type ObjectValidation<
+  T extends FormValue = FormValue,
+  S extends FormSchemaType = FormSchemaType
+> = {
+  [k in ValidationTrigger]?: ValidationFn<T, S>;
+};
+
+type MaybePromise<T> = T | Promise<T>;

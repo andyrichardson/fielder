@@ -34,7 +34,7 @@ export const Login = () => {
           <label>Email</label>
           <input type="text" {...emailProps} />
           <span style={{ color: 'red' }}>
-            {emailMeta.touched && emailMeta.error}
+            {emailMeta.hasBlurred && emailMeta.error}
           </span>
         </div>
 
@@ -42,7 +42,7 @@ export const Login = () => {
           <label>Password</label>
           <input type="password" {...passwordProps} />
           <span style={{ color: 'red' }}>
-            {passwordMeta.touched && passwordMeta.error}
+            {passwordMeta.hasBlurred && passwordMeta.error}
           </span>
         </div>
 

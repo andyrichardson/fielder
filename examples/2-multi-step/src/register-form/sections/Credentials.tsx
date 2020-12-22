@@ -9,14 +9,17 @@ export const CredentialsSection: FC<{ onComplete: () => void }> = ({
   const [usernameProps, usernameMeta] = useField({
     name: 'username',
     validate: usernameValidation,
+    initialValue: '',
   });
   const [passwordProps, passwordMeta] = useField({
     name: 'password',
     validate: passwordValidation,
+    initialValue: '',
   });
   const [passwordConfProps, passwordConfMeta] = useField({
     name: 'passwordConfirmation',
     validate: passwordConfValidation,
+    initialValue: '',
     destroyOnUnmount: true,
   });
 
@@ -46,7 +49,7 @@ export const CredentialsSection: FC<{ onComplete: () => void }> = ({
   );
 };
 
-const usernameValidation = (value) => {
+const usernameValidation = ({ value }) => {
   if (!value) {
     throw Error('Username is required.');
   }
@@ -56,7 +59,7 @@ const usernameValidation = (value) => {
   }
 };
 
-const passwordValidation = (value) => {
+const passwordValidation = ({ value }) => {
   if (!value) {
     throw Error('Password is required.');
   }
@@ -66,7 +69,7 @@ const passwordValidation = (value) => {
   }
 };
 
-const passwordConfValidation = (value, form) => {
+const passwordConfValidation = ({ value, form }) => {
   if (!value) {
     throw Error('Password confirmation is required.');
   }

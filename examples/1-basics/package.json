@@ -6,9 +6,9 @@
   "scripts": {
     "start": "parcel index.html --open",
     "serve": "parcel serve index.html",
-    "setup-dev": "sed -i -e 's|\"react\".*|\"react\": \"file:../../node_modules/react\",|; s|\"react-dom\".*|\"react-dom\": \"file:../../node_modules/react-dom\",|; s|\"fielder\".*|\"fielder\": \"file:../../\",|' package.json",
     "test": "cypress run",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "setup-dev": "node setup.mjs"
   },
   "dependencies": {
     "fielder": "latest",
@@ -20,9 +20,11 @@
   "devDependencies": {
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
-    "cypress": "^4.0.2",
+    "cypress": "^6.1.0",
     "parcel-bundler": "^1.6.1",
     "typescript": "^3.7.5"
   },
-  "keywords": []
+  "browserslist": [
+    "last 1 Chrome version"
+  ]
 }

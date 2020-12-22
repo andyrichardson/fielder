@@ -1,0 +1,122 @@
+# useField
+
+_Hook to mount a field to the form._
+
+```tsx
+import { useField } from 'fielder';
+```
+
+## Example usage
+
+```tsx
+const [passwordProps, passwordMeta] = useField({
+  name: 'password',
+  validate: passwordValidation,
+});
+
+return <input type={'password'} {...passwordProps} />;
+```
+
+## Return type
+
+An array containing props for the target component [(UseFieldProps)](#usefieldprops) and metadata [(UseFieldMeta)](#usefieldmeta).
+
+Type: `[UseFieldProps, UseFieldMeta]`
+
+## Arguments
+
+_useField_ takes a single object with the following properties:
+
+### name **(required)**
+
+The name/key of the field to be added to the form state.
+
+Type: `string`
+
+Example: `'password'`
+
+### initialValue **(required)**
+
+The starting value of the field on first mount.
+
+Type: `string | number | boolean | string[]`
+
+Example: `'small'`
+
+### validate
+
+A validation function which throws an error when validation has failed.
+
+Type: `(arg: { value: T, form: F, trigger: ValidationTrigger }) => (void | Promise<void>)`
+
+Default: `undefined`
+
+Example:
+
+```js
+(v, f) => {
+  if (v < f.otherField.value) {
+    throw Error("Value must be more than 'from' value")
+  }
+}`
+```
+
+### destroyOnUnmount
+
+Whether the field should be completely removed from the form state on unmount.
+
+Type: `boolean`
+
+Default: `false`
+
+## Types
+
+### UseFieldProps
+
+Props which can be passed to a form element / component.
+
+```ts
+type UseFieldProps<T = any> = {
+  readonly name: string;
+  readonly value: T;
+  readonly onChange: ChangeEventHandler | (value: T) => void;
+  readonly onBlur: () => void;
+};
+```
+
+### UseFieldMeta
+
+Additional information about a field and it's validation state.
+
+```ts
+type UseFieldMeta = {
+  /** Validation error. */
+  readonly error?: Error | string;
+  /** Valid state. */
+  readonly isValid: boolean;
+  /** Async validation is in progress. */
+  readonly isValidating: boolean;
+  /** onBlur has been called since mount/remount. */
+  readonly hasBlurred: boolean;
+  /** onChange has been called since mount/remount. */
+  readonly hasChanged: boolean;
+};
+```
+
+### ValidationTrigger
+
+An event type which has triggered validation.
+
+```ts
+type ValidationTrigger =
+  /* Field has been mounted */
+  | 'mount'
+  /* `onBlur` event called on field */
+  | 'blur'
+  /* `onChange` event called on field */
+  | 'change'
+  /* The value of another field in the form has changed */
+  | 'update'
+  /* Submission has begun */
+  | 'submit';
+```

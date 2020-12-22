@@ -41,8 +41,8 @@ export const TermsSection: FC = () => {
   );
 };
 
-const termsValidation = (v) => {
-  if (!v.includes('legal')) {
+const termsValidation = ({ value }) => {
+  if (!value.includes('legal')) {
     throw Error('Legal terms must be accepted');
   }
 };

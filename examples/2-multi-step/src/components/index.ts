@@ -1,2 +1,2 @@
 export * from './FormSection';
-export * from './card';
+export * from './Card';

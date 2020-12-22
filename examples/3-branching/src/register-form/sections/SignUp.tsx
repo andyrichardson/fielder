@@ -1,7 +1,6 @@
 import React, { FC, useCallback, MouseEventHandler } from 'react';
 import { useField, useFormContext } from 'fielder';
 import { validateEmail, validateName, validatePassword } from '../validation';
-import { span, Card } from '../../components';
 
 export const SignUp: FC = () => {
   const { isValid, fields } = useFormContext();
@@ -45,21 +44,21 @@ export const SignUp: FC = () => {
           <label>Name</label>
           <input type="text" {...nameProps} />
           <span style={{ color: 'red' }}>
-            {nameMeta.touched && nameMeta.error}
+            {nameMeta.hasBlurred && nameMeta.error}
           </span>
         </div>
         <div className="field">
           <label>Email</label>
           <input type="text" {...emailProps} />
           <span style={{ color: 'red' }}>
-            {emailMeta.touched && emailMeta.error}
+            {emailMeta.hasBlurred && emailMeta.error}
           </span>
         </div>
         <div className="field">
           <label>Password</label>
           <input type="password" {...passwordProps} />
           <span style={{ color: 'red' }}>
-            {passwordMeta.touched && passwordMeta.error}
+            {passwordMeta.hasBlurred && passwordMeta.error}
           </span>
         </div>
         <button className="primary" disabled={!isValid} onClick={handleSubmit}>

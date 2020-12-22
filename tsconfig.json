@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["dom", "es2015"],
+    "lib": ["dom", "es2015", "esnext"],
     "jsx": "react",
     "strict": true,
     "isolatedModules": true,
@@ -13,5 +13,6 @@
     "declaration": true,
     "sourceMap": true
   },
-  "files": ["src/index.ts"]
+  "include": ["src"],
+  "exclude": ["src/**/*.spec.*"]
 }

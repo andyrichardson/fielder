@@ -1,19 +1,20 @@
 import React, { FC } from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { create } from 'react-test-renderer';
 import { useField, UseFieldResponse } from './useField';
 import { FielderContext } from './context';
-import { FieldConfig } from './types';
 
 let context = {
   fields: {},
+  premountField: jest.fn(),
   mountField: jest.fn(),
   unmountField: jest.fn(),
   blurField: jest.fn(),
   setFieldValue: jest.fn(),
   setFieldState: jest.fn(),
+  setFieldValidation: jest.fn(),
 };
 let response: UseFieldResponse;
-let args: FieldConfig<any>;
+let args: any;
 
 const F: FC = ({ children }) => {
   response = useField(args);
@@ -34,94 +35,96 @@ beforeEach(jest.clearAllMocks);
 beforeEach(() => {
   context = {
     fields: {},
+    premountField: jest.fn(() => ({
+      value: 'abc',
+      isValid: true,
+      isValidating: false,
+      hasChanged: false,
+      hasBlurred: false,
+    })),
     mountField: jest.fn(),
     unmountField: jest.fn(),
     blurField: jest.fn(),
     setFieldValue: jest.fn(),
     setFieldState: jest.fn(),
+    setFieldValidation: jest.fn(),
   };
 });
 
 describe('on mount', () => {
-  it('calls mountField with default values', () => {
-    args = { name: 'someField' };
-    mount(<Fixture />);
+  beforeEach(() =>
+    context.premountField.mockReturnValue({
+      value: 'abc',
+      isValid: false,
+      isValidating: false,
+      hasChanged: false,
+      hasBlurred: false,
+    })
+  );
 
+  it('calls mount field', () => {
+    args = { name: 'someField', initialValue: 'abc', validate: jest.fn() };
+    create(<Fixture />);
+
+    expect(context.premountField).toBeCalledTimes(1);
     expect(context.mountField).toBeCalledTimes(1);
-    expect(context.mountField).toBeCalledWith({
-      name: args.name,
-      initialError: undefined,
-      initialValid: true,
-      initialValue: undefined,
-      initialTouched: false,
-      validate: undefined,
-      validateOnBlur: true,
-      validateOnChange: true,
-      validateOnUpdate: false,
-    });
+    expect(context.setFieldValidation).toBeCalledTimes(0);
   });
 
-  it('calls mountField with default values (validate function provided)', () => {
-    args = { name: 'someField', validate: jest.fn() };
-    mount(<Fixture />);
+  it('returns state from "mountField" response', () => {
+    args = { name: 'someField', initialValue: 'abc', validate: jest.fn() };
+    create(<Fixture />);
+
+    expect(response).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "name": "someField",
+          "onBlur": [Function],
+          "onChange": [Function],
+          "value": "abc",
+        },
+        Object {
+          "error": undefined,
+          "hasBlurred": false,
+          "hasChanged": false,
+          "isValid": false,
+          "isValidating": false,
+        },
+      ]
+    `);
+  });
+});
+
+describe('on validation changed', () => {
+  beforeEach(() =>
+    context.mountField.mockReturnValue({
+      value: 'abc',
+      isValid: true,
+      isValidating: false,
+      hasChanged: false,
+      hasBlurred: false,
+    })
+  );
+
+  it('calls setFieldValidation', () => {
+    const fn1 = () => true;
+    const fn2 = () => true;
+
+    args = { name: 'someField', initialValue: 'abc', validate: fn1 };
+    const wrapper = create(<Fixture />);
+
+    args = { ...args, validate: fn2 };
+    wrapper.update(<Fixture />);
 
     expect(context.mountField).toBeCalledTimes(1);
-    expect(context.mountField).toBeCalledWith({
-      name: args.name,
-      initialError: undefined,
-      initialValid: false,
-      initialValue: undefined,
-      initialTouched: false,
-      validate: args.validate,
-      validateOnBlur: true,
-      validateOnChange: true,
-      validateOnUpdate: false,
-    });
-  });
-
-  it('calls mountField with default overrides', () => {
-    args = {
-      name: 'someField',
-      initialError: 'aaa',
-      initialValid: true,
-      initialValue: 'hello',
-      initialTouched: true,
-      validate: jest.fn(),
-      validateOnBlur: false,
-      validateOnChange: false,
-      validateOnUpdate: true,
-    };
-    mount(<Fixture />);
-
-    expect(context.mountField).toBeCalledTimes(1);
-    expect(context.mountField).toBeCalledWith({
-      ...args,
-    });
-  });
-
-  it('does not call setFieldState with validation args', () => {
-    args = {
-      name: 'someField',
-      initialError: 'aaa',
-      initialValid: true,
-      initialValue: 'hello',
-      initialTouched: true,
-      validate: jest.fn(),
-      validateOnBlur: false,
-      validateOnChange: false,
-      validateOnUpdate: true,
-    };
-
-    mount(<Fixture />);
-
-    expect(context.setFieldState).toBeCalledTimes(0);
+    expect(context.setFieldValidation).toBeCalledTimes(1);
   });
 });
 
 describe('on unmount', () => {
   it('calls unmountField', () => {
     args = { name: 'someField' };
-    const wrapper = mount(<Fixture />);
+    const wrapper = create(<Fixture />);
     wrapper.unmount();
 
     expect(context.unmountField).toBeCalledTimes(1);
@@ -133,7 +136,7 @@ describe('on unmount', () => {
 
   it('calls unmountField and destroys value', () => {
     args = { name: 'someField', destroyOnUnmount: true };
-    const wrapper = mount(<Fixture />);
+    const wrapper = create(<Fixture />);
     wrapper.unmount();
 
     expect(context.unmountField).toBeCalledTimes(1);
@@ -145,9 +148,9 @@ describe('on unmount', () => {
 
   it('calls unmountField and passes destroy value after change', () => {
     args = { name: 'someField', destroyOnUnmount: false };
-    const wrapper = mount(<Fixture />);
+    const wrapper = create(<Fixture />);
     args = { ...args, destroyOnUnmount: true };
-    wrapper.setProps({});
+    wrapper.update(<Fixture />);
     wrapper.unmount();
 
     expect(context.unmountField).toBeCalledTimes(1);
@@ -161,9 +164,8 @@ describe('on unmount', () => {
 describe('on blur', () => {
   beforeEach(() => {
     args = { name: 'someField' };
-    const wrapper = mount(<Fixture />);
+    create(<Fixture />);
     response[0].onBlur();
-    wrapper.setProps({});
   });
 
   it('calls blurField', () => {
@@ -175,14 +177,41 @@ describe('on blur', () => {
 });
 
 describe('on change', () => {
+  describe('on initial value is boolean', () => {
+    beforeEach(() => {
+      args = { name: 'someField', initialValue: true };
+    });
+
+    it('calls setFieldValue with toggle fn', () => {
+      const value = 'newval';
+      const target = document.createElement('input');
+      target.type = 'text';
+      target.value = value;
+
+      create(<Fixture />);
+      response[0].onChange({
+        currentTarget: target,
+      } as any);
+
+      const action = context.setFieldValue.mock.calls[0][0].value;
+      expect(context.setFieldValue).toBeCalledTimes(1);
+      expect(action(false)).toBe(true);
+      expect(action(true)).toBe(false);
+    });
+  });
+
   describe('on event arg', () => {
+    beforeEach(() => {
+      args = { name: 'someField' };
+    });
+
     it('calls setFieldValue with field name', () => {
       const value = 'newval';
       const target = document.createElement('input');
       target.type = 'text';
       target.value = value;
 
-      mount(<Fixture />);
+      create(<Fixture />);
       response[0].onChange({
         currentTarget: target,
       } as any);
@@ -197,10 +226,14 @@ describe('on change', () => {
   });
 
   describe('on value arg', () => {
+    beforeEach(() => {
+      args = { name: 'someField' };
+    });
+
     it('calls setFieldValue with field name', () => {
       const value = 'newval';
 
-      mount(<Fixture />);
+      create(<Fixture />);
       response[0].onChange(value);
 
       expect(context.setFieldValue).toBeCalledTimes(1);
@@ -213,11 +246,15 @@ describe('on change', () => {
   });
 
   describe('on value action dispatch', () => {
+    beforeEach(() => {
+      args = { name: 'someField' };
+    });
+
     describe('on no existing value', () => {
       it('returns change value', () => {
         const value = 'newval';
 
-        mount(<Fixture />);
+        create(<Fixture />);
         response[0].onChange(value);
 
         const action = context.setFieldValue.mock.calls[0][0].value;
@@ -230,7 +267,7 @@ describe('on change', () => {
         const oldValue = 'oldval';
         const value = 'newval';
 
-        mount(<Fixture />);
+        create(<Fixture />);
         response[0].onChange(value);
 
         const action = context.setFieldValue.mock.calls[0][0].value;
@@ -243,7 +280,7 @@ describe('on change', () => {
         const oldValue = ['oldval'];
         const value = 'newval';
 
-        mount(<Fixture />);
+        create(<Fixture />);
         response[0].onChange(value);
 
         const action = context.setFieldValue.mock.calls[0][0].value;
@@ -256,111 +293,12 @@ describe('on change', () => {
         const oldValue = ['newval', 'oldval'];
         const value = 'newval';
 
-        mount(<Fixture />);
+        create(<Fixture />);
         response[0].onChange(value);
 
         const action = context.setFieldValue.mock.calls[0][0].value;
         expect(action(oldValue)).toEqual(oldValue.filter((v) => v !== value));
       });
-    });
-  });
-});
-
-describe('on validation arg change', () => {
-  let wrapper: ReactWrapper<any>;
-
-  beforeEach(() => {
-    args = {
-      name: 'someField',
-      validateOnBlur: false,
-      validateOnChange: true,
-      validateOnUpdate: false,
-      validate: jest.fn(),
-    };
-    wrapper = mount(<Fixture />);
-  });
-
-  describe('on validate change', () => {
-    it('calls setFieldState with new function', () => {
-      const oldState = { ...args };
-
-      args = {
-        ...args,
-        validate: jest.fn(),
-      };
-
-      wrapper.setProps({});
-
-      expect(context.setFieldState).toBeCalledTimes(1);
-      expect(context.setFieldState.mock.calls[0][0].state(oldState)).toEqual(
-        expect.objectContaining({
-          ...oldState,
-          _validate: args.validate,
-        })
-      );
-    });
-  });
-
-  describe('on validateOnBlur change', () => {
-    it('calls setFieldState with new value', () => {
-      const oldState = { ...args };
-
-      args = {
-        ...args,
-        validateOnBlur: true,
-      };
-
-      wrapper.setProps({});
-
-      expect(context.setFieldState).toBeCalledTimes(1);
-      expect(context.setFieldState.mock.calls[0][0].state(oldState)).toEqual(
-        expect.objectContaining({
-          ...oldState,
-          _validateOnBlur: true,
-        })
-      );
-    });
-  });
-
-  describe('on validateOnUpdate change', () => {
-    it('calls setFieldState with new value', () => {
-      const oldState = { ...args };
-
-      args = {
-        ...args,
-        validateOnUpdate: true,
-      };
-
-      wrapper.setProps({});
-
-      expect(context.setFieldState).toBeCalledTimes(1);
-      expect(context.setFieldState.mock.calls[0][0].state(oldState)).toEqual(
-        expect.objectContaining({
-          ...oldState,
-          _validateOnUpdate: true,
-        })
-      );
-    });
-  });
-
-  describe('on validateOnChange change', () => {
-    it('calls setFieldState with new value', () => {
-      const oldState = { ...args };
-
-      args = {
-        ...args,
-        validateOnChange: false,
-      };
-
-      wrapper.setProps({});
-
-      expect(context.setFieldState).toBeCalledTimes(1);
-      expect(context.setFieldState.mock.calls[0][0].state(oldState)).toEqual(
-        expect.objectContaining({
-          ...oldState,
-          _validateOnChange: false,
-        })
-      );
     });
   });
 });

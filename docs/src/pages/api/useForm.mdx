@@ -1,0 +1,71 @@
+# useForm
+
+_Creates a new form instance._
+
+```tsx
+import { useForm } from 'fielder';
+```
+
+## Example Usage
+
+```tsx
+const formState = useForm();
+
+return <FielderProvider value={formState}>{children}</FielderProvider>;
+```
+
+## Return type
+
+The state of the form [(FormState)](#formstate) along with accessors and mutators.
+
+Type: `FormState`
+
+## Arguments
+
+_useForm_ doesn't take any arguments.
+
+## Types
+
+### FormState
+
+The state of the whole form along with accessors and mutators.
+
+```ts
+export interface FormState<T extends Record<string, any> = any> {
+  fields: Record<string, FieldState>;
+  isValid: boolean;
+  isValidating: boolean;
+  setFieldValue: (a: SetFieldValueArgs) => void;
+  blurField: (a: BlurFieldArgs) => void;
+  validateField: (a: { name: string }) => void;
+
+  // Internals
+  premountField: (a: MountFieldArgs) => void;
+  mountField: (a: MountFieldArgs) => void;
+  unmountField: (a: UnmountFieldArgs) => void;
+  setFieldState: (a: SetFieldStateArgs)
+}
+```
+
+### FieldState
+
+The state of an individual field (including meta information).
+
+```tsx
+export interface FieldState<T = string | boolean | number> {
+  // Internals
+  readonly _isActive: boolean;
+  readonly _validate: FieldConfig['validate'];
+
+  // Props
+  readonly name: string;
+  readonly value?: T;
+
+  // Meta
+  readonly error?: FormError;
+  readonly isValid: boolean;
+  readonly isValidating: boolean;
+  readonly hasBlurred: boolean;
+  readonly hasChanged: boolean;
+}
+```
