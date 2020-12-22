@@ -9,7 +9,7 @@
     "build:meta": "react-snap",
     "build:sitemap": "sitemap-static --prefix=https://fielder.andyrichardson.dev/ --pretty --ignore-file=sitemap-ignore.json dist > dist/sitemap.xml",
     "postbuild": "npm run build:meta && npm run build:sitemap",
-    "deploy": "(echo \"fielder.andyrichardson.dev\" > .docz/dist/CNAME) && gh-pages -d .docz/dist"
+    "deploy": "(echo \"fielder.andyrichardson.dev\" > dist/CNAME) && gh-pages -d dist"
   },
   "author": "Andy Richardson",
   "license": "MIT",
@@ -51,7 +51,7 @@
     "@linaria/shaker": "^3.0.0-beta.1",
     "@mdx-js/react": "^1.6.22",
     "@philpl/buble": "^0.19.7",
-    "fielder": "^2.0.0-beta.1",
+    "fielder": "^2.0.0",
     "hoofd": "^1.0.2",
     "polished": "^4.0.5",
     "preact": "^10.5.7",

@@ -92,11 +92,11 @@ export const routes: RouteDef[] = [
   },
   {
     title: 'Api',
-    url: '/api/useField',
+    url: '/api/usefield',
     children: [
       {
         title: 'useField',
-        url: '/api/useField',
+        url: '/api/usefield',
         component: lazy(() => import('./pages/api/useField.mdx')),
         metadata: [
           {
@@ -107,7 +107,7 @@ export const routes: RouteDef[] = [
       },
       {
         title: 'useForm',
-        url: '/api/useForm',
+        url: '/api/useform',
         component: lazy(() => import('./pages/api/useForm.mdx')),
         metadata: [
           {
@@ -118,7 +118,7 @@ export const routes: RouteDef[] = [
       },
       {
         title: 'useFormContext',
-        url: '/api/useFormContext',
+        url: '/api/useformcontext',
         component: lazy(() => import('./pages/api/useFormContext.mdx')),
         metadata: [
           {
@@ -129,7 +129,7 @@ export const routes: RouteDef[] = [
       },
       {
         title: 'useSubmit',
-        url: '/api/useSubmit',
+        url: '/api/usesubmit',
         component: lazy(() => import('./pages/api/useSubmit.mdx')),
         metadata: [
           {
@@ -140,7 +140,7 @@ export const routes: RouteDef[] = [
       },
       {
         title: 'FielderProvider',
-        url: '/api/FielderProvider',
+        url: '/api/fielderprovider',
         component: lazy(() => import('./pages/api/FielderProvider.mdx')),
         metadata: [
           {
