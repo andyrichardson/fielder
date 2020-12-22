@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "name": "Fielder Docs",
+  "description": "Fielder docs",
+  "icons": {
+    "60": "/manifest/firefox_app_60x60.png",
+    "128": "/manifest/firefox_app_128x128.png",
+    "512": "/manifest/firefox_app_512x512.png"
+  },
+  "developer": {
+    "name": "Andy Richardson",
+    "url": null
+  }
+}

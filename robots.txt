@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://fielder.andyrichardson.dev/sitemap.xml

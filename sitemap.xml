@@ -4,34 +4,37 @@
         <loc>https://fielder.andyrichardson.dev/</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/examples</loc>
+        <loc>https://fielder.andyrichardson.dev/api/useForm</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/provider</loc>
+        <loc>https://fielder.andyrichardson.dev/examples/static-forms</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/useform</loc>
+        <loc>https://fielder.andyrichardson.dev/api/FielderProvider</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/usefield</loc>
+        <loc>https://fielder.andyrichardson.dev/api/useField</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/useformcontext</loc>
+        <loc>https://fielder.andyrichardson.dev/examples/dynamic-forms</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/guides/field-lifecycle</loc>
+        <loc>https://fielder.andyrichardson.dev/api/useSubmit</loc>
+    </url>
+    <url>
+        <loc>https://fielder.andyrichardson.dev/api/useFormContext</loc>
     </url>
     <url>
         <loc>https://fielder.andyrichardson.dev/guides/getting-started</loc>
-    </url>
-    <url>
-        <loc>https://fielder.andyrichardson.dev/guides/type-safety</loc>
     </url>
     <url>
         <loc>https://fielder.andyrichardson.dev/guides/react-native</loc>
     </url>
     <url>
         <loc>https://fielder.andyrichardson.dev/guides/submission</loc>
+    </url>
+    <url>
+        <loc>https://fielder.andyrichardson.dev/guides/type-safety</loc>
     </url>
     <url>
         <loc>https://fielder.andyrichardson.dev/guides/validation</loc>
