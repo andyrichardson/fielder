@@ -6,6 +6,7 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
@@ -82,7 +83,9 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin(),
-    // new CompressionPlugin(),
+    new CopyWebpackPlugin({
+      patterns: ['./src/robots.txt'],
+    }),
     // new BundleAnalyzerPlugin(),
     new HTMLWebpackPlugin({
       inject: true,

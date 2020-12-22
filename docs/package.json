@@ -24,6 +24,7 @@
     "@mdx-js/mdx": "^1.6.22",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^5.0.1",
     "favicons-webpack-plugin": "^5.0.0-alpha.3",
     "file-loader": "^6.2.0",
