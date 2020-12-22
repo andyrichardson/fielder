@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Fielder logo" src="https://github.com/andyrichardson/fielder/blob/master/docs/logo.svg?raw=true" width="150px" />
+  <img alt="Fielder logo" src="https://github.com/andyrichardson/fielder/blob/master/docs/src/assets/readme-logo.svg?raw=true" width="150px" />
 </p>
 
 <h1 align="center">Fielder</h1>
