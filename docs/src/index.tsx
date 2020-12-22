@@ -19,11 +19,11 @@ export function register() {
       // Check for new service worker on
       // worker already installed and page refresh
       if (!reg.installing) {
-        reg.update(); // Update service worker on refresh
+        reg.update().catch(() => {}); // Update service worker on refresh
       }
 
       // Check for a new service worker every minute
-      window.setInterval(reg.update, 1000 * 60);
+      window.setInterval(() => reg.update().catch(() => {}), 1000 * 60);
     });
 }
 register();
