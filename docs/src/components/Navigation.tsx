@@ -11,7 +11,8 @@ export const Navigation: FC<ComponentProps<'nav'>> = (props) => {
   return (
     <Nav {...props}>
       <NavContent>
-        <Logo src={Icon} alt={'Logo'} />
+        {/* Placeholder width on image - https://www.smashingmagazine.com/2020/03/setting-height-width-images-important-again/*/}
+        <Logo width={20} height={parseInt(scale(3))} src={Icon} alt={'Logo'} />
         {routes.map((r) => (
           <>
             <Link
@@ -76,7 +77,7 @@ const NavContent = styled.nav`
 `;
 
 const Logo = styled.img`
-  min-height: ${scale(3)};
+  width: 100%;
   margin-top: 60px;
   margin-bottom: ${scale(2)};
   overflow: visible;

@@ -2,11 +2,12 @@
 import React from 'react';
 import { styled } from '@linaria/react';
 
-const withLink = (Element: 'h1' | 'h2' | 'h3' | 'h4' | 'h5') => (
-  props: any
-) => (
-  <Element className={'heading'} {...props}>
-    <AnchorLink id={`link-${props.id}`} href={`#${props.id}`} {...props}>
+const withLink = (Element: 'h1' | 'h2' | 'h3' | 'h4' | 'h5') => ({
+  id,
+  ...props
+}: any) => (
+  <Element id={id} className={'heading'} {...props}>
+    <AnchorLink href={`#${id}`} {...props}>
       {props.children}
     </AnchorLink>
   </Element>
