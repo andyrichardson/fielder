@@ -4,25 +4,25 @@
         <loc>https://fielder.andyrichardson.dev/</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/useForm</loc>
+        <loc>https://fielder.andyrichardson.dev/api/fielderprovider</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/examples/static-forms</loc>
+        <loc>https://fielder.andyrichardson.dev/api/usefield</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/FielderProvider</loc>
+        <loc>https://fielder.andyrichardson.dev/api/useform</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/useField</loc>
+        <loc>https://fielder.andyrichardson.dev/api/useformcontext</loc>
     </url>
     <url>
         <loc>https://fielder.andyrichardson.dev/examples/dynamic-forms</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/useSubmit</loc>
+        <loc>https://fielder.andyrichardson.dev/api/usesubmit</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/api/useFormContext</loc>
+        <loc>https://fielder.andyrichardson.dev/examples/static-forms</loc>
     </url>
     <url>
         <loc>https://fielder.andyrichardson.dev/guides/getting-started</loc>
@@ -34,9 +34,9 @@
         <loc>https://fielder.andyrichardson.dev/guides/submission</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/guides/type-safety</loc>
+        <loc>https://fielder.andyrichardson.dev/guides/validation</loc>
     </url>
     <url>
-        <loc>https://fielder.andyrichardson.dev/guides/validation</loc>
+        <loc>https://fielder.andyrichardson.dev/guides/type-safety</loc>
     </url>
 </urlset>
