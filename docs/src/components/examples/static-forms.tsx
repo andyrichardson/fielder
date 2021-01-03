@@ -5,12 +5,6 @@ import { Editor } from '../Editor';
 const code = `\
 import { useForm, useField, useSubmit, FielderProvider } from "fielder";
 
-// ============================
-// Form
-// ============================
-//
-// Root level component creates form state and exposes via context.
-
 const Form = () => {
   const form = useForm();
 
@@ -20,13 +14,6 @@ const Form = () => {
     </FielderProvider>
   );
 };
-
-// ============================
-// Form Content
-// ============================
-//
-// Content components create/mount fields and optionally
-// handle submit logic.
 
 const FormContent = () => {
   const [usernameProps, usernameMeta] = useField({
@@ -64,14 +51,6 @@ const FormContent = () => {
     </form>
   );
 };
-
-// ============================
-// Validation functions
-// ============================
-//
-// Exactly what they sound like!
-// Can also be created inside form content but
-// need to be memoized to prevent infinite renders.
 
 const usernameValidation = ({ value }) => {
   if (!value) {

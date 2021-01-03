@@ -5,13 +5,6 @@ import * as fielderImports from 'fielder';
 const code = `\
 import { useForm, useField, useSubmit, FielderProvider } from "fielder";
 
-// ============================
-// Form
-// ============================
-//
-// Root level component creates form state and exposes via context.
-// Also handles routing of form content.
-
 const Form = () => {
   const [step, setStep] = useState(0);
   const form = useForm();
@@ -32,12 +25,6 @@ const Form = () => {
 
   return <FielderProvider value={form}>{content}</FielderProvider>;
 };
-
-// ============================
-// Form step 1
-// ============================
-//
-// Form content which is dynamically rendered.
 
 const RegionSelect = ({ onComplete }) => {
   const [regionProps, regionMeta] = useField({
@@ -62,13 +49,6 @@ const RegionSelect = ({ onComplete }) => {
     </form>
   );
 };
-
-// ==============================
-// Form step 2 (conditional - US)
-// ==============================
-//
-// Form content + validation which is conditionally rendered
-// depending on a previous step.
 
 const USSubForm = () => {
   const [ageProps, ageMeta] = useField({
@@ -99,13 +79,6 @@ const USSubForm = () => {
     </form>
   );
 };
-
-// ==============================
-// Form step 2 (conditional - UK)
-// ==============================
-//
-// Form content + validation which is conditionally rendered
-// depending on a previous step.
 
 const UKSubForm = () => {
   const [nameProps, nameMeta] = useField({
