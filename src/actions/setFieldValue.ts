@@ -1,6 +1,5 @@
 import { ActionHandler } from './util';
-import { SetStateAction } from 'react';
-import { FormSchemaType } from '../types';
+import { FormSchemaType, SetStateAction } from '../types';
 
 export type SetFieldValueAction = {
   type: 'SET_FIELD_VALUE';

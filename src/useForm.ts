@@ -1,11 +1,10 @@
 import {
   useCallback,
   useMemo,
-  Dispatch,
   useRef,
   MutableRefObject,
 } from 'react';
-import { FormState, FieldState, FieldsState, FormSchemaType } from './types';
+import {  Dispatch, FormState, FieldState, FieldsState, FormSchemaType } from './types';
 import { BlurFieldAction, doBlurField } from './actions/blurField';
 import { MountFieldAction, doMountField } from './actions/mountField';
 import { SetFieldStateAction, doSetFieldState } from './actions/setFieldState';
@@ -237,7 +236,7 @@ const createHandleAsyncValidation = (
     };
 
     const validationCallback = (isError: boolean) => (response: any) => {
-      if (!dispatch || dispatch.current === undefined) {
+      if (!dispatch || !dispatch.current) {
         console.warn(
           'Unable to update validation state. Dispatch not available.'
         );
@@ -255,7 +254,7 @@ const createHandleAsyncValidation = (
         type: 'SET_FIELD_STATE',
         config: {
           name,
-          state: (s) => ({
+          state: (s: any) => ({
             ...s,
             isValidating: false,
             isValid,

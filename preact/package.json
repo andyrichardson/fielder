@@ -1,0 +1,21 @@
+{
+    "name": "fielder",
+    "version": "latest",
+    "description": "A field-first form library for React and React Native",
+    "main": "./dist/index.js",
+    "module": "./dist/index.es.js",
+    "umd:main": "./dist/index.umd.js",
+    "types": "./dist/index.d.ts",
+    "sideEffects": false,
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/andyrichardson/fielder.git"
+    },
+    "author": "Andy Richardson (andyrichardson)",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/andyrichardson/fielder/issues"
+    },
+    "homepage": "https://github.com/andyrichardson/fielder#readme"
+  }
+  
