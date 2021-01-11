@@ -1,6 +1,6 @@
 {
   "name": "fielder",
-  "version": "2.0.0",
+  "version": "2.1.0-beta.0",
   "description": "A field-first form library for React and React Native",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -13,6 +13,17 @@
     "form",
     "dynamic",
     "validation"
+  ],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "docs/src/pages",
+    "dist",
+    "preact/dist",
+    "src",
+    "preact/src",
+    "preact/package.json"
   ],
   "scripts": {
     "start": "rollup -c rollup.config.js --watch",
