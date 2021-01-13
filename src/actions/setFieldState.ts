@@ -1,5 +1,4 @@
-import { SetStateAction } from 'react';
-import { FieldState, FormSchemaType } from '../types';
+import { SetStateAction, FieldState, FormSchemaType } from '../types';
 import { ActionHandler } from './util';
 
 /** Set state of a field (without triggering validation). */

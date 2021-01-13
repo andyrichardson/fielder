@@ -131,3 +131,7 @@ export type ObjectValidation<
 };
 
 type MaybePromise<T> = T | Promise<T>;
+
+export type Dispatch<T> = (a: T) => void;
+
+export type SetStateAction<T> = T | ((a: T) => T);

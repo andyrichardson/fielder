@@ -1,6 +1,5 @@
 import {
   useContext,
-  ChangeEvent,
   useCallback,
   useMemo,
   useLayoutEffect,
@@ -22,7 +21,7 @@ export type UseFieldProps<T = any> = {
   /** Field value. */
   readonly value: T;
   /** Change event handler. */
-  readonly onChange: (e: ChangeEvent | T) => void;
+  readonly onChange: (e: { currentTarget: { value: any } } | T) => void;
   /** Blur event handler (sets blurred state). */
   readonly onBlur: () => void;
 };

@@ -8,6 +8,7 @@ node_modules
 # Only use lockfile at project root (not example repos)
 /examples/**/package-lock.json
 /examples/**/cypress/videos
+/preact/src
 yarn.lock
 # docz requires use of yarn
 !/docs/yarn.lock
