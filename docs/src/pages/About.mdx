@@ -19,9 +19,21 @@ Add Fielder to your project.
 npm i fielder
 ```
 
+### Import the module
+
+Use `fielder` or `fielder/preact`.
+
+```tsx
+// React
+import { useForm, ... } from 'fielder';
+
+// Preact
+import { useForm, ... } from 'fielder/preact';
+```
+
 ### Set up a form
 
-Use the `useForm` to create a form.
+Use the `useForm` hook to create a form.
 
 ```tsx
 const myForm = useForm();
