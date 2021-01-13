@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/andyrichardson/fielder/tree/2.1.0) (2021-01-13)
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v2.0.0...2.1.0)
+
+**Additions:**
+
+- Add preact support [\#299](https://github.com/andyrichardson/fielder/issues/299)
+
+**Merged pull requests:**
+
+- Add preact support [\#300](https://github.com/andyrichardson/fielder/pull/300) ([andyrichardson](https://github.com/andyrichardson))
+
 ## [v2.0.0](https://github.com/andyrichardson/fielder/tree/v2.0.0)
 
 ### A new major release!
