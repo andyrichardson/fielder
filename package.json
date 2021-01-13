@@ -1,6 +1,6 @@
 {
   "name": "fielder",
-  "version": "2.1.0-beta.0",
+  "version": "2.1.0",
   "description": "A field-first form library for React and React Native",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -73,7 +73,7 @@
     "typescript": "^4.1.3"
   },
   "optionalDependencies": {
-    "react": ">=16.8.0",
-    "preact": ">=10.5.9"
+    "preact": ">=10.5.9",
+    "react": ">=16.8.0"
   }
 }
