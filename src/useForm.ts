@@ -1,10 +1,11 @@
+import { useCallback, useMemo, useRef, MutableRefObject } from 'react';
 import {
-  useCallback,
-  useMemo,
-  useRef,
-  MutableRefObject,
-} from 'react';
-import {  Dispatch, FormState, FieldState, FieldsState, FormSchemaType } from './types';
+  Dispatch,
+  FormState,
+  FieldState,
+  FieldsState,
+  FormSchemaType,
+} from './types';
 import { BlurFieldAction, doBlurField } from './actions/blurField';
 import { MountFieldAction, doMountField } from './actions/mountField';
 import { SetFieldStateAction, doSetFieldState } from './actions/setFieldState';
