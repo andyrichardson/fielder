@@ -156,11 +156,11 @@ const AppRoute: FC<LiteralRoute> = ({
       { name: 'og:type', content: 'website' },
       {
         name: 'og:image',
-        content: `https://fielder.andyrichardson.dev/${ogImage}`,
+        content: `https://fielder.andyrichardson.dev${ogImage}`,
       },
       {
         name: 'twitter:card',
-        content: 'summary',
+        content: 'summary_large_image',
       },
       {
         name: 'twitter:site',
@@ -170,6 +170,10 @@ const AppRoute: FC<LiteralRoute> = ({
         name: 'twitter:creator',
         content: '@andyrichardsonn',
       },
+      {
+        name: "twitter:image",
+	content: `https://fielder.andyrichardson.dev${ogImage}`,
+      }
     ],
   });
 
