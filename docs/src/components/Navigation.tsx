@@ -15,17 +15,19 @@ export const Navigation: FC<ComponentProps<'nav'>> = (props) => {
         <Logo width={20} height={parseInt(scale(3))} src={Icon} alt={'Logo'} />
         {routes.map((r) => (
           <>
-	    {r.external ? 
-	      <ParentLink key={r.url} href={r.url} target={'_blank'}>{r.title}</ParentLink>
-		    :
-            <Link
-              key={r.url}
-              to={r.url}
-              target={'external' in r && r.external ? '_blank' : ''}
-            >
-              <ParentLink>{r.title}</ParentLink>
-            </Link>
-	    }
+            {r.external ? (
+              <ParentLink key={r.url} href={r.url} target={'_blank'}>
+                {r.title}
+              </ParentLink>
+            ) : (
+              <Link
+                key={r.url}
+                to={r.url}
+                target={'external' in r && r.external ? '_blank' : ''}
+              >
+                <ParentLink>{r.title}</ParentLink>
+              </Link>
+            )}
             {'children' in r &&
               r.children &&
               r.children.map((c) => (

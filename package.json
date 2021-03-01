@@ -31,7 +31,7 @@
     "build": "npm run build:react && npm run build:preact",
     "build:react": "rm -rf dist && rollup -c rollup.config.js",
     "build:preact": "rm -rf preact/dist && PREACT=true rollup -c rollup.config.js",
-    "check-formatting": "prettier --check \"./**/*.{ts,tsx,md,mdx}\" \"!./CHANGELOG.md\"",
+    "check-formatting": "prettier --check \"./**/*.{ts,tsx,md,mdx,html}\" \"!./CHANGELOG.md\"",
     "lint": "eslint -c .eslintrc \"src/**.{ts,tsx}\"",
     "changelog": "docker run -it --rm -v \"$(pwd)\":/usr/local/src/your-app ferrarimarco/github-changelog-generator -u andyrichardson -p fielder"
   },
