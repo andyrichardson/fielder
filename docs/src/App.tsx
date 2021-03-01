@@ -171,9 +171,9 @@ const AppRoute: FC<LiteralRoute> = ({
         content: '@andyrichardsonn',
       },
       {
-        name: "twitter:image",
-	content: `https://fielder.andyrichardson.dev${ogImage}`,
-      }
+        name: 'twitter:image',
+        content: `https://fielder.andyrichardson.dev${ogImage}`,
+      },
     ],
   });
 
