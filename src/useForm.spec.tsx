@@ -369,7 +369,7 @@ describe('on change field', () => {
   it.each([
     ['function', validate],
     ["object's function", { change: validate }],
-  ])('calls validation %s', (_, validation) => {
+  ])('calls `change` validation %s on updated field', (_, validation) => {
     act(() => {
       response.mountField({
         name: fieldName,
@@ -386,6 +386,38 @@ describe('on change field', () => {
       expect.objectContaining({
         trigger: 'change',
         value: value,
+      })
+    );
+  });
+
+  it.each([
+    ['function', validate],
+    ["object's function", { update: validate }],
+  ])('calls `update` validation %s on other field/s', (_, validation) => {
+    act(() => {
+      response.mountField({
+        name: fieldName,
+        initialValue: value,
+      });
+      response.mountField({
+        name: 'otherField',
+        initialValue: '',
+        validate: validation,
+      });
+      response.setFieldValue({
+        name: fieldName,
+        value,
+      });
+    });
+
+    expect(validate).toBeCalledWith(
+      expect.objectContaining({
+        trigger: 'update',
+        form: expect.objectContaining({
+          [fieldName]: expect.objectContaining({
+            value,
+          }),
+        }),
       })
     );
   });
@@ -546,6 +578,82 @@ describe('on validate submission', () => {
           '1': 'Async error',
           '2': 'Sync error',
         },
+      })
+    );
+  });
+});
+
+describe('on setFieldValidation', () => {
+  const name = '1';
+  const initialValue = 'some value';
+  const newValue = 'new value!';
+  const validation = jest.fn();
+
+  beforeEach(async () => {
+    create(<Fixture />);
+    act(() => {
+      response.mountField({
+        name,
+        initialValue,
+      });
+    });
+  });
+
+  it('calls validation function with mount event', () => {
+    act(() => {
+      response.setFieldValidation({ name, validation });
+    });
+
+    expect(validation).toBeCalledTimes(1);
+    expect(validation).toBeCalledWith(
+      expect.objectContaining({
+        trigger: 'mount',
+        value: initialValue,
+      })
+    );
+  });
+
+  it('calls validation function with change event', () => {
+    act(() => {
+      response.setFieldValue({
+        name,
+        value: newValue
+      });
+    });
+    act(() => {
+      response.setFieldValidation({ name, validation });
+    });
+
+    expect(validation).toBeCalledTimes(1);
+    expect(validation).toBeCalledWith(
+      expect.objectContaining({
+        trigger: 'change',
+        value: newValue,
+      })
+    );
+  });
+
+  it('calls validation function with blur event', () => {
+    act(() => {
+      response.setFieldValue({
+        name,
+        value: newValue
+      });
+    });
+    act(() => {
+      response.blurField({
+        name,
+      });
+    });
+    act(() => {
+      response.setFieldValidation({ name, validation });
+    });
+
+    expect(validation).toBeCalledTimes(1);
+    expect(validation).toBeCalledWith(
+      expect.objectContaining({
+        trigger: 'blur',
+        value: newValue,
       })
     );
   });
