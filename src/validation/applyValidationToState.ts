@@ -54,7 +54,7 @@ export const applyValidationToState = (
             },
           },
         };
-      } catch (err) {
+      } catch (err: any) {
         return {
           promises,
           state: {

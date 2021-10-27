@@ -2,9 +2,9 @@ import {
   useContext,
   useCallback,
   useMemo,
-  useLayoutEffect,
   useRef,
 } from 'react';
+import { useLayoutEffect } from './util'
 import { FielderContext } from './context';
 import {
   FormState,
