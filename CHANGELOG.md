@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.1](https://github.com/andyrichardson/fielder/tree/2.1.1) (2021-11-02)
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v2.1.0...2.1.1)
+
+**Closed issues:**
+
+- useLayoutEffect warning when server side rendering [\#317](https://github.com/andyrichardson/fielder/issues/317)
+
+**Merged pull requests:**
+
+- Fix next.js support [\#318](https://github.com/andyrichardson/fielder/pull/318) ([andyrichardson](https://github.com/andyrichardson))
+- Update dev deps [\#302](https://github.com/andyrichardson/fielder/pull/302) ([andyrichardson](https://github.com/andyrichardson))
+
 ## [2.1.0](https://github.com/andyrichardson/fielder/tree/2.1.0) (2021-01-13)
 
 [Full Changelog](https://github.com/andyrichardson/fielder/compare/v2.0.0...2.1.0)

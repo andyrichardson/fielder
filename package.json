@@ -1,6 +1,6 @@
 {
   "name": "fielder",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A field-first form library for React and React Native",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
