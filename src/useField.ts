@@ -1,10 +1,5 @@
-import {
-  useContext,
-  useCallback,
-  useMemo,
-  useRef,
-} from 'react';
-import { useLayoutEffect } from './util'
+import { useContext, useCallback, useMemo, useRef } from 'react';
+import { useLayoutEffect } from './util';
 import { FielderContext } from './context';
 import {
   FormState,

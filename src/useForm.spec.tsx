@@ -5,8 +5,8 @@ import { FormState } from './types';
 
 let response: FormState;
 
-const Fixture = () => {
-  response = useForm();
+const Fixture = (args: any = {}) => {
+  response = useForm(args);
 
   return null;
 };
@@ -16,6 +16,13 @@ beforeEach(jest.clearAllMocks);
 describe('initial call', () => {
   it('matches snapshot', () => {
     create(<Fixture />);
+    expect(response).toMatchSnapshot();
+  });
+});
+
+describe('on fromState', () => {
+  it('matches snapshot', () => {
+    create(<Fixture fromState={{ field1: 'value1', field2: 'value2' }} />);
     expect(response).toMatchSnapshot();
   });
 });
@@ -36,7 +43,7 @@ describe('on premount field', () => {
     expect(response.fields[name]).toBe(undefined);
   });
 
-  it('returns psuedo-mounted field', () => {
+  it('returns pseudo-mounted field', () => {
     let field;
     act(() => {
       field = response.premountField({ name });
@@ -617,7 +624,7 @@ describe('on setFieldValidation', () => {
     act(() => {
       response.setFieldValue({
         name,
-        value: newValue
+        value: newValue,
       });
     });
     act(() => {
@@ -637,7 +644,7 @@ describe('on setFieldValidation', () => {
     act(() => {
       response.setFieldValue({
         name,
-        value: newValue
+        value: newValue,
       });
     });
     act(() => {

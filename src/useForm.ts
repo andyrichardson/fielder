@@ -31,9 +31,11 @@ export type FormAction =
   | ValidateFieldAction
   | ValidateSubmissionAction;
 
-export const useForm = <
-  T extends FormSchemaType = FormSchemaType
->(): FormState<T> => {
+export type UseFormOpts = { fromState?: Record<string, any> };
+
+export const useForm = <T extends FormSchemaType = FormSchemaType>(
+  opts: UseFormOpts = {}
+): FormState<T> => {
   /** Async validation promise updated synchronously after every dispatch. */
   const promiseRef = useRef<Record<string, Promise<any>> | undefined>();
   /** Reference to dispatch for forwarding closure. */
@@ -41,6 +43,28 @@ export const useForm = <
 
   const handleAsyncValidation = useMemo(
     () => createHandleAsyncValidation(dispatchRef),
+    []
+  );
+
+  const initialState = useMemo(
+    () =>
+      opts.fromState
+        ? Object.entries(opts.fromState).reduce<FieldsState>(
+            (p, [key, value]) => ({
+              ...p,
+              [key]: {
+                _isActive: false,
+                name: key,
+                value,
+                isValid: false,
+                isValidating: false,
+                hasBlurred: false,
+                hasChanged: false,
+              },
+            }),
+            {}
+          )
+        : {},
     []
   );
 
@@ -63,7 +87,7 @@ export const useForm = <
 
     promiseRef.current = promises;
     return validatedState;
-  }, {});
+  }, initialState);
 
   useMemo(() => (dispatchRef.current = dispatch), [dispatch]);
 
