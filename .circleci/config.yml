@@ -13,7 +13,7 @@ executors:
   cypress:
     working_directory: /mnt/ramdisk
     docker:
-      - image: cypress/browsers:node13.3.0-chrome-79-ff70
+      - image: cypress/browsers:node16.5.0-chrome94-ff93
 
 jobs:
   install:
