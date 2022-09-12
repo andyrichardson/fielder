@@ -22,7 +22,15 @@ Type: `FormState`
 
 ## Arguments
 
-_useForm_ doesn't take any arguments.
+_useForm_ optionally takes a single object with the following properties:
+
+### fromState
+
+A key value store of field names and their values, for restoring form state on initial render.
+
+Type: `object`
+
+Example: `{ name: "some name", someField: "1234" }`
 
 ## Types
 
