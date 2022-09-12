@@ -30,8 +30,8 @@ register();
 
 export const globals = css`
   :global() {
-    @import 'typeface-inter';
-    @import 'typeface-source-code-pro';
+    @import '@fontsource/inter';
+    @import '@fontsource/source-code-pro';
     @import 'prism-themes/themes/prism-material-light.css';
 
     html,
