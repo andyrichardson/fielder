@@ -57,6 +57,19 @@ jobs:
       - run: npm run test -- --coverage
       - uses: codecov/codecov-action@v3
 
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    container: 'node:16'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: nodemodules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run lint
+
   typecheck:
     needs: install
     runs-on: ubuntu-latest
@@ -84,9 +97,12 @@ jobs:
           key: nodemodules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - run: $(npm bin)/prettier --check .
 
-  e2e-example-1:
+  e2e-example:
     needs: build
-    name: e2e - example 1
+    strategy:
+      matrix:
+        example: ['1-basics', '2-multi-step', '3-branching']
+    name: e2e - example ${{ matrix.example }}
     runs-on: ubuntu-latest
     container: 'cypress/browsers:node16.5.0-chrome94-ff93'
     steps:
@@ -99,19 +115,19 @@ jobs:
       - run: npm pack
       - name: remove registry pkg
         run: npm remove fielder
-        working-directory: examples/1-basics
+        working-directory: examples/${{ matrix.example }}
       - name: install dependencies
         run: npm install
-        working-directory: examples/1-basics
+        working-directory: examples/${{ matrix.example }}
       - name: install prebuilt package
         run: npm install ../../fielder*.tgz
-        working-directory: examples/1-basics
+        working-directory: examples/${{ matrix.example }}
       - name: check types
         run: $(npm bin)/tsc --noEmit
-        working-directory: examples/1-basics
+        working-directory: examples/${{ matrix.example }}
       - name: run tests
         run: npm run serve & sleep 10 && npm run test
-        working-directory: examples/1-basics
+        working-directory: examples/${{ matrix.example }}
 
   publish:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -120,7 +136,9 @@ jobs:
       - build
       - test
       - check-formatting
+      - lint
       - typecheck
+      - e2e-example
     runs-on: ubuntu-latest
     container: 'node:16'
     steps:
