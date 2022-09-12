@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/github/checks-status/andyrichardson/fielder/master.svg" alt="build" />
   </a>
   <a href="https://npmjs.com/package/fielder">
-    <img src="https://img.shields.io/github/package-json/v/andyrichardson/fielder.svg" alt="version" />
+    <img src="https://img.shields.io/npm/v/fielder" alt="version" />
   </a>
   <a href="https://bundlephobia.com/result?p=fielder">
     <img src="https://img.shields.io/bundlephobia/minzip/fielder.svg" alt="size" />
