@@ -1,6 +1,6 @@
 {
   "name": "fielder",
-  "version": "2.1.1",
+  "version": "0.0.0",
   "description": "A field-first form library for React and React Native",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -33,7 +33,7 @@
     "build:preact": "rm -rf preact/dist && PREACT=true rollup -c rollup.config.js",
     "check-formatting": "prettier --check \"./**/*.{ts,tsx,md,mdx,html}\" \"!./CHANGELOG.md\"",
     "lint": "eslint -c .eslintrc \"src/**.{ts,tsx}\"",
-    "changelog": "docker run -it --rm -v \"$(pwd)\":/usr/local/src/your-app ferrarimarco/github-changelog-generator -u andyrichardson -p fielder"
+    "changelog": "docker run -it --rm -v \"$(pwd)\":/usr/local/src/your-app githubchangeloggenerator/github-changelog-generator -u andyrichardson -p fielder"
   },
   "author": "Andy Richardson (andyrichardson)",
   "license": "MIT",
@@ -73,10 +73,6 @@
     "typescript": "^4.2.2"
   },
   "optionalDependencies": {
-    "preact": ">=10.5.9",
-    "react": ">=16.8.0"
-  },
-  "dependencies": {
     "preact": ">=10.5.9",
     "react": ">=16.8.0"
   }

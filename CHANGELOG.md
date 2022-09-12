@@ -1,8 +1,25 @@
 # Changelog
 
-## [2.1.1](https://github.com/andyrichardson/fielder/tree/2.1.1) (2021-11-02)
+## [v2.2.0](https://github.com/andyrichardson/fielder/tree/v2.2.0) (2022-09-12)
 
-[Full Changelog](https://github.com/andyrichardson/fielder/compare/v2.1.0...2.1.1)
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v2.1.1...v2.2.0)
+
+**Additions:**
+
+- Add support for persisting state [\#12](https://github.com/andyrichardson/fielder/issues/12)
+
+**Merged pull requests:**
+
+- Update docs dependencies [\#336](https://github.com/andyrichardson/fielder/pull/336) ([andyrichardson](https://github.com/andyrichardson))
+- Add "fromState" to docs [\#335](https://github.com/andyrichardson/fielder/pull/335) ([andyrichardson](https://github.com/andyrichardson))
+- Fix formatting [\#334](https://github.com/andyrichardson/fielder/pull/334) ([andyrichardson](https://github.com/andyrichardson))
+- Move to Github Actions [\#333](https://github.com/andyrichardson/fielder/pull/333) ([andyrichardson](https://github.com/andyrichardson))
+- Fix e2e tests [\#321](https://github.com/andyrichardson/fielder/pull/321) ([andyrichardson](https://github.com/andyrichardson))
+- Add value restoration \(optional\) [\#320](https://github.com/andyrichardson/fielder/pull/320) ([andyrichardson](https://github.com/andyrichardson))
+
+## [v2.1.1](https://github.com/andyrichardson/fielder/tree/v2.1.1) (2021-11-02)
+
+[Full Changelog](https://github.com/andyrichardson/fielder/compare/v2.1.0...v2.1.1)
 
 **Closed issues:**
 

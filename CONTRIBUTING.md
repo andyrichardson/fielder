@@ -15,7 +15,7 @@ npm run changelog -- --future-release [release version] --token [your github oau
 ### 3. Push/merge new version to master
 
 ```
-git add package.json CHANGELOG.md
+git add CHANGELOG.md
 git commit -m "Version v0.0.0"
 git push origin master
 ```
