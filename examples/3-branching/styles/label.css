@@ -126,7 +126,7 @@ a.ui.label {
 
 /* Padding on next content after a label */
 .ui.top.attached.label:first-child + :not(.attached),
-.ui.top.attached.label + [class*="right floated"] + * {
+.ui.top.attached.label + [class*='right floated'] + * {
   margin-top: 2rem !important;
 }
 .ui.bottom.attached.label:first-child ~ :last-child:not(.attached) {
@@ -186,7 +186,7 @@ a.ui.label {
   transform: translateY(-50%) translateX(50%) rotate(-45deg);
   top: 50%;
   right: 100%;
-  content: "";
+  content: '';
   background-color: inherit;
   background-image: none;
   width: 1.56em;
@@ -197,7 +197,7 @@ a.ui.label {
 .ui.tag.labels .label:after,
 .ui.tag.label:after {
   position: absolute;
-  content: "";
+  content: '';
   top: 50%;
   left: -0.25em;
   margin-top: -0.25em;
@@ -234,7 +234,7 @@ a.ui.label {
 }
 .ui.corner.label:after {
   position: absolute;
-  content: "";
+  content: '';
   right: 0em;
   top: 0em;
   z-index: -1;
@@ -300,7 +300,7 @@ a.ui.label {
 }
 .ui.ribbon.label:after {
   position: absolute;
-  content: "";
+  content: '';
   top: 100%;
   left: 0%;
   background-color: transparent !important;
@@ -319,20 +319,20 @@ a.ui.label {
   padding-left: calc(1rem + 1.2em);
   padding-right: 1.2em;
 }
-.ui[class*="right ribbon"].label {
+.ui[class*='right ribbon'].label {
   left: calc(100% + 1rem + 1.2em);
   padding-left: 1.2em;
   padding-right: calc(1rem + 1.2em);
 }
 
 /* Right Ribbon */
-.ui[class*="right ribbon"].label {
+.ui[class*='right ribbon'].label {
   text-align: left;
   -webkit-transform: translateX(-100%);
   transform: translateX(-100%);
   border-radius: 0.28571429rem 0em 0em 0.28571429rem;
 }
-.ui[class*="right ribbon"].label:after {
+.ui[class*='right ribbon'].label:after {
   left: auto;
   right: 0%;
   border-style: solid;
@@ -351,8 +351,8 @@ a.ui.label {
 .ui.image > .ui.ribbon.label {
   left: calc(--0.05rem - 1.2em);
 }
-.ui.card .image > .ui[class*="right ribbon"].label,
-.ui.image > .ui[class*="right ribbon"].label {
+.ui.card .image > .ui[class*='right ribbon'].label,
+.ui.image > .ui[class*='right ribbon'].label {
   left: calc(100% + -0.05rem + 1.2em);
   padding-left: 0.833em;
 }
@@ -361,7 +361,7 @@ a.ui.label {
 .ui.table td > .ui.ribbon.label {
   left: calc(-0.78571429em - 1.2em);
 }
-.ui.table td > .ui[class*="right ribbon"].label {
+.ui.table td > .ui[class*='right ribbon'].label {
   left: calc(100% + 0.78571429em + 1.2em);
   padding-left: 0.833em;
 }
@@ -370,7 +370,7 @@ a.ui.label {
       Attached
 --------------------*/
 
-.ui[class*="top attached"].label,
+.ui[class*='top attached'].label,
 .ui.attached.label {
   width: 100%;
   position: absolute;
@@ -380,29 +380,29 @@ a.ui.label {
   padding: 0.75em 1em;
   border-radius: 0.21428571rem 0.21428571rem 0em 0em;
 }
-.ui[class*="bottom attached"].label {
+.ui[class*='bottom attached'].label {
   top: auto;
   bottom: 0em;
   border-radius: 0em 0em 0.21428571rem 0.21428571rem;
 }
-.ui[class*="top left attached"].label {
+.ui[class*='top left attached'].label {
   width: auto;
   margin-top: 0em !important;
   border-radius: 0.21428571rem 0em 0.28571429rem 0em;
 }
-.ui[class*="top right attached"].label {
+.ui[class*='top right attached'].label {
   width: auto;
   left: auto;
   right: 0em;
   border-radius: 0em 0.21428571rem 0em 0.28571429rem;
 }
-.ui[class*="bottom left attached"].label {
+.ui[class*='bottom left attached'].label {
   width: auto;
   top: auto;
   bottom: 0em;
   border-radius: 0em 0.28571429rem 0em 0.21428571rem;
 }
-.ui[class*="bottom right attached"].label {
+.ui[class*='bottom right attached'].label {
   top: auto;
   bottom: 0em;
   left: auto;
@@ -1136,7 +1136,7 @@ a.ui.basic.label:hover {
 /* Arrow */
 .ui.pointing.label:before {
   position: absolute;
-  content: "";
+  content: '';
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
   background-image: none;
@@ -1150,11 +1150,11 @@ a.ui.basic.label:hover {
 /*--- Above ---*/
 
 .ui.pointing.label,
-.ui[class*="pointing above"].label {
+.ui[class*='pointing above'].label {
   margin-top: 1em;
 }
 .ui.pointing.label:before,
-.ui[class*="pointing above"].label:before {
+.ui[class*='pointing above'].label:before {
   border-width: 1px 0px 0px 1px;
   -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
   transform: translateX(-50%) translateY(-50%) rotate(45deg);
@@ -1164,13 +1164,13 @@ a.ui.basic.label:hover {
 
 /*--- Below ---*/
 
-.ui[class*="bottom pointing"].label,
-.ui[class*="pointing below"].label {
+.ui[class*='bottom pointing'].label,
+.ui[class*='pointing below'].label {
   margin-top: 0em;
   margin-bottom: 1em;
 }
-.ui[class*="bottom pointing"].label:before,
-.ui[class*="pointing below"].label:before {
+.ui[class*='bottom pointing'].label:before,
+.ui[class*='pointing below'].label:before {
   border-width: 0px 1px 1px 0px;
   top: auto;
   right: auto;
@@ -1182,11 +1182,11 @@ a.ui.basic.label:hover {
 
 /*--- Left ---*/
 
-.ui[class*="left pointing"].label {
+.ui[class*='left pointing'].label {
   margin-top: 0em;
   margin-left: 0.6666em;
 }
-.ui[class*="left pointing"].label:before {
+.ui[class*='left pointing'].label:before {
   border-width: 0px 0px 1px 1px;
   -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
   transform: translateX(-50%) translateY(-50%) rotate(45deg);
@@ -1198,11 +1198,11 @@ a.ui.basic.label:hover {
 
 /*--- Right ---*/
 
-.ui[class*="right pointing"].label {
+.ui[class*='right pointing'].label {
   margin-top: 0em;
   margin-right: 0.6666em;
 }
-.ui[class*="right pointing"].label:before {
+.ui[class*='right pointing'].label:before {
   border-width: 1px 1px 0px 0px;
   -webkit-transform: translateX(50%) translateY(-50%) rotate(45deg);
   transform: translateX(50%) translateY(-50%) rotate(45deg);
@@ -1217,14 +1217,14 @@ a.ui.basic.label:hover {
 /*--- Above ---*/
 
 .ui.basic.pointing.label:before,
-.ui.basic[class*="pointing above"].label:before {
+.ui.basic[class*='pointing above'].label:before {
   margin-top: -1px;
 }
 
 /*--- Below ---*/
 
-.ui.basic[class*="bottom pointing"].label:before,
-.ui.basic[class*="pointing below"].label:before {
+.ui.basic[class*='bottom pointing'].label:before,
+.ui.basic[class*='pointing below'].label:before {
   bottom: auto;
   top: 100%;
   margin-top: 1px;
@@ -1232,14 +1232,14 @@ a.ui.basic.label:hover {
 
 /*--- Left ---*/
 
-.ui.basic[class*="left pointing"].label:before {
+.ui.basic[class*='left pointing'].label:before {
   top: 50%;
   left: -1px;
 }
 
 /*--- Right ---*/
 
-.ui.basic[class*="right pointing"].label:before {
+.ui.basic[class*='right pointing'].label:before {
   top: 50%;
   right: -1px;
 }

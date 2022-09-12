@@ -1,9 +1,9 @@
-@import url("./button.css");
-@import url("./card.css");
-@import url("./form.css");
-@import url("./label.css");
-@import url("./site.css");
-@import url("./step.css");
+@import url('./button.css');
+@import url('./card.css');
+@import url('./form.css');
+@import url('./label.css');
+@import url('./site.css');
+@import url('./step.css');
 
 body,
 html {

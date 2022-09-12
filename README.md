@@ -6,8 +6,8 @@
 <p align="center"><i>A field-first form library for React and React Native.</i></p>
 
 <p align="center">
-  <a href="https://circleci.com/gh/andyrichardson/fielder">
-    <img src="https://img.shields.io/circleci/build/github/andyrichardson/fielder" alt="build" />
+  <a href="https://github.com/andyrichardson/fielder/actions">
+    <img src="https://img.shields.io/github/checks-status/andyrichardson/fielder/master.svg" alt="build" />
   </a>
   <a href="https://npmjs.com/package/fielder">
     <img src="https://img.shields.io/github/package-json/v/andyrichardson/fielder.svg" alt="version" />

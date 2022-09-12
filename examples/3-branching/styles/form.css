@@ -70,17 +70,17 @@ form .field > label {
 
 form textarea,
 form input:not([type]),
-form input[type="date"],
-form input[type="datetime-local"],
-form input[type="email"],
-form input[type="number"],
-form input[type="password"],
-form input[type="search"],
-form input[type="tel"],
-form input[type="time"],
-form input[type="text"],
-form input[type="file"],
-form input[type="url"] {
+form input[type='date'],
+form input[type='datetime-local'],
+form input[type='email'],
+form input[type='number'],
+form input[type='password'],
+form input[type='search'],
+form input[type='tel'],
+form input[type='time'],
+form input[type='text'],
+form input[type='file'],
+form input[type='url'] {
   width: 100%;
   vertical-align: top;
 }
@@ -91,18 +91,18 @@ form ::-webkit-inner-spin-button {
   height: 1.21428571em;
 }
 form input:not([type]),
-form input[type="date"],
-form input[type="datetime-local"],
-form input[type="email"],
-form input[type="number"],
-form input[type="password"],
-form input[type="search"],
-form input[type="tel"],
-form input[type="time"],
-form input[type="text"],
-form input[type="file"],
-form input[type="url"] {
-  font-family: "Lato", "Helvetica Neue", Arial, Helvetica, sans-serif;
+form input[type='date'],
+form input[type='datetime-local'],
+form input[type='email'],
+form input[type='number'],
+form input[type='password'],
+form input[type='search'],
+form input[type='tel'],
+form input[type='time'],
+form input[type='text'],
+form input[type='file'],
+form input[type='url'] {
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   margin: 0em;
   outline: none;
   -webkit-appearance: none;
@@ -145,7 +145,7 @@ form textarea:not([rows]) {
   max-height: 24em;
 }
 form textarea,
-form input[type="checkbox"] {
+form input[type='checkbox'] {
   vertical-align: top;
 }
 
@@ -355,17 +355,17 @@ form .error :focus::-moz-placeholder {
 ---------------------*/
 
 form input:not([type]):focus,
-form input[type="date"]:focus,
-form input[type="datetime-local"]:focus,
-form input[type="email"]:focus,
-form input[type="number"]:focus,
-form input[type="password"]:focus,
-form input[type="search"]:focus,
-form input[type="tel"]:focus,
-form input[type="time"]:focus,
-form input[type="text"]:focus,
-form input[type="file"]:focus,
-form input[type="url"]:focus {
+form input[type='date']:focus,
+form input[type='datetime-local']:focus,
+form input[type='email']:focus,
+form input[type='number']:focus,
+form input[type='password']:focus,
+form input[type='search']:focus,
+form input[type='tel']:focus,
+form input[type='time']:focus,
+form input[type='text']:focus,
+form input[type='file']:focus,
+form input[type='url']:focus {
   color: rgba(0, 0, 0, 0.95);
   border-color: #85b7d9;
   border-radius: 0.28571429rem;
@@ -449,52 +449,52 @@ form .field.error .corner.label {
 form .fields.error .field textarea,
 form .fields.error .field select,
 form .fields.error .field input:not([type]),
-form .fields.error .field input[type="date"],
-form .fields.error .field input[type="datetime-local"],
-form .fields.error .field input[type="email"],
-form .fields.error .field input[type="number"],
-form .fields.error .field input[type="password"],
-form .fields.error .field input[type="search"],
-form .fields.error .field input[type="tel"],
-form .fields.error .field input[type="time"],
-form .fields.error .field input[type="text"],
-form .fields.error .field input[type="file"],
-form .fields.error .field input[type="url"],
+form .fields.error .field input[type='date'],
+form .fields.error .field input[type='datetime-local'],
+form .fields.error .field input[type='email'],
+form .fields.error .field input[type='number'],
+form .fields.error .field input[type='password'],
+form .fields.error .field input[type='search'],
+form .fields.error .field input[type='tel'],
+form .fields.error .field input[type='time'],
+form .fields.error .field input[type='text'],
+form .fields.error .field input[type='file'],
+form .fields.error .field input[type='url'],
 form .field.error textarea,
 form .field.error select,
 form .field.error input:not([type]),
-form .field.error input[type="date"],
-form .field.error input[type="datetime-local"],
-form .field.error input[type="email"],
-form .field.error input[type="number"],
-form .field.error input[type="password"],
-form .field.error input[type="search"],
-form .field.error input[type="tel"],
-form .field.error input[type="time"],
-form .field.error input[type="text"],
-form .field.error input[type="file"],
-form .field.error input[type="url"] {
+form .field.error input[type='date'],
+form .field.error input[type='datetime-local'],
+form .field.error input[type='email'],
+form .field.error input[type='number'],
+form .field.error input[type='password'],
+form .field.error input[type='search'],
+form .field.error input[type='tel'],
+form .field.error input[type='time'],
+form .field.error input[type='text'],
+form .field.error input[type='file'],
+form .field.error input[type='url'] {
   background: #fff6f6;
   border-color: #e0b4b4;
   color: #9f3a38;
-  border-radius: "";
+  border-radius: '';
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 form .field.error textarea:focus,
 form .field.error select:focus,
 form .field.error input:not([type]):focus,
-form .field.error input[type="date"]:focus,
-form .field.error input[type="datetime-local"]:focus,
-form .field.error input[type="email"]:focus,
-form .field.error input[type="number"]:focus,
-form .field.error input[type="password"]:focus,
-form .field.error input[type="search"]:focus,
-form .field.error input[type="tel"]:focus,
-form .field.error input[type="time"]:focus,
-form .field.error input[type="text"]:focus,
-form .field.error input[type="file"]:focus,
-form .field.error input[type="url"]:focus {
+form .field.error input[type='date']:focus,
+form .field.error input[type='datetime-local']:focus,
+form .field.error input[type='email']:focus,
+form .field.error input[type='number']:focus,
+form .field.error input[type='password']:focus,
+form .field.error input[type='search']:focus,
+form .field.error input[type='tel']:focus,
+form .field.error input[type='time']:focus,
+form .field.error input[type='text']:focus,
+form .field.error input[type='file']:focus,
+form .field.error input[type='url']:focus {
   background: #fff6f6;
   border-color: #e0b4b4;
   color: #9f3a38;
@@ -609,7 +609,7 @@ form .field.disabled :disabled {
 }
 .ui.loading.form:before {
   position: absolute;
-  content: "";
+  content: '';
   top: 0%;
   left: 0%;
   background: rgba(255, 255, 255, 0.8);
@@ -619,7 +619,7 @@ form .field.disabled :disabled {
 }
 .ui.loading.form:after {
   position: absolute;
-  content: "";
+  content: '';
   top: 50%;
   left: 50%;
   margin: -1.5em 0em 0em -1.5em;
@@ -673,7 +673,7 @@ form .required.field > label:after,
 form .required.fields:not(.grouped) > .field > .checkbox:after,
 form .required.field > .checkbox:after {
   margin: -0.2em 0em 0em 0.2em;
-  content: "*";
+  content: '*';
   color: #db2828;
 }
 form .required.fields:not(.grouped) > .field > label:after,
@@ -713,17 +713,17 @@ form .inverted.segment .ui.checkbox .box,
 
 /* Inverted Field */
 .ui.inverted.form input:not([type]),
-.ui.inverted.form input[type="date"],
-.ui.inverted.form input[type="datetime-local"],
-.ui.inverted.form input[type="email"],
-.ui.inverted.form input[type="number"],
-.ui.inverted.form input[type="password"],
-.ui.inverted.form input[type="search"],
-.ui.inverted.form input[type="tel"],
-.ui.inverted.form input[type="time"],
-.ui.inverted.form input[type="text"],
-.ui.inverted.form input[type="file"],
-.ui.inverted.form input[type="url"] {
+.ui.inverted.form input[type='date'],
+.ui.inverted.form input[type='datetime-local'],
+.ui.inverted.form input[type='email'],
+.ui.inverted.form input[type='number'],
+.ui.inverted.form input[type='password'],
+.ui.inverted.form input[type='search'],
+.ui.inverted.form input[type='tel'],
+.ui.inverted.form input[type='time'],
+.ui.inverted.form input[type='text'],
+.ui.inverted.form input[type='file'],
+.ui.inverted.form input[type='url'] {
   background: #ffffff;
   border-color: rgba(255, 255, 255, 0.1);
   color: rgba(0, 0, 0, 0.87);
@@ -829,9 +829,9 @@ form .ten.fields > .field {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
   }
-  .ui[class*="equal width"].form:not(.unstackable) .fields > .field,
+  .ui[class*='equal width'].form:not(.unstackable) .fields > .field,
   form:not(.unstackable)
-    [class*="equal width"].fields:not(.unstackable)
+    [class*='equal width'].fields:not(.unstackable)
     > .field,
   form:not(.unstackable) .two.fields:not(.unstackable) > .fields,
   form:not(.unstackable) .two.fields:not(.unstackable) > .field,
@@ -947,8 +947,8 @@ form .sixteen.wide.field {
      Equal Width
 ---------------------*/
 
-.ui[class*="equal width"].form .fields > .field,
-form [class*="equal width"].fields > .field {
+.ui[class*='equal width'].form .fields > .field,
+form [class*='equal width'].fields > .field {
   width: 100%;
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;

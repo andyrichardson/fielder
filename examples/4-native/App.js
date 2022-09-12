@@ -9,7 +9,7 @@ import {
   View,
   ListItem,
   CheckBox,
-  Body
+  Body,
 } from 'native-base';
 import { useForm, FielderProvider, useField } from 'fielder';
 
@@ -49,11 +49,11 @@ const TextInput = () => {
   const [{ onChange: onChangeText, ...textProps }, fieldMeta] = useField({
     name: 'textinput',
     initialValue: '',
-    validate: useCallback(v => {
+    validate: useCallback((v) => {
       if (!v) {
         throw Error('Text is required');
       }
-    }, [])
+    }, []),
   });
 
   return (
@@ -87,7 +87,7 @@ const TextInput = () => {
 const PickerInput = () => {
   const [{ onChange: onValueChange, value: selectedValue }] = useField({
     name: 'pickerinput',
-    initialValue: 'credit'
+    initialValue: 'credit',
   });
 
   const pickerValues = useMemo(
@@ -95,7 +95,7 @@ const PickerInput = () => {
       { label: 'Wallet', value: 'wallet' },
       { label: 'ATM Card', value: 'atm' },
       { label: 'Debit Card', value: 'debit' },
-      { label: 'Credit Card', value: 'credit' }
+      { label: 'Credit Card', value: 'credit' },
     ],
     []
   );
@@ -109,7 +109,7 @@ const PickerInput = () => {
         selectedValue={selectedValue}
         onValueChange={onValueChange}
       >
-        {pickerValues.map(v => (
+        {pickerValues.map((v) => (
           <Picker.Item key={v.value} {...v} />
         ))}
       </Picker>
@@ -128,19 +128,19 @@ const CheckboxInput = () => {
   const [{ value, onChange }, fieldMeta] = useField({
     name: 'checkboxinput',
     initialValue: ['A', 'C'],
-    validate: useCallback(v => {
+    validate: useCallback((v) => {
       if (v.length === 0) {
         throw Error('Must select at least one checkbox');
       }
     }),
-    initialValid: true
+    initialValid: true,
   });
 
   return (
     <>
       <Section>
         <Text>Try selecting some checkboxes</Text>
-        {['A', 'B', 'C', 'D'].map(v => (
+        {['A', 'B', 'C', 'D'].map((v) => (
           <ListItem key={v}>
             <CheckBox checked={value.includes(v)} onPress={() => onChange(v)} />
             <Body>
@@ -156,14 +156,14 @@ const CheckboxInput = () => {
   );
 };
 
-const Section = props => (
+const Section = (props) => (
   <View
     style={{
       flex: 1,
-      padding: 20
+      padding: 20,
     }}
     {...props}
   />
 );
 
-const ErrorMessage = props => <Text {...props} style={{ color: 'red' }} />;
+const ErrorMessage = (props) => <Text {...props} style={{ color: 'red' }} />;
