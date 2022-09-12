@@ -1,14 +1,16 @@
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
-import { execSync } from 'child_process'
+import { execSync } from 'child_process';
 
-const isPreact = process.env.PREACT === "true";
+const isPreact = process.env.PREACT === 'true';
 const pkg = require(isPreact ? './preact/package.json' : './package.json');
-const prefix = (arg) => isPreact ? `./preact/${arg}` : arg;
+const prefix = (arg) => (isPreact ? `./preact/${arg}` : arg);
 
 if (isPreact) {
   // Run preact transform
-  execSync('$(npm bin)/babel src --out-dir preact/src --plugins @babel/plugin-syntax-typescript,./react-to-preact.js --extensions .ts --out-file-extension .ts');
+  execSync(
+    '$(npm bin)/babel src --out-dir preact/src --plugins @babel/plugin-syntax-typescript,./react-to-preact.js --extensions .ts --out-file-extension .ts'
+  );
 }
 
 export default {
@@ -29,14 +31,21 @@ export default {
       format: 'umd',
       sourcemap: true,
       name: 'fielder',
-      globals: isPreact ? { preact: 'preact', 'preact/hooks': 'preact' } : { 'react': 'react' },
+      globals: isPreact
+        ? { preact: 'preact', 'preact/hooks': 'preact' }
+        : { react: 'react' },
     },
   ],
   external: [
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
   ],
-  plugins: [typescript({
-    tsconfigOverride: isPreact ? { exclude: ["./src"], include: ["./preact/src"] } : undefined
-  }), terser({})],
+  plugins: [
+    typescript({
+      tsconfigOverride: isPreact
+        ? { exclude: ['./src'], include: ['./preact/src'] }
+        : undefined,
+    }),
+    terser({}),
+  ],
 };
