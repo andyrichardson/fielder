@@ -1,0 +1,141 @@
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+  pull_request:
+
+name: CI
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    container: 'node:16'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: nodemodules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+  build:
+    needs: install
+    runs-on: ubuntu-latest
+    container:
+      image: 'node:16'
+      options: --user 1001
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: nodemodules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: dist
+
+  test:
+    needs: install
+    runs-on: ubuntu-latest
+    container: 'node:16'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: nodemodules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run test -- --coverage
+      - uses: codecov/codecov-action@v3
+
+  typecheck:
+    needs: install
+    runs-on: ubuntu-latest
+    container: 'node:16'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: nodemodules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - run: $(npm bin)/tsc --noEmit
+
+  check-formatting:
+    name: check formatting
+    needs: install
+    runs-on: ubuntu-latest
+    container: 'node:16'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore node modules
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: nodemodules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - run: $(npm bin)/prettier --check .
+
+  e2e-example-1:
+    needs: build
+    name: e2e - example 1
+    runs-on: ubuntu-latest
+    container: 'cypress/browsers:node16.5.0-chrome94-ff93'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output
+          path: dist
+      - run: npm pack
+      - name: remove registry pkg
+        run: npm remove fielder
+        working-directory: examples/1-basics
+      - name: install dependencies
+        run: npm install
+        working-directory: examples/1-basics
+      - name: install prebuilt package
+        run: npm install ../../fielder*.tgz
+        working-directory: examples/1-basics
+      - name: check types
+        run: $(npm bin)/tsc --noEmit
+        working-directory: examples/1-basics
+      - name: run tests
+        run: npm run serve & sleep 10 && npm run test
+        working-directory: examples/1-basics
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - install
+      - build
+      - test
+      - check-formatting
+      - typecheck
+    runs-on: ubuntu-latest
+    container: 'node:16'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output
+          path: dist
+      - name: Version package.json
+        run: npm --no-git-tag-version version ${{steps.tag.outputs.tag}}
+      - name: Create .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+      - name: Publish
+        run: npm publish
