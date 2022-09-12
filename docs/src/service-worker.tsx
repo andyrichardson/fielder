@@ -1,9 +1,11 @@
-import { clientsClaim, skipWaiting } from 'workbox-core';
+import { clientsClaim } from 'workbox-core';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
 
-skipWaiting();
+declare const self: ServiceWorkerGlobalScope;
+
+self.skipWaiting();
 clientsClaim();
 
 precacheAndRoute(self.__WB_MANIFEST);

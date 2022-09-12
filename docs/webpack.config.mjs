@@ -1,14 +1,18 @@
-const path = require('path');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
-const { InjectManifest } = require('workbox-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import HTMLWebpackPlugin from 'html-webpack-plugin';
+import { InjectManifest } from 'workbox-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import remarkSlug from 'remark-slug';
+import remarkPrism from 'remark-prism';
 
-module.exports = {
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default {
   mode: process.env.NODE_ENV || 'development',
   entry: {
     app: './src/index.tsx',
@@ -48,35 +52,28 @@ module.exports = {
           {
             loader: '@mdx-js/loader',
             options: {
-              remarkPlugins: [require('remark-slug'), require('remark-prism')],
+              remarkPlugins: [remarkSlug, remarkPrism],
             },
           },
         ],
       },
       {
         test: /\.(svg|png)$/,
-        use: ['file-loader'],
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[hash][ext][query]',
+        },
       },
       {
-        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/',
-            },
-          },
-        ],
+        test: /\.(woff(2)?|ttf|eot)(\?.*)?$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[hash][ext][query]',
+        },
       },
       {
         test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'resolve-url-loader',
-          // 'sass-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
@@ -113,7 +110,7 @@ module.exports = {
         },
       },
       outputPath: './manifest',
-      prefix: '/manifest',
+      prefix: '/manifest/',
     }),
     new InjectManifest({
       swSrc: path.resolve(__dirname, './src/service-worker.tsx'),
