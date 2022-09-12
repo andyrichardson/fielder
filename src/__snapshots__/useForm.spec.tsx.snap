@@ -16,3 +16,39 @@ Object {
   "validateSubmission": [Function],
 }
 `;
+
+exports[`on fromState matches snapshot 1`] = `
+Object {
+  "blurField": [Function],
+  "fields": Object {
+    "field1": Object {
+      "_isActive": false,
+      "hasBlurred": false,
+      "hasChanged": false,
+      "isValid": false,
+      "isValidating": false,
+      "name": "field1",
+      "value": "value1",
+    },
+    "field2": Object {
+      "_isActive": false,
+      "hasBlurred": false,
+      "hasChanged": false,
+      "isValid": false,
+      "isValidating": false,
+      "name": "field2",
+      "value": "value2",
+    },
+  },
+  "isValid": true,
+  "isValidating": false,
+  "mountField": [Function],
+  "premountField": [Function],
+  "setFieldState": [Function],
+  "setFieldValidation": [Function],
+  "setFieldValue": [Function],
+  "unmountField": [Function],
+  "validateField": [Function],
+  "validateSubmission": [Function],
+}
+`;
