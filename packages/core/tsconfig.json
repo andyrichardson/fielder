@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["dom", "es2015", "esnext"],
+    "jsx": "react",
+    "strict": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "keyofStringsOnly": true,
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.spec.*"]
+}
