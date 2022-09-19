@@ -16,5 +16,5 @@ export const getFormStateFromValues = <T extends FieldsState>(
         hasChanged: false,
       },
     }),
-    {}
+    {} as T
   );

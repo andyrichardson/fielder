@@ -8,7 +8,7 @@ export const useSynchronousReducer = <S, A>(
   const [state, setState] = useState<S>(stateRef.current);
 
   const dispatch = useCallback<(a: A) => S>((action) => {
-    stateRef.current = reducer(stateRef.current, action);
+    stateRef.current = reducer(stateRef.current, action, dispatch);
     setState(stateRef.current);
     return stateRef.current;
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

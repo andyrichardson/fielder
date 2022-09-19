@@ -1,0 +1,9 @@
+{
+  "name": "@fielder/solid",
+  "devDependencies": {
+    "solid-js": "^1.5.5"
+  },
+  "peerDependencies": {
+    "solid-js": ">= 1.5.0"
+  }
+}

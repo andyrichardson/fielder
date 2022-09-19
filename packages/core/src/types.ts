@@ -157,3 +157,6 @@ export type FormAction =
   | ValidateSubmissionAction;
 
 export type FormOpts = { fromState?: Record<string, any> };
+
+/** Ref object (MutableRefObject) */
+export type Ref<T> = { current: T };
